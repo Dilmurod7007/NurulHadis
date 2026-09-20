@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+.env
+.vscode/
+.idea/
+
+# Django
+__pycache__/
+*.py[cod]
+*.sqlite3
+backend/staticfiles/
+backend/media/
+.venv/
+venv/
