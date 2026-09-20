@@ -1,0 +1,602 @@
+/* ===========================================================
+   Nurul Hadis — UI
+   Ranglar banka nakleykasidagi 6 kategoriya rangidan olingan.
+   =========================================================== */
+
+/* --- Tokenlar: yorug' rejim (asosiy) --- */
+:root {
+  --bg:        #F3EDE3;
+  --bg-sunk:   #EBE3D6;
+  --surface:   #FFFBF4;
+  --surface-2: #F7F0E4;
+  --ink:       #33291F;
+  --ink-2:     #7D6C58;
+  --ink-3:     #A2917C;
+  --accent:    #8A6A45;
+  --accent-sk: #EFE2CE;
+  --line:      #E4D9C8;
+  --line-soft: #EFE7DA;
+  --shadow:    0 1px 2px rgba(51,41,31,.04), 0 6px 20px -12px rgba(51,41,31,.18);
+  --ring:      0 0 0 3px rgba(138,106,69,.28);
+
+  /* Kategoriya ranglari — nakleykadan */
+  --c-oila:   #E8B33F;
+  --c-umid:   #45B96A;
+  --c-baraka: #4B9BDC;
+  --c-ilm:    #E87B93;
+  --c-axloq:  #DC463F;
+  --c-sunnat: #FFFFFF;
+  --c-sunnat-ring: #D8CBB6;
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+
+  /* "Amiri" zaxira sifatida turibdi: ﷺ belgisi shundan olinadi */
+  --font-ui:  "Manrope", "Amiri", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-read: "Literata", "Amiri", ui-serif, Georgia, "Times New Roman", serif;
+  --font-ar:  "Amiri", "Scheherazade New", "Traditional Arabic", serif;
+}
+
+/* --- Qorong'i rejim: tizim sozlamasi --- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:        #17120D;
+    --bg-sunk:   #100C08;
+    --surface:   #221A13;
+    --surface-2: #2C2219;
+    --ink:       #EFE5D6;
+    --ink-2:     #A5937C;
+    --ink-3:     #7C6D5A;
+    --accent:    #D2A971;
+    --accent-sk: #3A2C1C;
+    --line:      #33281D;
+    --line-soft: #2A2016;
+    --shadow:    0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.8);
+    --ring:      0 0 0 3px rgba(210,169,113,.32);
+    --c-sunnat:  #F2E9DA;
+    --c-sunnat-ring: #4A3B29;
+  }
+}
+
+/* --- Qorong'i rejim: qo'lda tanlangan --- */
+:root[data-theme="dark"] {
+  --bg:        #17120D;
+  --bg-sunk:   #100C08;
+  --surface:   #221A13;
+  --surface-2: #2C2219;
+  --ink:       #EFE5D6;
+  --ink-2:     #A5937C;
+  --ink-3:     #7C6D5A;
+  --accent:    #D2A971;
+  --accent-sk: #3A2C1C;
+  --line:      #33281D;
+  --line-soft: #2A2016;
+  --shadow:    0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.8);
+  --ring:      0 0 0 3px rgba(210,169,113,.32);
+  --c-sunnat:  #F2E9DA;
+  --c-sunnat-ring: #4A3B29;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; color: inherit; cursor: pointer; }
+a { color: var(--accent); }
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+  border-radius: 8px;
+}
+
+/* ================= Sahna ================= */
+.shell {
+  max-width: 560px;
+  margin: 0 auto;
+  min-height: 100%;
+  padding-inline: 16px;
+  padding-block: 0 56px;
+}
+
+/* ================= Sarlavha paneli ================= */
+.topbar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-block: 14px 12px;
+  background: linear-gradient(var(--bg) 72%, transparent);
+}
+
+.topbar__title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iconbtn {
+  flex: none;
+  width: 38px; height: 38px;
+  display: grid; place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-2);
+  transition: color .15s, border-color .15s;
+}
+.iconbtn:hover { color: var(--ink); border-color: var(--ink-3); }
+.iconbtn svg { width: 17px; height: 17px; }
+
+/* ================= Qidiruv ================= */
+.search {
+  position: relative;
+  margin-bottom: 14px;
+}
+.search input {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 11px 14px 11px 40px;
+}
+.search input::placeholder { color: var(--ink-3); }
+.search input:focus-visible { box-shadow: var(--ring); border-color: var(--accent); }
+.search svg {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%);
+  width: 16px; height: 16px;
+  color: var(--ink-3);
+  pointer-events: none;
+}
+
+/* ================= Kategoriya tanlagich ================= */
+.chips {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-block: 2px 16px;
+  margin-inline: -16px;
+  padding-inline: 16px;
+}
+.chips::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-2);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.chip[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+}
+.dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--dot, var(--ink-3));
+  box-shadow: 0 0 0 1px var(--dot-ring, transparent);
+}
+
+/* ================= Kategoriya bo'limi ================= */
+.group { margin-bottom: 26px; }
+
+.group__head {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  padding-bottom: 10px;
+}
+.group__name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.group__count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+.group__list { display: flex; flex-direction: column; gap: 9px; }
+
+/* ================= Hadis kartochkasi ================= */
+.card {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  padding: 15px 16px 14px;
+  box-shadow: var(--shadow);
+  transition: transform .12s ease, border-color .15s;
+}
+.card:hover { border-color: var(--line); transform: translateY(-1px); }
+.card:active { transform: translateY(0); }
+
+.card__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+.card__cat {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.card__title {
+  font-family: var(--font-read);
+  font-size: 16.5px;
+  font-weight: 500;
+  line-height: 1.32;
+  margin: 0 0 7px;
+  text-wrap: balance;
+}
+.card__snippet {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0 0 11px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.card__meta .sep { opacity: .45; }
+
+/* ================= Bo'sh holat ================= */
+.empty {
+  border: 1px dashed var(--line);
+  border-radius: var(--r-md);
+  padding: 20px 16px;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 13.5px;
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+/* Bo'sh kategoriya ro'yxatda bitta qatorda turadi */
+.empty--slim {
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 13px;
+}
+
+/* ================= Tafsilot: orqaga ================= */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-2);
+  transition: color .15s;
+}
+.back:hover { color: var(--accent); }
+.back svg { width: 16px; height: 16px; }
+
+/* ================= Tafsilot: bosh blok ================= */
+.hero {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  padding: 20px 20px 22px;
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+}
+.hero__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-bottom: 12px;
+}
+.hero__title {
+  font-family: var(--font-read);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.26;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+/* ================= Tablar ================= */
+.tabs {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 58px);
+  z-index: 10;
+  display: flex;
+  gap: 4px;
+  background: var(--bg-sunk);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 16px;
+}
+.tab {
+  flex: 1;
+  border: 0;
+  background: none;
+  border-radius: 999px;
+  padding: 9px 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  transition: background .18s, color .18s;
+}
+.tab[aria-selected="true"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.tab__badge {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ================= Panel ================= */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* Arabcha matn */
+.arabic {
+  font-family: var(--font-ar);
+  font-size: 25px;
+  line-height: 2.05;
+  direction: rtl;
+  text-align: right;
+  color: var(--ink);
+  margin: 0;
+}
+
+.rule {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+  margin: 20px 0;
+}
+.rule--soft { background: var(--line-soft); }
+
+/* O'zbekcha tarjima */
+.uz {
+  font-family: var(--font-read);
+  font-size: 16px;
+  line-height: 1.72;
+  margin: 0;
+}
+
+.srcline {
+  margin: 16px 0 0;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* To'liq matn tugmasi */
+.fullbtn {
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  background: var(--accent-sk);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  padding: 13px 15px;
+  color: var(--ink);
+  transition: border-color .15s;
+}
+.fullbtn:hover { border-color: var(--accent); }
+.fullbtn__label { font-size: 13.5px; font-weight: 600; }
+.fullbtn__note { font-size: 12px; color: var(--ink-2); display: block; margin-top: 2px; font-weight: 400; }
+.fullbtn svg { width: 16px; height: 16px; flex: none; color: var(--accent); transition: transform .2s; }
+.fullbtn[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+.fulltext {
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 16px;
+  background: var(--surface-2);
+}
+.fulltext__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 10px;
+}
+.fulltext mark {
+  background: var(--accent-sk);
+  color: inherit;
+  padding: 1px 0;
+  border-radius: 2px;
+}
+
+/* ================= Sharh ================= */
+.sharh {
+  font-family: var(--font-read);
+  font-size: 15.5px;
+  line-height: 1.78;
+}
+.sharh p { margin: 0 0 1.1em; }
+.sharh p:last-child { margin-bottom: 0; }
+.sharh p.lead {
+  font-weight: 500;
+  color: var(--ink);
+  border-left: 2px solid var(--accent);
+  padding-left: 14px;
+}
+.sharh p.num {
+  font-weight: 600;
+  margin-top: 1.6em;
+  color: var(--ink);
+}
+
+/* ================= Manba jadvali ================= */
+.facts { display: flex; flex-direction: column; }
+.fact {
+  display: flex;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-size: 14px;
+}
+.fact:last-of-type { border-bottom: 0; padding-bottom: 0; }
+.fact dt {
+  flex: none;
+  width: 108px;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.fact dd { margin: 0; flex: 1; min-width: 0; font-variant-numeric: tabular-nums; }
+
+.badge {
+  display: inline-block;
+  background: var(--accent-sk);
+  color: var(--accent);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.linkrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+  padding-top: 15px;
+  border-top: 1px solid var(--line);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.linkrow svg { width: 14px; height: 14px; }
+
+.note {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-3);
+}
+
+/* ================= Qog'ozcha ko'rinishi ================= */
+.slip {
+  margin-top: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-md);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+.slip__head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 11px;
+}
+.slip__len {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 600;
+}
+.slip__paper {
+  background: var(--surface-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-sm);
+  padding: 13px 14px;
+}
+.slip__text { margin: 0; font-size: 13.5px; line-height: 1.5; }
+.slip__src {
+  margin: 9px 0 0;
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ================= Pastki izoh ================= */
+.foot {
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
