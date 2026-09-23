@@ -178,6 +178,9 @@ a { color: var(--accent); }
   padding-block: 2px 16px;
   margin-inline: -16px;
   padding-inline: 16px;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 .chips::-webkit-scrollbar { display: none; }
 

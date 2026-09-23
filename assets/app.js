@@ -299,9 +299,9 @@
 
   function panelHadis(h) {
     var s = '<div class="panel">';
-    s += '<p class="arabic" dir="rtl" lang="ar">' + esc(h.arabic_text) + "</p>";
-    s += '<hr class="rule">';
     s += '<p class="uz">' + esc(h.uzbek_full) + "</p>";
+    s += '<hr class="rule">';
+    s += '<p class="arabic" dir="rtl" lang="ar">' + esc(h.arabic_text) + "</p>";
     s += '<p class="srcline">' + esc(h.collection) + ", " + esc(h.collection_no) +
          " · " + esc(h.narrator) + "</p></div>";
 

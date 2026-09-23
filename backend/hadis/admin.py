@@ -36,8 +36,8 @@ class FullTextInline(admin.StackedInline):
 class HadithAdmin(admin.ModelAdmin):
     inlines = [FullTextInline]
     list_display = (
-        "title", "category", "manba_qisqa",
-        "qogozcha_holati", "sharh_belgisi", "published",
+        "title", "category", "paper_text_input", "paper_source_line_input",
+        "manba_qisqa", "qogozcha_holati", "sharh_belgisi", "published",
     )
     list_filter = ("category", "published", "collection")
     search_fields = ("title", "paper_text", "uzbek_full", "narrator",
@@ -45,6 +45,7 @@ class HadithAdmin(admin.ModelAdmin):
     list_editable = ("published",)
     readonly_fields = ("created_at", "updated_at", "qogozcha_holati")
     save_on_top = True
+    actions = ("chop_etish", "chop_etishni_bekor_qilish")
 
     fieldsets = (
         ("Asosiy", {
@@ -74,6 +75,22 @@ class HadithAdmin(admin.ModelAdmin):
         }),
     )
 
+    @admin.display(description="Qog'ozcha matni")
+    def paper_text_input(self, obj):
+        return format_html(
+            '<input type="text" value="{}" readonly onclick="this.select()" '
+            'style="width:260px;font:inherit;padding:2px 4px">',
+            obj.paper_text,
+        )
+
+    @admin.display(description="Qog'ozcha manba qatori")
+    def paper_source_line_input(self, obj):
+        return format_html(
+            '<input type="text" value="{}" readonly onclick="this.select()" '
+            'style="width:200px;font:inherit;padding:2px 4px">',
+            obj.paper_source_line,
+        )
+
     @admin.display(description="Manba")
     def manba_qisqa(self, obj):
         return f"{obj.collection}, {obj.collection_no}"
@@ -94,6 +111,16 @@ class HadithAdmin(admin.ModelAdmin):
     @admin.display(description="Sharh", boolean=True)
     def sharh_belgisi(self, obj):
         return obj.sharh_status == "bor"
+
+    @admin.action(description="Tanlanganlarni chop etish")
+    def chop_etish(self, request, queryset):
+        yangilandi = queryset.update(published=True)
+        self.message_user(request, f"{yangilandi} ta hadis chop etildi.")
+
+    @admin.action(description="Tanlanganlarni chop etishdan olib tashlash")
+    def chop_etishni_bekor_qilish(self, request, queryset):
+        yangilandi = queryset.update(published=False)
+        self.message_user(request, f"{yangilandi} ta hadis chop etishdan olib tashlandi.")
 
 
 admin.site.site_header = "Nurul Hadis"
