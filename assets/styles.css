@@ -181,7 +181,9 @@ a { color: var(--accent); }
   touch-action: pan-x;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
+  cursor: grab;
 }
+.chips:active { cursor: grabbing; }
 .chips::-webkit-scrollbar { display: none; }
 
 .chip {

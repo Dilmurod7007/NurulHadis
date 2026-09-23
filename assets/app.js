@@ -434,6 +434,33 @@
 
   window.addEventListener("hashchange", onRoute);
 
+  /* Sichqoncha bilan bosib-sudrab gorizontal scroll (.chips) —
+     real qurilmada barmoq bilan surish allaqachon ishlaydi,
+     bu faqat sichqoncha/trackpad uchun qo'shimcha. */
+  (function () {
+    var dragEl = null, startX = 0, startScroll = 0, moved = false;
+    document.addEventListener("mousedown", function (e) {
+      var el = e.target.closest && e.target.closest(".chips");
+      if (!el) return;
+      dragEl = el; moved = false;
+      startX = e.clientX; startScroll = el.scrollLeft;
+    });
+    window.addEventListener("mousemove", function (e) {
+      if (!dragEl) return;
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      if (moved) dragEl.scrollLeft = startScroll - dx;
+    });
+    window.addEventListener("mouseup", function () { dragEl = null; });
+    document.addEventListener("click", function (e) {
+      if (moved && e.target.closest && e.target.closest(".chips")) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      moved = false;
+    }, true);
+  })();
+
   if (window.matchMedia) {
     var mq = window.matchMedia("(prefers-color-scheme: dark)");
     (mq.addEventListener ? mq.addEventListener.bind(mq, "change")
