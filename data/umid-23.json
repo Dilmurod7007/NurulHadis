@@ -1,5 +1,5 @@
 {
-  "izoh": "23 ta hadis (422-444, 51-BOB \"Umid qilish haqida\") hadis.islom.uz saytidan (Riyozus solihiyn — matn, Riyozus solihiyn sharhi — sharh) to'g'ridan-to'g'ri olindi va kirilldan lotinga o'girildi. umid-12 (433-hadis) uchun manbada alohida sharh matni yo'q edi, shu sababli sharh maydoni bo'sh qoldirildi.",
+  "izoh": "23 ta hadis (51-BOB \"Umid qilish haqida\", 422-446-hadislar, 431 va 434 - takroriy mazmun bo'lgani uchun 445, 446 bilan almashtirildi) hadis.islom.uz saytidan (Riyozus solihiyn - matn, Riyozus solihiyn sharhi - sharh) to'g'ridan-to'g'ri olindi va kirilldan lotinga o'girildi. umid-11 (433-hadis) uchun manbada alohida sharh matni yo'q.",
   "hadislar": [
     {
       "id": "umid-01",
@@ -193,27 +193,6 @@
     {
       "id": "umid-10",
       "category": "Umid",
-      "title": "Qiyomat kuni komil bo‘ladigan rahmat",
-      "paper_text": "Rasululloh ﷺ: “Allohning yuzta rahmati bor. Shundan bir rahmati bilan jamiki maxluqotlar bir-biriga rahm qiladi, to‘qson to‘qqiztasi esa Qiyomat kuni uchundir”, dedilar.",
-      "paper_source_line": "Salmon Forsiy — Muslim",
-      "arabic_text": "وَرَوَاهُ مُسْلِمٌ أَيضاً مِنْ رِوَايَةِ سَلْمَانَ الفَارِسيِّ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ: “إِنَّ للهِ تَعَالَى ماِئَةَ رَحْمَةٍ، فَمِنْهَا رَحْمَةٌ يَتَراحَمُ بِهَا الخَلْقُ بَيْنَهُمْ، وَتِسْعٌ وَتِسْعُونَ لِيَوْمِ القِيَامَةِ” [2753]. وَفِي رِوَايَةٍ: “إِنَّ اللهَ تَعَالَى خَلَقَ يَومَ خَلَقَ السَّمَاوَاتِ وَالأَرْضَ مِئَةَ رَحْمَةٍ، كُلُّ رَحْمَةٍ طِبَاقُ مَا بَيْنَ السَّمَاءِ وَالأَرْضِ، فَجَعَلَ مِنْهَا فِي الأَرْضِ رَحْمَةً، فَبِهَا تَعْطِفُ الوَالِدَةُ عَلَى وَلَدِهَا، وَالْوَحْشُ وَالطَّيْرُ بَعْضُهَا عَلَى بَعْضٍ، فَإِذَا كَانَ يَوْمُ القِيَامَةِ أَكْمَلَهَا بِهَذِهِ الرَّحْمَةِ” [م 2753/21].",
-      "uzbek_full": "Imom Muslimning Salmon Forsiy roziyallohu anhudan qilgan rivoyatida: “Rasululloh sollallohu alayhi vasallam shunday dedilar: “Allohning yuzta rahmati bor. Shundan bir rahmati bilan jamiki maxluqotlar bir-biriga rahm qiladi, to‘qson to‘qqiztasi esa Qiyomat kuni uchundir”.\n\nYana boshqa bir rivoyatda Rasululloh sollallohu alayhi vasallam shunday dedilar: “Alloh osmonlaru erni yaratgan kuni yuzta rahmat yaratdi. Har bir rahmatning kengligi eru osmon orasichadir. Shundan bir rahmatni erga qo‘ydi. O‘sha (rahmat) bilan ona bolasiga, vahshiy hayvonlar va qushlar bir-biriga mehribonlik qiladi. Qiyomat kuni o‘sha bilan rahmatini komil qiladi”.\n\nImom Muslim rivoyati.",
-      "narrator": "Salmon Forsiy",
-      "collection": "Muslim",
-      "collection_no": "",
-      "grade": "Sahih — Imom Muslim rivoyati",
-      "ref_book": "Riyozus solihiyn, 431-hadis",
-      "ref_url": "https://hadis.islom.uz/kitob/28/0/431",
-      "parent_hadith": {
-        "bor": false
-      },
-      "sharh": "Alloh taoloning rahmati keng, Uning mag‘firat eshiklari biz uchun hamisha ochiq. Mo‘min-musulmonlar besh mahal namozning har bir rakatida “Fotiha” surasining: “(U) Mehribon, Rahmli” oyatini tilovat qilganda, bir kunda 64 marotaba Allohning Mehribon va Rahmli ekanligini zikr qiladilar.\n\nQur’oni karimda “rahmat” va unga bog‘liq bo‘lgan 315 dan ortiq so‘zlar uchraydi. Rostgo‘ylik – 145 marta, sabr – 90 marta, afv – 43 marta, saxiylik – 42 marta, to‘g‘rilik – 40 marta, sodiqlik – 29 marta, odillik – 24 marta, beozorlik – 15 marta zikr etilgan.\n\nAgar kasal bo‘lsangiz yoki biror ko‘ngilsizlikka duchor bo‘lsangiz, bu Allohning sizga g‘azab qilgani yoki jazolaganini bildirmaydi, balki bu ham rahmatdir. Zero, musibat orqali Alloh taolo bandalarini sinab, O‘ziga yaqin qiladi va gunohlarini mag‘firat etadi.\n\nAbu Hurayra roziyallohu anhudan rivoyat qilinadi:\n\nRasululloh sollallohu alayhi vasallam: “Musulmonga qay bir musibat, charchashmi, bemorlikmi, tashvishmi, xafachilikmi, ozormi, g‘am-g‘ussami, hattoki tikan kirishmi etadigan bo‘lsa, albatta, Alloh ular ila uning xatolarini kafforat qiladi”, dedilar (Imom Buxoriy va Muslim rivoyati).\n\nAgar boshingizga biror musibat tushsa, bu Allohning sizga yomonlikni istashi emas, bu ham rahmat. Bu bilan Alloh sizga o‘zining yaxshi ko‘rgan bandalaridan biri bo‘lish imkonini bergan bo‘ladi. Rasululloh sollallohu alayhi vasallam bunday deganlar: “Yaxshiliklar katta sinovlar bilan keladi. Qachonki Alloh bir bandasini yaxshi ko‘rsa, Alloh o‘sha bandaga bir sinovni yuboradi. Agar banda sinovga sabr qilsa, Allohning rahmatiga erishadi, ammo sabrsizlik qilsa Uning g‘azabiga duchor bo‘ladi”.\n\nAgar biror savobli amal qilsangiz ham buni Allohning fazli va rahmati ila ado etganingizni unutmang. Lekin gunoh ish sodir etsangiz darhol tavba qilib, Allohga istig‘for ayting. Zero, “Albatta, Alloh odamlarga nisbatan mehribon va rahmlidir” (Baqara surasi, 143-oyat.)",
-      "sharh_ref": "Riyozus solihiyn sharhi, 431-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/431"
-    },
-    {
-      "id": "umid-11",
-      "category": "Umid",
       "title": "Tavba qilgan bandaning mag‘firati",
       "paper_text": "Rasululloh ﷺ dedilar: Alloh taolo: “Bandam gunoh qildi va uni kechiradigan Robbi borligini bildi. Haqiqatda gunohini kechirdim. U xohlaganini qilaversin”, deydi.",
       "paper_source_line": "Abu Hurayra — Buxoriy va Muslim",
@@ -233,7 +212,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/432"
     },
     {
-      "id": "umid-12",
+      "id": "umid-11",
       "category": "Umid",
       "title": "Gunohkorlarning mag‘firati",
       "paper_text": "Rasululloh ﷺ: “Agar gunoh qilmaganlaringizda, Alloh sizlarni ketkazib, o‘rningizga boshqa bir qavmni keltirar, ular mag‘firat so‘rashar va U ularni mag‘firat qilar edi”, dedilar.",
@@ -254,28 +233,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/433"
     },
     {
-      "id": "umid-13",
-      "category": "Umid",
-      "title": "Yangi gunohkorlar va mag‘firat",
-      "paper_text": "Rasululloh ﷺ: “Agar sizlar gunoh qilmasangiz, Alloh boshqa bir gunoh qiluvchilarni yaratib, keyin ularni mag‘firat qilgan bo‘lar edi”, dedilar.",
-      "paper_source_line": "Abu Ayub — Muslim",
-      "arabic_text": "وَعَنْ أَبِي أَيُّوبَ رَضِيَ اللهُ عَنْهُ قَالَ: سَمِعْتُ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ يَقُولُ: “لَوْلَا أَنَّكُمْ تُذْنِبُونَ لَخَلَقَ اللهُ خَلْقاً يُذْنِبُونَ، يَغْفِرُ لَهُمْ” رَوَاهُ مُسْلِمٌ [2748].",
-      "uzbek_full": "Abu Ayub roziyallohu anhudan rivoyat qilinadi:\n\nRasululloh sollallohu alayhi vasallamni: “Agar sizlar gunoh qilmasangiz, Alloh boshqa bir gunoh qiluvchilarni yaratib, keyin ularni mag‘firat qilgan bo‘lar edi” deganlarini eshitganman”.\n\nImom Muslim rivoyati.",
-      "narrator": "Abu Ayub",
-      "collection": "Muslim",
-      "collection_no": "",
-      "grade": "Sahih — Imom Muslim rivoyati",
-      "ref_book": "Riyozus solihiyn, 434-hadis",
-      "ref_url": "https://hadis.islom.uz/kitob/28/0/434",
-      "parent_hadith": {
-        "bor": false
-      },
-      "sharh": "Inson hech gunoh qilmasa kibrlanib ketgani, gunoh qilmayabmanku, deb Allohga kechirishini so‘rab yalinmay qo‘ygani uchun Alloh insonni xato qiladigan qilib yaratdi. Xato qilsinda keyin Robbisidan kechirishini so‘rasin.\n\nBandadan gunoh sodir bo‘lmasligi ilojsiz narsa. Faqat payg‘ambarlargina gunohdan pok bo‘ladilar. Banda xohlasa ham, xohlamasa ham gunoh ichida bo‘ladi. Bu xususda bandalarning yaxshisi, o‘sha gunohlarni tark qilishga qattiq tirishib, tavbada bardavom bo‘luvchisidir. Bu degani bilib turib gunohni sodir etib, yana tavbani qilaverish degani emas.\n\nBanda modomiki, hayot ekan oldingi gunohlariga tavba qilishi vojibdir.\n\nAlloh taolo Qur’onda quyidagicha amr qiladi:\n\nBarchangiz Allohga tavba qiling, hoy mo‘minlar. Shoyadki shunda najot topsangiz… (Nur surasi, 31-oyat).\n\nAgar gunoh Alloh taoloning haqqi bilan bog‘liq bo‘lsa, undan tavba qilishda uchta narsa shart bo‘ladi:\n\n1. Qilgan ishidan afsus-nadomat qilish;\n\n2. Darhol o‘sha gunohni tark qilmoq va undan chekinmoq;\n\n3. Qayta takrorlamaslikka astoydil qasd qilmoq.\n\nMana shu tarzda qilingan tavbaga “tavbai nasuh” deyiladi. Mabodo yuqoridagi uchta shartdan birortasi topilmasa bu tavbani sog‘lom-sahih tavba deyilmaydi.\n\nAgar gunoh bandaning haqqiga doir bo‘lsa, bu holatda undan tavba qilish uchun to‘rtta shart bor. Yuqoridagi uch shart va to‘rtinchisi haqdorni rozi qilib qo‘yish. Agar masalan birovning molini tortib olgan bo‘lsa, yuqoridagi uchta shartni bajargach, haq egasiga uning molini qaytarib berish lozim bo‘ladi. Mabodo birovni haqorat qilgan yo tan jarohat etkazgan bo‘lsa, bu gunohdan tavba qilishda yuqorida qator sanab o‘tilgan uchta shartni ado qilgach, jabrlanuvchiga ham xuddi shunday qilishga imkon beradi yo undan kechirim so‘raydi. Agar g‘iybat qilgan bo‘lsa, unga oshkor qilib rizolik so‘raydi. Mana shu shartlar topilgach tavba qiluvchining tavbasi nasux tavba bo‘lib gunohdan inshaalloh forig‘ bo‘ladi.\n\nAmmo bir inson, men hech gunoh qilmayman, tavba qilib yalinmasam ham bo‘laveradi desa, demak u eng katta xatoni qilgan hisoblanadi. Gunoh qilmayman, gunohim yo‘q, deb da’vo qiluvchi kishilar ham uchrab turadi.\n\nAlloh taolo sizni va bizni ko‘p tavba qilib, istig‘for aytuvchi insonlardan qilsin.",
-      "sharh_ref": "Riyozus solihiyn sharhi, 434-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/434"
-    },
-    {
-      "id": "umid-14",
+      "id": "umid-12",
       "category": "Umid",
       "title": "Chin qalbdan shahodat va jannat xushxabari",
       "paper_text": "Rasululloh ﷺ: “Chorboqning ortida “Allohdan boshqa iloh yo‘q”, deb chin qalbdan ishonib guvohlik beradigan kimni uchratsang, unga jannat xushxabarini ber”, dedilar.",
@@ -296,7 +254,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/435"
     },
     {
-      "id": "umid-15",
+      "id": "umid-13",
       "category": "Umid",
       "title": "Rasululloh ﷺning ummati uchun duosi",
       "paper_text": "Rasululloh ﷺ “Allohim, ummatim, ummatim!” deb yig‘ladilar. Alloh: “Ummating xususida seni rozi qilamiz, mahzun qilib qo‘ymaymiz”, dedi.",
@@ -317,7 +275,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/436"
     },
     {
-      "id": "umid-16",
+      "id": "umid-14",
       "category": "Umid",
       "title": "Allohning haqqi va bandalarning haqqi",
       "paper_text": "Rasululloh ﷺ: “Allohning bandalardagi haqqi U Zotga ibodat qilishlari va sherik qilmasliklaridir. Bandalarning haqlari esa shirk keltirmaganni azoblamaslikdir”, dedilar.",
@@ -338,7 +296,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/437"
     },
     {
-      "id": "umid-17",
+      "id": "umid-15",
       "category": "Umid",
       "title": "Qabr savoli va sobit so‘z",
       "paper_text": "Rasululloh ﷺ: “Musulmon qabrida so‘ralganda, “Allohdan o‘zga iloh yo‘q va Muhammad Allohning Rasulidir”, deb guvohlik beradi”, dedilar.",
@@ -359,7 +317,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/438"
     },
     {
-      "id": "umid-18",
+      "id": "umid-16",
       "category": "Umid",
       "title": "Mo‘minning yaxshiligi oxiratga saqlanadi",
       "paper_text": "Rasululloh ﷺ: “Mo‘min kishi yaxshilik qilsa, Alloh uning yaxshiliklarini Qiyomatga saqlab qo‘yib, dunyoda ham rizq beradi”, dedilar.",
@@ -380,7 +338,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/439"
     },
     {
-      "id": "umid-19",
+      "id": "umid-17",
       "category": "Umid",
       "title": "Besh vaqt namoz — anhorga o‘xshash",
       "paper_text": "Rasululloh ﷺ: “Besh mahal namoz xuddi biringizning eshigi oldida oqadigan, har kuni besh mahal yuvinadigan anhorga o‘xshaydi”, dedilar.",
@@ -401,7 +359,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/440"
     },
     {
-      "id": "umid-20",
+      "id": "umid-18",
       "category": "Umid",
       "title": "Qirq kishining janozadagi shafoati",
       "paper_text": "Rasululloh ﷺ: “Biror musulmon kishi o‘lib, uning janozasiga Allohga shirk keltirmagan qirq kishi qoim bo‘lsa, Alloh ularning shafoatini qabul qilmay qo‘ymaydi”, dedilar.",
@@ -422,7 +380,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/441"
     },
     {
-      "id": "umid-21",
+      "id": "umid-19",
       "category": "Umid",
       "title": "Jannat ahlining yarmi bo‘lish umidi",
       "paper_text": "Rasululloh ﷺ: “Jonim qo‘lida bo‘lgan Zotga qasamki, jannat ahlining yarmi bo‘lasiz deb umid qilaman, chunki jannatga faqat musulmon jon kiradi”, dedilar.",
@@ -443,7 +401,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/442"
     },
     {
-      "id": "umid-22",
+      "id": "umid-20",
       "category": "Umid",
       "title": "Qiyomat kunida do‘zaxdan najot",
       "paper_text": "Rasululloh ﷺ: “Qiyomat kuni Alloh har bir musulmonga bir yahudiy yoki nasroniyni berib, “Bu sening do‘zaxdan najotingdir”, deydi”, dedilar.",
@@ -464,7 +422,7 @@
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/443"
     },
     {
-      "id": "umid-23",
+      "id": "umid-21",
       "category": "Umid",
       "title": "Gunohi yashirilgan mo‘min bandaning holi",
       "paper_text": "Rasululloh ﷺ: “Sening gunohingni dunyoda yashirgan edim, bugun esa ularni mag‘firat qilaman”, deydi. So‘ng unga yaxshiliklar sahifasi beriladi.",
@@ -483,6 +441,48 @@
       "sharh": "Hadisning to‘la shakli quyidagichadir:\n\nSafvon ibn Muhrizdan rivoyat qilinadi:\n\n“Bir kishi Ibn Umarga: “Rasululloh sollallohu alayhi vasallamdan najva (Qiyomatdagi xoli suhbat) haqida nima eshitgansan?” deb so‘radi. Ibn Umar shunday dedi: “Nabiy sollallohu alayhi vasallamning shunday deganlarini eshitganman: “Qiyomat kuni mo‘min banda Robbi azza va jallaga yaqinlashtiriladi. Alloh taolo uning ustidan pardasini yopadi. So‘ng uni gunohlariga iqror qildirib, “(Shu gunohlarni) bilasan-a?” deydi. U “Bilaman, ey Robbim”, deydi. U Zot: “Sening gunohingni dunyoda yashirgan edim, bugun esa ularni mag‘firat qilaman”, deydi. So‘ng unga yaxshiliklar (yozilgan) sahifasi beriladi. Kofir va munofiqlarga esa butun xaloyiq ichida “Manavilar Allohga nisbatan yolg‘on aytishgan edi!” deb nido qilinadi”. (Imom Muslim rivoyati).\n\n“Allohga yaqinlashtiriladi”, deyilganda karam va yaxshilik ila yaqinlashtirish tushuniladi. Chunki Alloh masofa ila yaqinlashishdan pokdir”.\n\nHadisdan olinadigan xulosalar:\n\n­­– Iymon ahliga Alloh taoloning inoyati hamda dunyo va oxiratda uni satr qilishi.\n\n– Mo‘min banda dunyo va oxiratda yolg‘on so‘zlamaydi.\n\n– E’tirof gunohlarni o‘chiradi.\n\n– Imkoni boricha mo‘min gunohlarini yashirishga undalmoqda.\n\n– Bandalarning barcha amallarini Alloh hisoblab boradi. Kim yaxshilik topsa, Allohga hamd aytsin. Kim bundan boshqa narsa topsa, faqat o‘zini malomat qilsin. U kishi Allohning xohishida bo‘ladi.",
       "sharh_ref": "Riyozus solihiyn sharhi, 444-hadis",
       "sharh_url": "https://hadis.islom.uz/kitob/32/0/444"
+    },
+    {
+      "id": "umid-22",
+      "category": "Umid",
+      "title": "Yaxshiliklar yomonliklarni ketkazadi",
+      "paper_text": "Rasululloh ﷺ: “Kunduzning ikki tarafida va kechaning bir bo‘lagida namozni to‘kis ado qil! Yaxshiliklar yomonliklarni ketkazadi”, oyati butun ummat uchun nozil bo‘ldi.",
+      "paper_source_line": "Ibn Mas’ud — Buxoriy va Muslim",
+      "arabic_text": "وَعَنِ ابْنِ مَسْعُودٍ رَضِيَ اللهُ عَنْهُ: أَنَّ رَجُلًا أَصَابَ مِنْ امْرَأَةٍ قُبْلَةً، فَأَتَى النَّبِيَّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ فأَخْبَرَهُ، فَأَنْزَلَ اللهُ تَعَالَى: {وَأَقِمِ الصَّلَاةَ طَرَفَيِ النَّهَارِ وَزُلَفاً مِنَ الَّليْلِ * إِنَّ الحَسَنَاتِ يُذْهِبْنَ السَّيِّئَاتِ}. [هود: 114] فَقَالَ الرَّجُلُ: أَلِي هَذَا يَا رَسُولَ اللهِ؟ قَالَ: “لِجَمِيعِ أُمَّتي كُلِّهِمْ” مُتَّفَقٌ عَلَيهِ [خ 526، م 2763].",
+      "uzbek_full": "Ibn Mas’ud roziyallohu anhudan rivoyat qilinadi:\n\n“Bir kishi bir ayolni o‘pib oldi. Keyin Nabiy sollallohu alayhi vasallamning oldilariga kelib, buni aytdi. Shunda Alloh “Kunduzning ikki tarafida va kechaning bir bo‘lagida namozni to‘kis ado qil! Yaxshiliklar yomonliklarni ketkazadi”[1] oyatini nozil qildi. Haligi kishi: “Ey Allohning Rasuli, men uchunmi bu?” degan edi, “Ummatimning barchasi uchun”, dedilar”.\n\nMuttafaqun alayh.",
+      "narrator": "Ibn Mas’ud",
+      "collection": "Buxoriy va Muslim",
+      "collection_no": "Buxoriy 526, Muslim 2763",
+      "grade": "Muttafaqun alayh",
+      "ref_book": "Riyozus solihiyn, 445-hadis",
+      "ref_url": "https://hadis.islom.uz/kitob/28/0/445",
+      "parent_hadith": {
+        "bor": false
+      },
+      "sharh": "Ulamolarimizning aniqlashlaricha, o‘sha begona ayolni o‘pib olgan kishining ismi Abul Yusir ekan. Imom Termiziy Abul Yusirning o‘zlaridan quyidagi rivoyatni keltiradilar:\n\n“Bir ayol huzurimga xurmo sotib olish uchun keldi. Men uyda bundan yaxshi xurmo bor, dedim. U men bilan uyga kirdi. Unga tomon engashib, o‘pib oldim. Keyin Abu Bakr roziyallohu anhuning oldiga borib, unga haligi ishni zikr qildim. U:\n\n“Hech kimga bildirma. Tavba qil”, dedi.\n\nSo‘ng Umarning oldiga borib haligi ishni zikr qildim.\n\n“O‘zingni bekit. Tavba qil, hech kimga xabar berma”, dedi.\n\nSabr qila olmay Rasululloh sollallohu alayhi vasallam huzurlariga bordim. U zot boshlarini quyi solib, uzoq turib qoldilar. To Alloh taolo u kishiga “Namozni nahorning ikki tarafidan va kechaning bir qismida ado et” oyatini nozil qilgunicha turdilar”.\n\nOyatdagi “...Nahorning ikki tarafi”dan murod, bomdod, peshin va asr namozlaridir. “Kechaning bir qismi”dan murod esa shom va xufton namozlaridir.\n\nMana shu hodisa sahobalar avlodiga xos xususiyatlaridan bittasini yaqqol ko‘rsatmoqda. Ular har qancha ulug‘ zot bo‘lsalar ham, ichlaridan ba’zi birlari gohida insoniy zaifligi tutib, Abul Yusir roziyallohu anhuga o‘xshash ishlarni qilib qo‘yar edilar. Bu ajablanarli emas. Beayb Parvardigorning O‘zi. Ammo, sahobalar avlodi gunoh sodir bo‘lganidan keyinoq zudlik bilan o‘zlariga kelar va o‘sha gunohni yuvish payidan bo‘lar edilar. Gunoh yuvilganiga ishonch hosil qilmagunlaricha boshqa ishga qo‘l urmas edilar.\n\nAbul Yusir roziyallohu anhu ham darhol Abu Bakr va Umar roziyallohu anhumlarga murojaat qildilar. Ularning javoblari to‘g‘ri bo‘lsa ham ko‘ngillari tinchimaydi. Payg‘ambarimiz sollallohu alayhi vasallam huzurlariga bordilar.\n\nBu masalani Allohning O‘zi hal qildi. Abul Yusir roziyallohu anhu va boshqa mo‘minlar ado etib yurgan besh vaqt namoz oddiy narsa emas, balki ularning gunohlarini tinmay yuvib turuvchi kafforot ekanini bayon qildi.\n\nShulardan kelib chiqib, hech bir gunoh qilmaslikka tirishaylik. Xudo ko‘rsatmasin, ba’zi bir gunohlar sodir etib qo‘ysak, darhol uni yuvish payi­dan bo‘laylik. Besh vaqt namozimizni vaqtida ado etaylik. Yomon ishlardan ko‘ra, yaxshi ishlarni qilishga ko‘proq harakat qilaylik.",
+      "sharh_ref": "Riyozus solihiyn sharhi, 445-hadis",
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/445"
+    },
+    {
+      "id": "umid-23",
+      "category": "Umid",
+      "title": "Namoz — gunohning kaffarati",
+      "paper_text": "Rasululloh ﷺ gunohini iqror qilgan kishiga: “Sen biz bilan namoz o‘qidingmi?” dedilar. U: “Ha”, dedi. U zot: “Mag‘firat qilinding”, dedilar.",
+      "paper_source_line": "Anas ibn Molik — Buxoriy va Muslim",
+      "arabic_text": "وَعَنْ أَنَسٍ رَضِيَ اللهُ عَنْهُ قَالَ: جَاءَ رَجُلٌ إِلَى النَّبِيِّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ فَقَالَ: يَا رَسُولَ اللهِ؛ أَصَبْتُ حَدّاً، فَأَقِمْهُ عَلَيَّ، وَحَضَرتِ الصَّلَاةُ، فَصَلَّى مَعَ رَسُولِ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ، فَلَمَّا قَضَى الصَّلَاةَ قَالَ: يَا رَسُولَ اللهِ؛ إِنِّي أَصَبْتُ حَدّاً، فَأَقِمْ فِيَّ كِتَابَ اللهِ، قَالَ: “هَلْ حَضَرْتَ مَعَنَا الصَّلَاةَ؟” قَالَ: نَعَمْ: قَالَ: “قَدْ غُفِرَ لَكَ” مُتَّفَقٌ عَلَيهِ [خ 6823، م 2764].\n\nوَقَولُهُ: “أَصَبْتُ حَدّاً” مَعْنَاهُ: مَعْصِيَةٌ تُوجِبُ التَّعْزِيرَ، وَلَيْسَ الْمُرَادُ الحَدَّ الشَّرْعِيَّ الْحَقِيقِيَّ كَحَدِّ الزِّنَا وَالخَمْرِ وَغَيْرِهمَا؛ فَإِنَّ هَذِهِ الحُدُودَ لَا تَسْقُطُ بِالصَّلَاةِ، وَلَا يَجُوزُ لِلإِمَامِ تَرْكُهَا.",
+      "uzbek_full": "Anas roziyallohu anhudan rivoyat qilinadi:\n\n“Nabiy sollallohu alayhi vasallamning huzurlariga bir kishi kelib, “Ey Allohning Rasuli, men gunoh qilib qo‘ydim. Menga haddni* qoim qiling”, dedi. Namoz vaqti kirdi. U Rasululloh sollallohu alayhi vasallam bilan birga namoz o‘qidi. Namoz tugagach, u: “Ey Allohning Rasuli, men gunoh qilib qo‘ydim. Menga Allohning Kitobidagi haddni qoim qiling”, dedi. U zot: “Sen biz bilan namoz o‘qidingmi?” dedilar. U: “Ha” degan edi, u zot: “Mag‘firat qilinding”, dedilar”.\n\nMuttafaqun alayh.",
+      "narrator": "Anas ibn Molik",
+      "collection": "Buxoriy va Muslim",
+      "collection_no": "Buxoriy 6823, Muslim 2764",
+      "grade": "Muttafaqun alayh",
+      "ref_book": "Riyozus solihiyn, 446-hadis",
+      "ref_url": "https://hadis.islom.uz/kitob/28/0/446",
+      "parent_hadith": {
+        "bor": false
+      },
+      "sharh": "Hadd – ma’lum jinoyatlar uchun shariatda belgilangan jazo.\n\n“Haqiqiy shar’iy jazo”dan maqsad zino va aroq ichgandagi va bu ikkisidan boshqa had (shar’iy jazo) emas. Balki ta’zir ma’nosidagi jazodir. Chunki zino va aroq ichgandagi jazo namoz bilan soqit bo‘lmaydi hamda imomning u jazoni tark qilishi ham joiz emas.\n\nNabiy alayhissalom namoz tufayli bu gunohning kechirilganini aytganlari va jazolamaganlaridan kelib chiqib, imom Navaviy va bir guruh ulamolar buning gunohi sag‘ira bo‘lganini aytishgan.\n\nBa’zi kishilar gunohni berkitish riyo deb o‘ylaydilar. Aslida esa undoq emas. Riyo qilmaydigan sodiq banda o‘zidan ma’siyat sodir bo‘lganda berkitsa joiz. Chunki Alloh taolo gunohlarning oshkora bo‘lishini yoqtirmaydi va berkitilishini yaxshi ko‘radi.\n\nAbdulloh ibn Mas’ud roziyallohu anhudan rivoyat qilinadi: “Bir odam Rasululloh sollallohu alayhi vasallamning huzurlariga kelib: “Ey Allohning Rasuli, men shaharning chetida bir ayol bilan birga bo‘ldim, u bilan jinsiy aloqa qilmadim-u, boshqasini qildim. Mana, men turibman, nima qilsangiz, mayli”, dedi.\n\nUmar roziyallohu anhu unga: “Alloh seni berkitibdi, sen ham o‘zingni berkitganingda edi…”, dedi.\n\nRasululloh sollallohu alayhi vasallam u odamga hech narsa demadilar. U o‘rnidan turib jo‘nab ketdi. Rasululloh sollallohu alayhi vasallam uning ortidan bir kishini yubordilar. U borib, haligi odamni chaqirdi-da, unga:\n\n“Nahorning ikki tarafida va kechaning bir qismida namozni to‘kis ado et. Albatta, yaxshiliklar yomonliklarni ketkazur. Bu eslovchilar uchun eslatmadir”, oyatini o‘qib berdi.\n\nU erdagi odamlardan biri: “Ey Allohning Payg‘ambari, bu uning o‘ziga xosmi?” dedi.\n\nU zot: “Yo‘q! Barcha odamlarga”, dedilar”.\n\n(Imom Buxoriy, Muslim va Nasaiy rivoyat qilgan).\n\nHa, banda gunoh qilgan bo‘lsa ham, qalbida Alloh taolo muhabbat qilgan narsalarga muhabbat bo‘lishi mumkin.\n\nRiyodan qo‘rqib toatni tark qilishda ham holatga qaraladi. Agar amalning boisi va undovchisi dunyo bo‘lsa, uni tark qilish lozim. Chunki bunday amal toat emas, ma’siyatdir. Agar amalning boisi din va xolis Alloh taolo uchun bo‘lsa, uni tark qilish lozim emas. Chunki uning boisi dindir.\n\nShuningdek, riyo deyilishidan qo‘rqib, amal tark qilinishi durust emas. Chunki bu shaytonning hiylalaridandir.",
+      "sharh_ref": "Riyozus solihiyn sharhi, 446-hadis",
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/446"
     }
   ]
 }
