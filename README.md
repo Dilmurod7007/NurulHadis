@@ -115,7 +115,26 @@ solishtirilishi va diniy ma'lumotli mutaxassis tomonidan tekshirilishi kerak.
 
 ---
 
-## 7. Keyingi qadamlar
+## 7. Foydali buyruqlar
+
+Barchasi `backend/` papkada, venv faol holda ishga tushiriladi:
+
+```bash
+cd backend
+venv\Scripts\activate
+```
+
+| Buyruq | Nima qiladi |
+|---|---|
+| `python manage.py runserver` | serverni ishga tushiradi |
+| `python manage.py migrate` | bazaga migratsiyalarni qo'llaydi |
+| `python manage.py import_hadislar --fayl ../data/<fayl>.json` | shu JSON fayldagi hadislarni bazaga yuklaydi/yangilaydi (slug bo'yicha, dublikat yaratmaydi) — **yangi kategoriya/fayl qo'shilganda shu buyruq ishlatiladi** |
+| `python manage.py tuzat_qoshtirnoq` | `«»`/`""`/tutuq belgilarini to'g'ri tipografik shaklga keltiradi (data/ fayllar + baza) |
+| `python manage.py createsuperuser` | admin panelga kiruvchi foydalanuvchi yaratadi |
+
+---
+
+## 8. Keyingi qadamlar
 
 - [ ] Qolgan kategoriyalar bo'yicha hadislarni yig'ish
 - [ ] Domen olish, haqiqiy manzillarga o'tish
