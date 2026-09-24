@@ -130,6 +130,7 @@ venv\Scripts\activate
 | `python manage.py migrate` | bazaga migratsiyalarni qo'llaydi |
 | `python manage.py import_hadislar --fayl ../data/<fayl>.json` | shu JSON fayldagi hadislarni bazaga yuklaydi/yangilaydi (slug bo'yicha, dublikat yaratmaydi) — **yangi kategoriya/fayl qo'shilganda shu buyruq ishlatiladi** |
 | `python manage.py tuzat_qoshtirnoq` | `«»`/`""`/tutuq belgilarini to'g'ri tipografik shaklga keltiradi (data/ fayllar + baza) |
+| `python manage.py eksport_hadislar --fayl ../data/hammasi.json` | bazadagi barcha hadislarni JSON qilib chiqaradi (import_hadislar bilan bir xil shaklda) |
 | `python manage.py createsuperuser` | admin panelga kiruvchi foydalanuvchi yaratadi |
 
 ---
