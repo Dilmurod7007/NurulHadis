@@ -5,10 +5,10 @@ ham data/ papkadagi manba fayllarda, ham bazadagi mavjud yozuvlarda.
     python manage.py tuzat_qoshtirnoq
 
 Qoidalar:
-  «...» / "..."   ->  "..."       (juft qo'shtirnoq, ochilish/yopilish
+  «...» / "..."     ->  "..."     (juft qo'shtirnoq, ochilish/yopilish
                                     tartibi bo'yicha)
-  o' / g'          ->  o‘ / g‘    (digraf belgisi, U+2018)
-  boshqa barcha '  ->  '          (tutuq belgisi, U+2019)
+  ʻ (U+02BB) / o'/g' ->  o‘ / g‘  (digraf belgisi, U+2018)
+  ʼ (U+02BC) / boshqa '  ->  '    (tutuq belgisi, U+2019)
 """
 
 import json
@@ -63,7 +63,10 @@ def _juft_qoshtirnoq(matn):
 
 
 def _tutuq_belgilari(matn):
-    # o' / g' digrafi (kichik/katta) — modifikator vergul U+2018
+    # allaqachon farqlangan modifikator harflar (ʻ U+02BB, ʼ U+02BC) —
+    # manba shu ko'rinishda bersa, to'g'ridan-to'g'ri maqsad belgiga o'tadi
+    matn = matn.replace("ʻ", "‘").replace("ʼ", "’")
+    # o' / g' digrafi (kichik/katta, ASCII apostrof qolgan bo'lsa) — U+2018
     matn = re.sub(r"(?<=[oOgG])'", "‘", matn)
     # qolgan barcha apostroflar — tutuq belgisi U+2019
     matn = matn.replace("'", "’")
