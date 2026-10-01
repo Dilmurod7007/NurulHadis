@@ -5,8 +5,8 @@
      1. Django API  (/api/hadislar/)  — asosiy
      2. data/hadislar.js              — API javob bermasa, zaxira
 
-   Manzil shakli:  #/          → ro'yxat
-                   #/h/<id>    → tafsilot  (QR shu manzilga olib keladi)
+   Manzil shakli:  /           → ro'yxat
+                   /h/<id>     → tafsilot  (QR shu manzilga olib keladi)
    =========================================================== */
 
 (function () {
@@ -372,8 +372,13 @@
   var root = document.getElementById("app");
 
   function routeId() {
-    var m = /^#\/h\/(.+)$/.exec(location.hash);
+    var m = /^\/h\/([^/]+)\/?$/.exec(location.pathname);
     return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  function navigate(path) {
+    history.pushState(null, "", path);
+    onRoute();
   }
 
   function render() {
@@ -401,15 +406,16 @@
       Array.prototype.forEach.call(document.querySelectorAll(".card"), function (b) {
         b.addEventListener("click", function () {
           state.tab = "hadis"; state.full = false;
-          location.hash = "#/h/" + encodeURIComponent(b.dataset.id);
+          navigate("/h/" + encodeURIComponent(b.dataset.id));
         });
       });
       return;
     }
 
     var back = document.getElementById("back");
-    if (back) back.addEventListener("click", function () {
-      if (history.length > 1) history.back(); else location.hash = "#/";
+    if (back) back.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (history.length > 1) history.back(); else navigate("/");
     });
     Array.prototype.forEach.call(document.querySelectorAll(".tab"), function (b) {
       b.addEventListener("click", function () { state.tab = b.dataset.tab; render(); });
@@ -432,7 +438,7 @@
     window.scrollTo(0, 0);
   }
 
-  window.addEventListener("hashchange", onRoute);
+  window.addEventListener("popstate", onRoute);
 
   /* Sichqoncha bilan bosib-sudrab gorizontal scroll (.chips) —
      real qurilmada barmoq bilan surish allaqachon ishlaydi,
