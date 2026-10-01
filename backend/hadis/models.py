@@ -103,6 +103,12 @@ class Hadith(models.Model):
     sharh_ref = models.CharField("Sharh manbasi", max_length=160, blank=True)
     sharh_url = models.URLField("Sharh sahifasi", blank=True)
 
+    # --- QR kod ---
+    qr_code = models.ImageField(
+        "QR kod", upload_to="qr/", blank=True,
+        help_text="Qog'ozchadagi QR kod rasmi (https://nurulhadis.uz/h/<slug> manziliga).",
+    )
+
     # --- Xizmat maydonlari ---
     published = models.BooleanField(
         "Chop etilgan", default=False,

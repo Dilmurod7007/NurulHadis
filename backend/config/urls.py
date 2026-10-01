@@ -16,4 +16,5 @@ if settings.DEBUG:
     urlpatterns += [
         re_path(r"^$", serve, {"path": "index.html", "document_root": FRONT}),
         re_path(r"^(?P<path>(assets|data)/.*)$", serve, {"document_root": FRONT}),
+        re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     ]

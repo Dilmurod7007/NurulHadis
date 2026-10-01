@@ -43,7 +43,7 @@ class HadithAdmin(admin.ModelAdmin):
     search_fields = ("title", "paper_text", "uzbek_full", "narrator",
                      "collection_no", "slug")
     list_editable = ("published",)
-    readonly_fields = ("created_at", "updated_at", "qogozcha_holati")
+    readonly_fields = ("created_at", "updated_at", "qogozcha_holati", "qr_preview")
     save_on_top = True
     actions = ("chop_etish", "chop_etishni_bekor_qilish")
 
@@ -64,6 +64,9 @@ class HadithAdmin(admin.ModelAdmin):
         ("Manba", {
             "fields": ("narrator", "collection", "collection_no", "grade",
                        "ref_book", "ref_url"),
+        }),
+        ("QR kod", {
+            "fields": ("qr_preview", "qr_code"),
         }),
         ("Sharh", {
             "fields": ("sharh", "sharh_ref", "sharh_url"),
@@ -111,6 +114,18 @@ class HadithAdmin(admin.ModelAdmin):
     @admin.display(description="Sharh", boolean=True)
     def sharh_belgisi(self, obj):
         return obj.sharh_status == "bor"
+
+    @admin.display(description="Ko'rinishi")
+    def qr_preview(self, obj):
+        if not obj.qr_code:
+            return "— hali yaratilmagan —"
+        return format_html(
+            '<a href="{0}" target="_blank">'
+            '<img src="{0}" style="width:180px;height:180px;image-rendering:pixelated;'
+            'border:1px solid #ddd;border-radius:6px">'
+            "</a>",
+            obj.qr_code.url,
+        )
 
     @admin.action(description="Tanlanganlarni chop etish")
     def chop_etish(self, request, queryset):
