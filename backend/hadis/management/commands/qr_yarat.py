@@ -9,6 +9,7 @@ import io
 
 import qrcode
 from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand
 
 from hadis.models import Hadith
@@ -38,6 +39,16 @@ class Command(BaseCommand):
             if h.qr_code and not qayta:
                 continue
 
+            nom = f"{h.slug}.png"
+            if h.qr_code:
+                h.qr_code.delete(save=False)
+            # Oldingi urinishdan qolgan xuddi shu nomli fayl bo'lsa ham
+            # o'chiramiz — aks holda Django tasodifiy qo'shimcha bilan
+            # yangi nom yaratib, eskisi omonat (orphan) bo'lib qoladi.
+            yol = f"qr/{nom}"
+            if default_storage.exists(yol):
+                default_storage.delete(yol)
+
             url = f"{domen}/h/{h.slug}"
             qr = qrcode.QRCode(
                 version=None,
@@ -47,11 +58,19 @@ class Command(BaseCommand):
             )
             qr.add_data(url)
             qr.make(fit=True)
-            img = qr.make_image(fill_color="black", back_color="white")
+            img = qr.make_image(fill_color="black", back_color="white").convert("RGBA")
+
+            # Oq fonni shaffof qiladi — faqat qora kataklar qoladi.
+            piksellar = img.getdata()
+            yangi = [
+                (255, 255, 255, 0) if p[:3] == (255, 255, 255) else p
+                for p in piksellar
+            ]
+            img.putdata(yangi)
 
             buf = io.BytesIO()
             img.save(buf, format="PNG")
-            h.qr_code.save(f"{h.slug}.png", ContentFile(buf.getvalue()), save=True)
+            h.qr_code.save(nom, ContentFile(buf.getvalue()), save=True)
             soni += 1
             self.stdout.write(f"  {h.slug:12s} -> {url}")
 
