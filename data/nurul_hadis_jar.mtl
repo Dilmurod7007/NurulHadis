@@ -1,0 +1,73 @@
+# Exported by three-d-stage
+newmtl glass_borosilicate
+Kd 1.0000 1.0000 1.0000
+Ks 0.2000 0.2000 0.2000
+Ns 196
+d 1.0000
+
+newmtl bamboo
+Kd 1.0000 1.0000 1.0000
+Ks 0.2000 0.2000 0.2000
+Ns 76
+d 1.0000
+
+newmtl label_front
+Kd 1.0000 1.0000 1.0000
+Ks 0.2000 0.2000 0.2000
+Ns 100
+d 1.0000
+
+newmtl label_back
+Kd 0.8879 0.8228 0.6867
+Ks 0.2000 0.2000 0.2000
+Ns 20
+d 1.0000
+
+newmtl label_seal
+Kd 1.0000 1.0000 1.0000
+Ks 0.2000 0.2000 0.2000
+Ns 100
+d 1.0000
+
+newmtl label_logo
+Kd 1.0000 1.0000 1.0000
+Ks 0.2000 0.2000 0.2000
+Ns 100
+d 1.0000
+
+newmtl paper_axloq_red
+Kd 0.6867 0.0343 0.0252
+Ks 0.2000 0.2000 0.2000
+Ns 36
+d 1.0000
+
+newmtl paper_oila_yellow
+Kd 0.9216 0.5271 0.0252
+Ks 0.2000 0.2000 0.2000
+Ns 36
+d 1.0000
+
+newmtl paper_sunnat_white
+Kd 0.8963 0.8879 0.8469
+Ks 0.2000 0.2000 0.2000
+Ns 36
+d 1.0000
+
+newmtl paper_ilm_pink
+Kd 0.8879 0.3663 0.4020
+Ks 0.2000 0.2000 0.2000
+Ns 36
+d 1.0000
+
+newmtl paper_umid_green
+Kd 0.3663 0.7305 0.2016
+Ks 0.2000 0.2000 0.2000
+Ns 36
+d 1.0000
+
+newmtl paper_baraka_blue
+Kd 0.0110 0.3140 0.6724
+Ks 0.2000 0.2000 0.2000
+Ns 36
+d 1.0000
+
