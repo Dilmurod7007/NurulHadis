@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "tts_model": "gemini-3.8-flash-tts",
+  "voice": "Sulafat",
+  "lang": "uz",
+  "style": "Uzbek language. Calm, warm, trustworthy narrator — unhurried, sincere, like personally introducing something you love to a friend, not an advertisement. Leave a clear pause of about one second between sentences.",
+  "lines": [
+    {
+      "id": "voiceover",
+      "text": "Yaqinlaringizga sovgʻa izlayapsizmi?\n\nSovgʻa bejirim, noodatiy, shu bilan birga foydali boʻlishini istaysizmi?\n\nUnda sizga Nurul Hadisni tanishtiraman.\n\nBir yuz yigirmadan ortiq hadislar toʻplamini oʻz ichiga olgan sovgʻa bankasi.\n\nHadislar olti xil turkumga ranglar bilan ajratilgan boʻlib, barchasi ishonchli va ruxsat etilgan manbalardan olingan.\n\nHar kuni bitta hadis oʻqing va yangi ilmga ega boʻling.\n\nQogʻozchada hadis matni bilan birga QR kod joylashgan boʻlib, smartfoningiz yordamida hadisning batafsil maʼlumotlari hamda manbalarini koʻrishingiz mumkin.\n\nOʻzbekiston boʻylab bepul yetkazib berish mavjud.\n\nNurul Hadis — sovgʻa emas, ilm bering."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  }
+}

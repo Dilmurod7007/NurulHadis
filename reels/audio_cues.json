@@ -1,0 +1,176 @@
+{
+  "vo": {
+    "file": "assets/vo/voiceover.wav",
+    "offset": 0.4,
+    "volume": 1
+  },
+  "bgm": {
+    "source": "audio/mfcc-arabic-ramadan-islamic-background-music-306681.mp3",
+    "file": "assets/bgm/track.wav",
+    "from": 0,
+    "fadeIn": 1.2,
+    "fadeOut": 2.2,
+    "volume": 0.2
+  },
+  "tail": 1.4,
+  "fallbackT": [
+    0.4,
+    3.2,
+    8.0,
+    11.0,
+    15.4,
+    22.2,
+    26.2,
+    36.0,
+    39.8
+  ],
+  "sfx": [
+    {
+      "id": "sfx-s2-w1",
+      "file": "assets/sfx/click-soft.mp3",
+      "scene": 1,
+      "at": 0.35,
+      "volume": 0.2
+    },
+    {
+      "id": "sfx-s2-w2",
+      "file": "assets/sfx/click-soft.mp3",
+      "scene": 1,
+      "at": 0.95,
+      "volume": 0.2
+    },
+    {
+      "id": "sfx-s2-w3",
+      "file": "assets/sfx/click-soft.mp3",
+      "scene": 1,
+      "at": 2.65,
+      "volume": 0.2
+    },
+    {
+      "id": "sfx-s3-logo",
+      "file": "assets/sfx/bell-g.wav",
+      "scene": 2,
+      "at": -0.15,
+      "volume": 0.35
+    },
+    {
+      "id": "sfx-s4-in",
+      "file": "assets/sfx/whoosh.mp3",
+      "scene": 3,
+      "at": -0.45,
+      "volume": 0.16
+    },
+    {
+      "id": "sfx-s4-num",
+      "file": "assets/sfx/ping.mp3",
+      "scene": 3,
+      "at": 0.95,
+      "volume": 0.18
+    },
+    {
+      "id": "sfx-s5-c1",
+      "file": "assets/sfx/pop.mp3",
+      "scene": 4,
+      "at": 0.9,
+      "volume": 0.13
+    },
+    {
+      "id": "sfx-s5-c2",
+      "file": "assets/sfx/pop.mp3",
+      "scene": 4,
+      "at": 1.18,
+      "volume": 0.13
+    },
+    {
+      "id": "sfx-s5-c3",
+      "file": "assets/sfx/pop.mp3",
+      "scene": 4,
+      "at": 1.46,
+      "volume": 0.13
+    },
+    {
+      "id": "sfx-s5-c4",
+      "file": "assets/sfx/pop.mp3",
+      "scene": 4,
+      "at": 1.74,
+      "volume": 0.13
+    },
+    {
+      "id": "sfx-s5-c5",
+      "file": "assets/sfx/pop.mp3",
+      "scene": 4,
+      "at": 2.02,
+      "volume": 0.13
+    },
+    {
+      "id": "sfx-s5-c6",
+      "file": "assets/sfx/pop.mp3",
+      "scene": 4,
+      "at": 2.3,
+      "volume": 0.13
+    },
+    {
+      "id": "sfx-s6-paper",
+      "file": "assets/sfx/whoosh-short.mp3",
+      "scene": 5,
+      "at": 0.2,
+      "volume": 0.18
+    },
+    {
+      "id": "sfx-s7-push",
+      "file": "assets/sfx/whoosh.mp3",
+      "scene": 6,
+      "at": 1.8,
+      "volume": 0.18
+    },
+    {
+      "id": "sfx-s7-phone",
+      "file": "assets/sfx/whoosh-short.mp3",
+      "scene": 6,
+      "at": 3.1,
+      "volume": 0.16
+    },
+    {
+      "id": "sfx-s7-aim",
+      "file": "assets/sfx/click-soft.mp3",
+      "scene": 6,
+      "at": 4.3,
+      "volume": 0.24
+    },
+    {
+      "id": "sfx-s7-lock",
+      "file": "assets/sfx/ping.mp3",
+      "scene": 6,
+      "at": 5.6,
+      "volume": 0.22
+    },
+    {
+      "id": "sfx-s7-app",
+      "file": "assets/sfx/whoosh-short.mp3",
+      "scene": 6,
+      "at": 6.0,
+      "volume": 0.16
+    },
+    {
+      "id": "sfx-s8-in",
+      "file": "assets/sfx/whoosh.mp3",
+      "scene": 7,
+      "at": -0.45,
+      "volume": 0.16
+    },
+    {
+      "id": "sfx-s8-stamp",
+      "file": "assets/sfx/pop.mp3",
+      "scene": 7,
+      "at": 0.55,
+      "volume": 0.16
+    },
+    {
+      "id": "sfx-s9-end",
+      "file": "assets/sfx/bell-d.wav",
+      "scene": 8,
+      "at": 1.1,
+      "volume": 0.35
+    }
+  ]
+}
