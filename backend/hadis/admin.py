@@ -36,8 +36,9 @@ class FullTextInline(admin.StackedInline):
 class HadithAdmin(admin.ModelAdmin):
     inlines = [FullTextInline]
     list_display = (
-        "title", "category", "paper_text_input", "paper_source_line_input",
-        "manba_qisqa", "qogozcha_holati", "sharh_belgisi", "published",
+        "title", "category", "qr_kichik", "paper_text_input",
+        "paper_source_line_input", "manba_qisqa", "qogozcha_holati",
+        "sharh_belgisi", "published",
     )
     list_filter = ("category", "published", "collection")
     search_fields = ("title", "paper_text", "uzbek_full", "narrator",
@@ -114,6 +115,18 @@ class HadithAdmin(admin.ModelAdmin):
     @admin.display(description="Sharh", boolean=True)
     def sharh_belgisi(self, obj):
         return obj.sharh_status == "bor"
+
+    @admin.display(description="QR")
+    def qr_kichik(self, obj):
+        if not obj.qr_code:
+            return "—"
+        return format_html(
+            '<a href="{0}" target="_blank" title="{1}">'
+            '<img src="{0}" style="width:64px;height:64px;background:#fff;'
+            'image-rendering:pixelated;border:1px solid #ddd;border-radius:4px">'
+            "</a>",
+            obj.qr_code.url, obj.slug,
+        )
 
     @admin.display(description="Ko'rinishi")
     def qr_preview(self, obj):
