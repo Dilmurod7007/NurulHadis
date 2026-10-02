@@ -97,6 +97,18 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# --- HTTPS (nginx ortida) ---
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_TRUSTED_ORIGINS = [
+        o.strip() for o in os.environ.get(
+            "DJANGO_CSRF_ORIGINS",
+            "https://nurulhadis.uz,https://www.nurulhadis.uz",
+        ).split(",") if o.strip()
+    ]
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # --- REST framework ---
