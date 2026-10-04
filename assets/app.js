@@ -283,16 +283,16 @@
     html += '<div class="tabs" role="tablist">' +
       '<button class="tab" role="tab" data-tab="hadis" aria-selected="' +
         (state.tab === "hadis") + '">Hadis</button>' +
+      '<button class="tab" role="tab" data-tab="manba" aria-selected="' +
+        (state.tab === "manba") + '">Manba</button>' +
       '<button class="tab" role="tab" data-tab="sharh" aria-selected="' +
         (state.tab === "sharh") + '">Sharh' +
         (h.sharh_status === "bor" ? "" : '<span class="tab__badge">—</span>') +
-      "</button>" +
-      '<button class="tab" role="tab" data-tab="manba" aria-selected="' +
-        (state.tab === "manba") + '">Manba</button></div>';
+      "</button></div>";
 
     if (state.tab === "hadis")      html += panelHadis(h);
-    else if (state.tab === "sharh") html += panelSharh(h);
-    else                            html += panelManba(h);
+    else if (state.tab === "manba") html += panelManba(h);
+    else                            html += panelSharh(h);
 
     return html;
   }
@@ -346,6 +346,11 @@
       s += '<p class="srcline" style="margin-top:20px;padding-top:16px;' +
         'border-top:1px solid var(--line)">' + esc(h.sharh_ref) + "</p>";
     }
+    if (h.sharh_url) {
+      s += '<div class="linkrow"><a href="' + esc(h.sharh_url) +
+        '" target="_blank" rel="noopener">hadis.islom.uz — sharhning manbadagi sahifasi</a>' +
+        ICON.ext + "</div>";
+    }
     return s + "</div>";
   }
 
@@ -361,6 +366,11 @@
     if (h.ref_url) {
       s += '<div class="linkrow"><a href="' + esc(h.ref_url) +
         '" target="_blank" rel="noopener">hadis.islom.uz — manbadagi sahifa</a>' +
+        ICON.ext + "</div>";
+    }
+    if (h.sharh_url) {
+      s += '<div class="linkrow"><a href="' + esc(h.sharh_url) +
+        '" target="_blank" rel="noopener">hadis.islom.uz — sharhning manbadagi sahifasi</a>' +
         ICON.ext + "</div>";
     }
     s += '<p class="note">' + esc(store.meta.toplam || "") + "<br>" +

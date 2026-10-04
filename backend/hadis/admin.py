@@ -36,9 +36,8 @@ class FullTextInline(admin.StackedInline):
 class HadithAdmin(admin.ModelAdmin):
     inlines = [FullTextInline]
     list_display = (
-        "title", "category", "qr_kichik", "paper_text_input",
-        "paper_source_line_input", "manba_qisqa", "qogozcha_holati",
-        "sharh_belgisi", "published",
+        "title", "slug", "category", "qr_kichik", "manba_qisqa",
+        "qogozcha_holati", "sharh_belgisi", "published",
     )
     list_filter = ("category", "published", "collection")
     search_fields = ("title", "paper_text", "uzbek_full", "narrator",
@@ -78,22 +77,6 @@ class HadithAdmin(admin.ModelAdmin):
             "classes": ("collapse",),
         }),
     )
-
-    @admin.display(description="Qog'ozcha matni")
-    def paper_text_input(self, obj):
-        return format_html(
-            '<input type="text" value="{}" readonly onclick="this.select()" '
-            'style="width:260px;font:inherit;padding:2px 4px">',
-            obj.paper_text,
-        )
-
-    @admin.display(description="Qog'ozcha manba qatori")
-    def paper_source_line_input(self, obj):
-        return format_html(
-            '<input type="text" value="{}" readonly onclick="this.select()" '
-            'style="width:200px;font:inherit;padding:2px 4px">',
-            obj.paper_source_line,
-        )
 
     @admin.display(description="Manba")
     def manba_qisqa(self, obj):
