@@ -325,12 +325,26 @@
     return s;
   }
 
+  function sharhLinks(h) {
+    var s = "";
+    function link(url, text) {
+      return '<div class="linkrow"><a href="' + esc(url) +
+        '" target="_blank" rel="noopener">' + text + "</a>" + ICON.ext + "</div>";
+    }
+    if (h.sharh_url) s += link(h.sharh_url, "hadis.islom.uz — sharhning manbadagi sahifasi");
+    var re = /;\s*(\d+)-hadis ostidagi sharh/g, m;
+    while ((m = re.exec(h.sharh_ref || ""))) {
+      s += link("https://hadis.islom.uz/kitob/32/0/" + m[1],
+        "hadis.islom.uz — " + m[1] + "-hadis sharhi");
+    }
+    return s;
+  }
+
   function panelSharh(h) {
     if (h.sharh_status !== "bor" || !h.sharh) {
       return '<div class="panel"><div class="empty" style="border:0;padding:8px 0">' +
         "Bu hadisga manbada sharh berilmagan.</div>" +
-        (h.sharh_url ? '<div class="linkrow"><a href="' + esc(h.sharh_url) +
-          '" target="_blank" rel="noopener">Manbadagi sahifa</a>' + ICON.ext + "</div>" : "") +
+        sharhLinks(h) +
         "</div>";
     }
     var parts = String(h.sharh).split("\n\n");
@@ -346,11 +360,7 @@
       s += '<p class="srcline" style="margin-top:20px;padding-top:16px;' +
         'border-top:1px solid var(--line)">' + esc(h.sharh_ref) + "</p>";
     }
-    if (h.sharh_url) {
-      s += '<div class="linkrow"><a href="' + esc(h.sharh_url) +
-        '" target="_blank" rel="noopener">hadis.islom.uz — sharhning manbadagi sahifasi</a>' +
-        ICON.ext + "</div>";
-    }
+    s += sharhLinks(h);
     return s + "</div>";
   }
 
@@ -366,11 +376,6 @@
     if (h.ref_url) {
       s += '<div class="linkrow"><a href="' + esc(h.ref_url) +
         '" target="_blank" rel="noopener">hadis.islom.uz — manbadagi sahifa</a>' +
-        ICON.ext + "</div>";
-    }
-    if (h.sharh_url) {
-      s += '<div class="linkrow"><a href="' + esc(h.sharh_url) +
-        '" target="_blank" rel="noopener">hadis.islom.uz — sharhning manbadagi sahifasi</a>' +
         ICON.ext + "</div>";
     }
     s += '<p class="note">' + esc(store.meta.toplam || "") + "<br>" +
