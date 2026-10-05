@@ -2575,28 +2575,6 @@
       }
     },
     {
-      "id": "sunnat-08",
-      "category": "Sunnat",
-      "title": "Izorni to‘piqdan pastga tushirmaslik",
-      "paper_text": "Nabiy ﷺ: “Izorning ikki to‘piqdan pastga tushgani do‘zaxdadir”, dedilar.",
-      "paper_source_line": "Abu Hurayra roziyallohu anhudan — Buxoriy",
-      "arabic_text": "وَعَنْهُ، عَـنِ النَّبِيِّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ قَالَ: “مَا أَسْفَلَ مِنَ الْكَعْبَيْنِ مِنَ الإِزَارِ فَفِي النَّارِ”. رَوَاهُ البُخَارِيُّ [5787].",
-      "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi: “Nabiy ﷺ: “Izorning ikki to‘piqdan pastga tushgani do‘zaxdadir”, dedilar”. Imom Buxoriy rivoyati.",
-      "narrator": "Abu Hurayra roziyallohu anhudan",
-      "collection": "Buxoriy",
-      "collection_no": "Buxoriy 5787",
-      "grade": "Sahih hadis (Buxoriy rivoyati)",
-      "ref_book": "Riyozus solihiyn, 806-hadis",
-      "ref_url": "https://hadis.islom.uz/kitob/28/0/806",
-      "sharh": "Ulamolar bu va shu kabi boshqa hadislarni o‘rganib, xulosa qilib aytishganki, agar kiyimni to‘piqdan pastgacha tushirib kiyishda kishida kibr va kekkayish bo‘lsa, u mazkur va’idga duchor bo‘ladi. Ammo qalbida bunday xayol bo‘lmasa, u bundan mustasno.\n\nAbdurrahmon roziyallohu anhu aytdi:\n\n“Abu Sa’iddan izor haqida so‘radim. Bas, u:\n\n“Xabardorini topding. Rasululloh sollallohu alayhi vasallam aytdilarki, musulmonning izor tutishi ikki boldirgachadir. Undan ikki to‘piqqacha tanglik yoki gunoh yo‘q. Ikki to‘piqdan pastga tushgan narsa do‘zaxdadir”.\n\n(Abu Dovud, Buxoriy va Nasaiy rivoyat qilgan).\n\nUshbu rivoyat sohiblari Abdurrahmon roziyallohu anhuning ulkan sahobiy Abu Sa’id al-Xudriy roziyallohu anhudan izorning uzunligi qancha bo‘lishi haqida so‘rashlaridan o‘sha vaqtlarda ham bu masalada ba’zi bir tushunmovchiliklar chiqib turgani ma’lum bo‘lyapti.\n\nMana shu rivoyatda izorning to‘piqdan pastga tushgan qismi do‘zaxda kuyishi haqida so‘z ketmoqda.",
-      "sharh_ref": "Riyozus solihiyn sharhi, 806-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/806",
-      "published": true,
-      "parent_hadith": {
-        "bor": false
-      }
-    },
-    {
       "id": "sunnat-09",
       "category": "Sunnat",
       "title": "Yangi kiyim kiyish duosi",
