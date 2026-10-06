@@ -5,10 +5,10 @@
       "category": "Sunnat",
       "title": "Bismillah, o‘ng qo‘l bilan va oldidan yeyish",
       "paper_text": "Rasululloh ﷺ menga: “Allohning ismini ayt, o‘ng qo‘ling bilan yegin va oldingdan yegin!” dedilar.",
-      "paper_source_line": "Umar ibn Abu Salama roziyallohu anhudan — Buxoriy va Muslim",
+      "paper_source_line": "Umar ibn Abu Salamadan roziyallohu anhu — Buxoriy va Muslim",
       "arabic_text": "عَنْ عُمَرَ بْنِ أَبِي سَلَمَةَ رَضِيَ اللهُ عَنْهُمَا قَالَ: قَالَ لِي رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ: “سَمِّ اللهَ، وَكُلْ بِيَمِيْنِكَ، وَكُلْ مِمَّا يَلِيْكَ”. مُتَّفَقٌ عَلَيهِ [خ 5376، م 2022 وسبق برقم 306].",
-      "uzbek_full": "Umar ibn Abu Salamadan roziyallohu anhu rivoyat qilinadi. Rasululloh ﷺ menga: “Allohning ismini ayt, o‘ng qo‘ling bilan yegin va oldingdan yegin!” dedilar. Muttafaqun alayh.",
-      "narrator": "Umar ibn Abu Salama roziyallohu anhudan",
+      "uzbek_full": "Umar ibn Abu Salamadan roziyallohu anhu rivoyat qilinadi. Rasululloh sollallohu alayhi vasallam menga:\n\n“Allohning ismini ayt, o‘ng qo‘ling bilan yegin va oldingdan yegin!” dedilar.\n\nMuttafaqun alayh.",
+      "narrator": "Umar ibn Abu Salamadan roziyallohu anhu",
       "collection": "Buxoriy va Muslim",
       "collection_no": "Buxoriy 5376, Muslim 2022",
       "grade": "Muttafaqun alayh",
@@ -16,7 +16,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/740",
       "sharh": "Bu hadisning sharhi 306-raqamli hadis ostida keltirilgan.\n\nImom Navaviy fikrlaricha, ovqat xususida shundoq. Lekin mevada esa xohlagan joyidan tanlab yeyveradi.\n\nUshbu hadisi sharifning roviyi Umar ibn Abu Salama roziyallohu anhu Payg‘ambar sollallohu alayhi vasallamning o‘gay o‘g‘illari bo‘lgan. U Ummu Salama onamizning avvalgi erlari Abu Salamaning o‘g‘illari bo‘lib, otasi vafot etib, onasi Payg‘ambar sollallohu alayhi vasallamga turmushga chiqqanlaridan keyin Payg‘ambar sollallohu alayhi vasallamning qaramog‘larida o‘sganlar. Bu haqda u kishining o‘zlari:\n\n“Rasululloh sollallohu alayhi vasallamning qaramog‘laridagi bola edim”, demoqdalar.\n\nAlbatta, turmush taqozosi ila bir uyda yashaganlaridan keyin bir dasturxonda ovqatlanganlar ham. O‘shanda yosh bola bo‘lgan Umar ibn Abu Salama roziyallohu anhuning qo‘llari taomning yaxshisini, ko‘prog‘ini izlab idishning hamma tomoniga borib-kelgan ekan.\n\n“Qo‘lim laganda borib-kelar edi”.\n\nBu holni ko‘rgan Payg‘ambar sollallohu alayhi vasallam unga taom tanovul qilish haqida ta’lim berdilar:\n\n“Ey g‘ulom! Allohning ismi ila, o‘ng qo‘ling ila, o‘zingga yaqindan yegin!” dedilar”.\n\nDemak, islomiy odob bo‘yicha taom yeyishni boshlaganda “Bismillahi”ni aytmoq kerak, taomni o‘ng qo‘l bilan yemoq kerak. Har kim o‘z oldidan yemog‘i kerak.\n\nPayg‘ambar sollallohu alayhi vasallamning bu gaplarini Umar ibn Abu Salama jon, deb qabul qildilar va unga umr bo‘yi og‘ishmay amal qildilar. U haqda o‘zlari:\n\n“Shundan so‘ng mening yemog‘im xuddi o‘shandoq bo‘lib qoldi”, deydilar.\n\nXuddi shu nabaviy tavsiya hamma musulmonlarga ham ta’lim bo‘ldi. Hamma musulmonlarning yemog‘i xuddi o‘shandoq bo‘lib qoldi.\n\nUshbu hadisi sharifdan olinadigan foydalar:\n\n1. Kattalar yosh bolalarga taom tanovul qilish va shunga o‘xshash ishlarda islomiy odoblarni o‘rgatib borishlari zarurligi.\n\n2. Taom tanovul qilishni “Bismillah”ni aytib boshlash zarurligi.\n\n3. Taomni o‘ng qo‘l bilan yemoq kerakligi.\n\nChunki, chap qo‘l tozalanishga ishlatiladi. Afsuski, ko‘pchilik, hatto, kap-katta odamlar ham bu narsani bilmaydilar. Ba’zida juda noqulay holatlarga tushib qolinadi.\n\n4. Taomni har kim o‘z oldidan yemog‘i kerakligi.\n\n5. Payg‘ambar sollallohu alayhi vasallamdan yetgan har bir hukmni musulmon odam o‘zi uchun qonun-qoida qilib olmog‘i lozimligi.",
       "sharh_ref": "Riyozus solihiyn sharhi, 740-hadis; 306-hadis ostidagi sharh",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/740"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/740",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-02",
@@ -25,7 +29,7 @@
       "paper_text": "Rasululloh ﷺ hech qachon taomni ayblamaganlar. Ishtahalari tortsa, yerdilar, yoqtirmasalar, tark qilardilar.",
       "paper_source_line": "Abu Hurayra roziyallohu anhudan — Buxoriy va Muslim",
       "arabic_text": "عَنْ أَبِي هُرَيرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: “مَا عَابَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ طَعَاماً قَطُّ، إِنِ اشْتَهَاهُ أَكَلَهُ، وَإِنْ كَرِهَهُ تَرَكَهُ” مُتَّفَقٌ عَلَيهِ [خ 5409، م 2064].",
-      "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi: “Rasululloh ﷺ hech qachon taomni ayblamaganlar. Ishtahalari tortsa, yerdilar, yoqtirmasalar, tark qilardilar”. Muttafaqun alayh.",
+      "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallam hech qachon taomni ayblamaganlar. Ishtahalari tortsa, yerdilar, yoqtirmasalar, tark qilardilar”.\n\nMuttafaqun alayh.",
       "narrator": "Abu Hurayra roziyallohu anhudan",
       "collection": "Buxoriy va Muslim",
       "collection_no": "Buxoriy 5409, Muslim 2064",
@@ -34,7 +38,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/748",
       "sharh": "Har qanday halol taom banda uchun Alloh taoloning ne’mati hisoblanadi. Har qanday ne’mat uchun banda Alloh taologa shukr qilishi lozim. Faqat nonko‘r insongina shukr o‘rniga, taomni ayblashga o‘tadi. Payg‘ambar sollallohu alayhi vasallam doimo shukr qiluvchi banda bo‘lganlar.\n\n“Nabiy sollallohu alayhi vasallam hech qachon, hech qanday taomni ayblamadilar”.\n\nHa, U zot umrlarida biror taomni ayblamaganlar. Bu haqiqatni uning ustida turib ko‘rganlardan biri, ulkan sahobiy Abu Hurayra roziyallohu anhu aytmoqdalar. Do‘stu dushmanning huzurida aytmoqdalar. Agar bu gapda zarracha shubha bo‘lsa, darhol Abu Hurayra roziyallohu anhuga e’tiroz bildirilishi turgan gap edi.\n\nRasululloh sollallohu alayhi vasallamga ergashgan holda musulmon kishi taomni ayblamasligi lozim. Chunki taomni ayblash mutakabbirlik va haddan oshishlik belgisidir.\n\n“Agar ishtahalari tortsa, yerdilar. Ko‘ngillari tusamasa, tark qilar edilar”.\n\nShuning uchun U zotning ummatlari bo‘lmish siz bilan biz musulmonlar ham o‘z Payg‘ambarimiz sollallohu alayhi vasallamdan bu borada ham o‘rnak olmog‘imiz lozim.",
       "sharh_ref": "Riyozus solihiyn sharhi, 748-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/748"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/748",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-03",
@@ -43,7 +51,7 @@
       "paper_text": "Rasululloh ﷺning uchta barmoqlari bilan yeganlarini ko‘rdim. Yeb bo‘lgach barmoqlarini yalardilar.",
       "paper_source_line": "Ka’b ibn Molik roziyallohu anhudan — Muslim",
       "arabic_text": "وَعَنْ كَعْبِ بْنِ مَالِكٍ رَضِيَ اللهُ عَنْهُ قَالَ: رَأَيْتُ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ يَأْكُلُ بِثَلَاثِ أَصَابِعَ، فَإِذا فَرغَ لَعِقَهَا. رَوَاهُ مُسْلِمٌ [2032/132].",
-      "uzbek_full": "Ka’b ibn Molik roziyallohu anhudan rivoyat qilinadi: “Rasululloh ﷺning uchta barmoqlari bilan yeganlarini ko‘rdim. Yeb bo‘lgach barmoqlarini yalardilar”. Imom Muslim rivoyati.",
+      "uzbek_full": "Ka’b ibn Molik roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallamning uchta barmoqlari bilan yeganlarini ko‘rdim. Yeb bo‘lgach barmoqlarini yalardilar”.\n\nImom Muslim rivoyati.",
       "narrator": "Ka’b ibn Molik roziyallohu anhudan",
       "collection": "Muslim",
       "collection_no": "Muslim 2032",
@@ -52,17 +60,21 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/762",
       "sharh": "Barmoqlarni ovqat tugagandan keyin yalanadi. Ovqat tanovul qilinayotgan asnoda emas. Chunki tupuk qoldiqlari ovqatga aralashib ketishi mumkin.\n\nYana ovqatni uchta barmoqda yeyishning mahbubligi ham aytilmoqda. Ular Imom Tabaroniy rivoyatlarida kelganidek bosh, ko‘rsatgich va o‘rta barmoqlardir. Rasululloh sollallohu alayhi vasallam aksar paytlarda mana shundoq qilganlar. Chunki uch barmoqdan ozida ovqat tanovul qilish mutukabbirlik alomatidir. Uch barmoqdan ko‘pida ovqat tanovul qilish esa, ochofatlik belgisidir.",
       "sharh_ref": "Riyozus solihiyn sharhi, 762-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/762"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/762",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-04",
       "category": "Sunnat",
       "title": "Barmoq va idishni yalash",
       "paper_text": "Rasululloh ﷺ barmoqlarni va idishni yalashga buyurib, “Sizlar taomlaringizni qaysi qismida baraka borligini bilmaysiz”, dedilar.",
-      "paper_source_line": "Jobir ibn Abdulloh roziyallohu anhudan — Muslim",
+      "paper_source_line": "Jobir roziyallohu anhudan — Muslim",
       "arabic_text": "وَعَنْ جَابِرٍ رَضِيَ اللهُ عَنْهُ: أَنَّ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ أَمَرَ بِلَعْقِ الأَصَابِعِ وَالصَّحْفَةِ، وَقَالَ: “إِنَّكُمْ لَا تَدرُونَ فِي أَيِّ طعَامِكُمُ البَرَكَةُ”. رَوَاهُ مُسْلِمٌ [2033/133].",
-      "uzbek_full": "Jobir roziyallohu anhudan rivoyat qilinadi: Rasululloh ﷺ barmoqlarni va idishni yalashga buyurib, “Sizlar taomlaringizni qaysi qismida baraka borligini bilmaysiz”, dedilar. Imom Muslim rivoyati.",
-      "narrator": "Jobir ibn Abdulloh roziyallohu anhudan",
+      "uzbek_full": "Jobir roziyallohu anhudan rivoyat qilinadi:\n\nRasululloh sollallohu alayhi vasallam barmoqlarni va idishni yalashga buyurib, “Sizlar taomlaringizni qaysi qismida baraka borligini bilmaysiz”, dedilar.\n\nImom Muslim rivoyati.",
+      "narrator": "Jobir roziyallohu anhudan",
       "collection": "Muslim",
       "collection_no": "Muslim 2033",
       "grade": "Sahih hadis (Muslim rivoyati)",
@@ -70,17 +82,21 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/763",
       "sharh": "",
       "sharh_ref": "",
-      "sharh_url": ""
+      "sharh_url": "",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-05",
       "category": "Sunnat",
       "title": "Ichishda o‘ngdan boshlash",
       "paper_text": "Rasululloh ﷺga suv aralashtirilgan sut keltirildi. O‘ng tomonlarida bir a’robiy, chap tomonlarida esa Abu Bakr edi. U zot o‘zlari ichdilar, so‘ng a’robiyga uzatdilar va: “O‘ng tomondan, o‘ng tomondan”, dedilar.",
-      "paper_source_line": "Anas ibn Molik roziyallohu anhudan — Buxoriy va Muslim",
-      "arabic_text": "وَعَنْ أَنَسٍ رَضِيَ اللهُ عَنْهُ: أَنَّ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ أُتِي بِلَبَنٍ قَدْ شِيْبَ بِمَاءٍ، وَعَنْ يَمِينِهِ أَعْرَابِيٌّ، وَعَنْ يَسَارِهِ أَبُو بَكْرٍ رَضِيَ اللهُ عَنْهُ، فَشَرِبَ، ثُمَّ أَعْطَى الأَعْرَابيَّ وَقَالَ: “الأَيمَنَ فَالأَيْمَنَ”. مُتَّفَقٌ عَلَيهِ [خ 5619، م 2029].",
-      "uzbek_full": "Anas roziyallohu anhudan rivoyat qilinadi: “Rasululloh ﷺga suv aralashtirilgan sut keltirildi. O‘ng tomonlarida bir a’robiy, chap tomonlarida esa Abu Bakr edi. U zot o‘zlari ichdilar, so‘ng a’robiyga uzatdilar va: “O‘ng tomondan, o‘ng tomondan”, dedilar. Muttafaqun alayh.",
-      "narrator": "Anas ibn Molik roziyallohu anhudan",
+      "paper_source_line": "Anas roziyallohu anhudan — Buxoriy va Muslim",
+      "arabic_text": "وَعَنْ أَنَسٍ رَضِيَ اللهُ عَنْهُ: أَنَّ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ أُتِي بِلَبَنٍ قَدْ شِيْبَ بِمَاءٍ، وَعَنْ يَمِينِهِ أَعْرَابِيٌّ، وَعَنْ يَسَارِهِ أَبُو بَكْرٍ رَضِيَ اللهُ عَنْهُ، فَشَرِبَ، ثُمَّ أَعْطَى الأَعْرَابيَّ وَقَالَ: “الأَيمَنَ فَالأَيْمَنَ”. مُتَّفَقٌ عَلَيهِ [خ 5619، م 2029]. قَولُهُ: “شِيبَ” أَي: خُلِطَ.",
+      "uzbek_full": "Anas roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallamga suv aralashtirilgan sut keltirildi. O‘ng tomonlarida bir a’robiy, chap tomonlarida esa Abu Bakr edi. U zot o‘zlari ichdilar, so‘ng a’robiyga uzatdilar va: “O‘ng tomondan, o‘ng tomondan”, dedilar.\n\nMuttafaqun alayh.",
+      "narrator": "Anas roziyallohu anhudan",
       "collection": "Buxoriy va Muslim",
       "collection_no": "Buxoriy 5619, Muslim 2029",
       "grade": "Muttafaqun alayh",
@@ -88,7 +104,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/773",
       "sharh": "Ushbu hadisi sharifdan olinadigan xulosalar:\n\n1. Sutga suv aralashtirib ichish mumkinligi.\n\nAlbatta, bu ichuvchiga bildirilgan holda va ushbu rivoyatdagiga o‘xshagan o‘tirishlarda bo‘lsa. Ammo hiyla tariqasida sutga suv aralashtirib sotish haromdir.\n\n2. Ko‘pchilik o‘tirganda ichimlikni avvalo eng afzal, muhtaram shaxsga tutish lozimligi.\n\n3. Undan keyin o‘sha muhtaram shaxsning o‘ng tomonidagi kishiga navbat kelishi.\n\n4. So‘ngra o‘ng tomondan davom etib ketaverishi.",
       "sharh_ref": "Riyozus solihiyn sharhi, 773-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/773"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/773",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-06",
@@ -97,7 +117,7 @@
       "paper_text": "Rasululloh ﷺ: “Sizlardan birortangiz zinhor tik turib ichmasin. Kim unutgan bo‘lsa, qayt qilsin”, dedilar.",
       "paper_source_line": "Abu Hurayra roziyallohu anhudan — Muslim",
       "arabic_text": "وَعَنْ أَبِي هُرَيرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ: “لَا يَشْرَبَنَّ أَحَدٌ مِنْكُمْ قَائِماً، فَمَنْ نَسِيَ فَلْيَسْتَقِيءْ”. رَوَاهُ مُسْلِمٌ [2026].",
-      "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi: Rasululloh ﷺ: “Sizlardan birortangiz zinhor tik turib ichmasin. Kim unutgan bo‘lsa, qayt qilsin”, dedilar. Imom Muslim rivoyati.",
+      "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi:\n\nRasululloh sollallohu alayhi vasallam:\n\n“Sizlardan birortangiz zinhor tik turib ichmasin. Kim unutgan bo‘lsa, qayt qilsin”, dedilar.\n\nImom Muslim rivoyati.",
       "narrator": "Abu Hurayra roziyallohu anhudan",
       "collection": "Muslim",
       "collection_no": "Muslim 2026",
@@ -106,7 +126,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/785",
       "sharh": "Avvalgi uchta hadisdan tik turib ichimlik ichish va ovqatlanish joizligi chiqmoqda. Ammo keyingi hadislardan tik turib biror ichimlik ichishning makruhligi, tik turib ovqatlanish esa undanda qattiq karohiyatli ekani chiqmoqda. Endi kimki tik turib biror narsa ichib qo‘ysa sunnatga xilof qilgani uchun, nafsini jazolash sifatida ichgan narsasini qayt qilib yuborishi mahbub amaldir. Albatta sunnatga xilof qilishni qasd etgandagina shunday qiladi. Ammo muxoliflikni qasd qilmasa unday emas.",
       "sharh_ref": "Riyozus solihiyn sharhi, 785-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/785"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/785",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-07",
@@ -115,7 +139,7 @@
       "paper_text": "Rasululloh ﷺ shunday dedilar: “Oppoq rangli kiyimlaringizni kiyinglar, chunki u kiyimlaringizning eng yaxshisidir. Mayyitlaringizni u bilan kafanlanglar”.",
       "paper_source_line": "Ibn Abbos roziyallohu anhumodan — Abu Dovud va Termiziy",
       "arabic_text": "وَعَنِ ابْنِ عَبَّاسٍ رَضِيَ اللهُ عَنْهُمَا أَنَّ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ قَالَ: “الْبَسُوا مِنْ ثِيَابِكُمُ البَيَاضَ؛ فَإِنَّهَا مِنْ خَيْرِ ثِيَابِكُمْ، وَكَفِّنُوا فِيْهَا مَوْتَاكُمْ”. رَوَاهُ أَبُو دَاوُدَ، وَالتِّرْمِذِيُّ وَقَالَ: حَدِيثٌ حَسَنٌ صَحِيحٌ [د 3878، ت 994].",
-      "uzbek_full": "Ibn Abbos roziyallohu anhumodan rivoyat qilinadi: “Rasululloh ﷺ shunday dedilar: “Oppoq rangli kiyimlaringizni kiyinglar, chunki u kiyimlaringizning eng yaxshisidir. Mayyitlaringizni u bilan kafanlanglar”. Abu Dovud va Termiziy rivoyati. Termiziy hasan, sahih hadis, dedilar.",
+      "uzbek_full": "Ibn Abbos roziyallohu anhumodan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallam shunday dedilar: “Oppoq rangli kiyimlaringizni kiyinglar, chunki u kiyimlaringizning eng yaxshisidir. Mayyitlaringizni u bilan kafanlanglar”.\n\nAbu Dovud va Termiziy rivoyati. Termiziy hasan, sahih hadis, dedilar.",
       "narrator": "Ibn Abbos roziyallohu anhumodan",
       "collection": "Abu Dovud va Termiziy",
       "collection_no": "Abu Dovud 3878, Termiziy 994",
@@ -124,17 +148,21 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/792",
       "sharh": "",
       "sharh_ref": "",
-      "sharh_url": ""
+      "sharh_url": "",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-09",
       "category": "Sunnat",
       "title": "Yangi kiyim kiyish duosi",
       "paper_text": "Rasululloh ﷺ yangi kiyim kiysalar, sallami yoki ko‘ylakmi yoki ridomi, nomini aytib, “Allohumma, lakal hamd. Anta kasavtaniyhi, as’aluka xoyrahu va xoyra maa suni’a lahu, va a’uuzu bika min sharrihi va sharri maa suni’a lah”, der edilar.",
-      "paper_source_line": "Abu Sa’id al-Xudriy roziyallohu anhudan — Abu Dovud va Termiziy",
+      "paper_source_line": "Abu Said Xudriy roziyallohu anhudan — Abu Dovud va Termiziy",
       "arabic_text": "عَنْ أَبِي سَعِيدٍ الخُدْرِيِّ رَضِيَ اللَّهُ عَنْهُ قَالَ: كَانَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ إِذَا اسْتَجَدَّ ثَوْباً سَمَّاهُ باسْمِهِ - عِمَامَةً، أَوْ قَمِيصاً، أَوْ رِدَاءً - يَقُولُ: “اللَّهُمَّ؛ لَكَ الحَمْدُ أَنْتَ كَسَوْتَنِيهِ، أَسْأَلُكَ خَيْرَهُ وَخَيْرَ مَا صُنِعَ لَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّهِ وَشَرِّ مَا صُنِعَ لَهُ”. رَوَاهُ أَبُو دَاوُدَ، وَالتِّرْمِذِيُّ وَقَالَ: حَدِيثٌ حَسَنٌ [د 4020، ت 1767].",
       "uzbek_full": "Abu Said Xudriy roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallam yangi kiyim kiysalar, sallami yoki ko‘ylakmi yoki ridomi, nomini aytib, “Allohumma, lakal hamd. Anta kasavtaniyhi, as’aluka xoyrahu va xoyra maa suni’a lahu, va a’uuzu bika min sharrihi va sharri maa suni’a lah”, der edilar”.\n\n* Ma’nosi: “Allohim, Senga hamdlar bo‘lsin. Buni menga Sen kiydirding. Sendan uning yaxshiligini va undagi yaxshilikni so‘rayman, uning yomonligidan va undagi yomonlikdan panoh tilayman”.\n\nAbu Dovud va Termiziy rivoyat qilishdi. Termiziy hasan hadis, dedilar.",
-      "narrator": "Abu Sa’id al-Xudriy roziyallohu anhudan",
+      "narrator": "Abu Said Xudriy roziyallohu anhudan",
       "collection": "Abu Dovud va Termiziy",
       "collection_no": "Abu Dovud 4020, Termiziy 1767",
       "grade": "Sahih hadis (Abu Dovud va Termiziy rivoyati)",
@@ -142,7 +170,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/826",
       "sharh": "Musulmon inson o‘z hayotining har bir lahzasi Alloh taologa doimiy ravishda bog‘liq ekanini chuqur his qiluvchi va o‘sha his asosida hayot kechiruvchi bandadir.\n\nQolaversa, u o‘ziga yetgan har bir narsa, kattayu kichik har bir ne’mat Allohdan ekanini bir lahza ham unutmaydigan bandadir.\n\nMusulmon inson o‘ziga kattayu kichik har bir ne’mat yetgan paytda ne’mat beruvchi Zotga shukr aytishga shoshiladi va shu bilan birga, u Alloh taoloning “Agar shukr qilsangiz, yana ziyoda qilurman”, degan va’dasiga to‘la ishongan bandadir.\n\nUshbu ma’nolar dinimizning kiyinish madaniyati bo‘yicha bergan ko‘rsatmalarida ham o‘z aksini topgan. Ana o‘sha madaniyatni Payg‘ambar sollallohu alayhi vasallam aytib, o‘zlari amal qilib, ko‘rsatib berganlar.\n\n“Rasululloh sollallohu alayhi vasallam yangi kiyim kiysalar, sallami yoki ko‘ylakmi yoki ridomi, nomini aytib,\n\n“Allohim, Senga hamdlar bo‘lsin. Buni menga Sen kiydirding. Sendan uning yaxshiligini va undagi yaxshilikni so‘rayman, uning yomonligidan va undagi yomonlikdan panoh tilayman”, der edilar”.\n\nPayg‘ambar sollallohu alayhi vasallamning bu duolarida yangi kiyim kiygan odam keltirishi lozim bo‘lgan eng oliymaqom shukr va yangi kiyim kiygan odam tilashi mumkin bo‘lgan eng oliymaqom tilaklar o‘z aksini topgandir.\n\n“Allohim, Senga hamdlar bo‘lsin. Buni menga Sen kiydirding”.\n\nHa, har bir kiyimni haqiqiy kiydiruvchi Alloh taoloning O‘zidir. U zotdan boshqa kim ham buni qila olar edi? Shuning uchun, har bir yangi kiyim kiygan banda U Zotga hamdu sano aytib, shukr qilmog‘i lozim. Aynan Alloh taolo unga o‘sha kiyimni kiygazganini tan olmog‘i lozim.\n\n“ Sendan uning yaxshiligini va undagi yaxshilikni so‘rayman”.\n\nAlbatta, kiyimni kiyish bilan ish oxiriga yetib qolmaydi. Kiyimni kiygandan keyin hayot davom etadi. Ana o‘sha kiyim ila turli holatlar boshdan o‘tkaziladi. Shuning uchun, yangi kiyim kiygan kishi o‘sha kiyimning yaxshiliklarga nasib qilishini Alloh taolodan so‘rashi lozim toki, kiyimning o‘zi ham yaxshi bo‘lsin, o‘sha kiyimni kiygandan keyingi ishlar ham yaxshi bo‘lsin.\n\n“Sendan Uning yomonligidan va undagi yomonlikdan panoh tilayman”.\n\nAksincha, kiyilgan yangi kiyim shumlik alomati va sababchisi bo‘lishi ham mumkin. Uni kiygan odamning boshiga balolar yog‘ilishi ham mumkin. Shuning uchun Alloh taoloning O‘zidan bundoq ko‘ngilsizliklardan panoh so‘raladi.\n\n“Nabiy sollallohu alayhi vasallamning sahobalari agar ulardan biri yangi kiyim kiysa, unga:\n\n“Eskitgin. Alloh taolo o‘rniga boshqasini bersin”, deyishardi”.\n\nPayg‘ambar sollallohu alayhi vasallam sahobai kiromlarining bu ishlari ham islomiy kiyinish madaniyatining ajralmas bir qismidir. Xalqimiz ichida yangi kiyim kiygan kishiga, muborak bo‘lsin, qutlug‘ bo‘lsin, iloho, bunga o‘xshagan kiyimlarni yana ko‘p kiyishni nasib qilsin, deyish odati ham mana shu ma’nolardan kelib chiqqan.\n\nYangi bir ne’matga erishgan kishiga hasad qilish o‘rniga uni muborakbod etish, unga yaxshi tilaklar bildirish, o‘sha berilgan ne’matlarga o‘xshash ne’matlar yana ham ko‘proq bo‘lishini tilash Islom madaniyatiga xos narsadir.\n\nHar birimiz ushbu hadisi sharifga amal qilishga o‘tishimiz lozim. Qachon yangi kiyim kiysak, Allohga hamd aytishimiz, yangi kiyim kiyganlarimizni muborakbod etishimiz lozim.",
       "sharh_ref": "Riyozus solihiyn sharhi, 826-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/826"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/826",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-10",
@@ -167,10 +199,10 @@
       "category": "Sunnat",
       "title": "Uyquga yotish va uyg‘onish duosi",
       "paper_text": "Nabiy ﷺ tunda yotmoqchi bo‘lsalar, qo‘llarini yonoqlarining tagiga qo‘yar, keyin: “Allohumma, bismika amuutu va ahyaa”, derdilar. Uyg‘onganlarida esa: “Al-hamdu lillaahillazii ahyaanaa ba’da maa amaatanaa va ilayhin-nushuur”, derdilar.",
-      "paper_source_line": "Huzayfa ibn Yamon roziyallohu anhudan — Buxoriy",
+      "paper_source_line": "Huzayfa roziyallohu anhudan — Buxoriy",
       "arabic_text": "وَعَنْ حُذَيْفَةَ رَضِيَ اللهُ عَنْهُ قَالَ : كَانَ النَّبِيُّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ إِذَا أَخَذَ مَضْجَعَهُ مِنَ اللَّيْلِ وَضَعَ يَدَهُ تَحْتَ خَدِّهِ، ثُمَّ يَقُولُ: “اللَّهُمَّ؛ بِاسْمِكَ أمُوتُ وَأَحْيَا” وَإِذَا اسْتيْقَظَ قَالَ: “الحَمْدُ للهِ الَّذي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيهِ النُّشُورُ”. رَوَاهُ البُخَارِيُّ [6314].",
-      "uzbek_full": "Huzayfa roziyallohu anhudan rivoyat qilinadi:\n\n“Nabiy sollallohu alayhi vasallam tunda yotmoqchi bo‘lsalar, qo‘llarini yonoqlarining tagiga qo‘yar, keyin: “Allohumma, bismika amuutu va ahyaa”, derdilar.\n\n(Ma’nosi: Allohim, Sening isming bilan tirilaman va o‘laman.)\n\nUyg‘onganlarida esa: “Al‑hamdu lillaahillazii ahyaanaa ba’da maa amaatanaa va ilayhin‑nushuur”, derdilar”.\n\n(Ma’nosi: Bizni o‘ldirgandan keyin tiriltirgan Allohga hamd bo‘lsin. Va qaytish Ungadir.)\n\nImom Buxoriy rivoyati.",
-      "narrator": "Huzayfa ibn Yamon roziyallohu anhudan",
+      "uzbek_full": "Huzayfa roziyallohu anhudan rivoyat qilinadi:\n\n“Nabiy sollallohu alayhi vasallam tunda yotmoqchi bo‘lsalar, qo‘llarini yonoqlarining tagiga qo‘yar, keyin: “Allohumma, bismika amuutu va ahyaa”, derdilar.\n\n(Ma’nosi: Allohim, Sening isming bilan tirilaman va o‘laman.)\n\nUyg‘onganlarida esa: “Al-hamdu lillaahillazii ahyaanaa ba’da maa amaatanaa va ilayhin-nushuur”, derdilar”.\n\n(Ma’nosi: Bizni o‘ldirgandan keyin tiriltirgan Allohga hamd bo‘lsin. Va qaytish Ungadir.)\n\nImom Buxoriy rivoyati.",
+      "narrator": "Huzayfa roziyallohu anhudan",
       "collection": "Buxoriy",
       "collection_no": "Buxoriy 6314",
       "grade": "Sahih hadis (Buxoriy rivoyati)",
@@ -178,7 +210,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/830",
       "sharh": "Alloh taolo Qur’oni karimda: “Alloh jonlarni o‘lgan vaqtida, o‘lmaganlarni esa uxlayotgan paytlarida olur. Bas, O‘zi o‘limga hukm qilgan jonlarni (qaytarmasdan) ushlab qolur, boshqalarini esa belgilangan bir muddatgacha (ajallari yetguncha) qo‘yib yuborur. Albatta, bunda tafakkur qiladigan qavm uchun alomatlar bordir”, deb aytgan. (Zumar surasi, 42 oyat).\n\nIbn Kasir ushbu oyatni tafsir qilib bunday deydilar: “Alloh taolo O‘zi mavjudotlarni xohlaganday boshqarishining xabarini beryapti. Darhaqiqat, U jonlarni tanalardan olish orqali “katta o‘lim”ga hukm qiladi. “Kichik o‘lim” esa – uyqudir”.\n\nBoshqa oyati karimada esa shunday deydi:\n\n“U tunda sizlarni “vafot ettiradigan” (uxlatib ruhingizni vaqtincha oladigan), kunduzi qilgan ishlaringizni biladigan zotdir. So‘ngra belgilangan muhlat (umr) ado etilishi uchun unda (kunduzi) sizlarni (yana) “tiriltirur” (uyg‘otur). Keyin Unga qaytish (bor). So‘ngra sizlarga qilgan ishlaringiz xabarini berur” (An’om surasi, 60 oyat).\n\nDarhaqiqat, uyqu – Alloh taoloning buyuk mo‘’jizalaridan. Zero, go‘yo o‘lgandek, hech narsani his qilmay yotgan odamni Alloh yana ruhini qaytarib uyg‘otadi va u oldingidek to‘la-to‘kis yashay boshlaydi. Demak, uyqudagilarni uyg‘otib ruhini qaytargan Alloh taolo qabrlarda yotgan “katta o‘lim” berilganlarni uyg‘otishga albatta qodirdir!\n\nDinimizda hamma, hatto, ko‘zimizga kichik va e’tiborsiz bo‘lib ko‘rinadigan amallardagi odoblar ham bayon qilingan.\n\n“Nega aynan uyqu. Uyquda ham e’tiborli yoki savobli amal bormi? Axir uyquda inson na yaxshilik va na yomonlik qila olmaydiku”, deyishingiz mumkin. Lekin, faraz qiling, bir kishi oltmish yil yashadi, deylik. Odatda, umumiy hisobda u sakkiz soat uxlasa uning hayotining uchdan bir qismi ya’ni, yigirma yilni uyquda o‘tkazgan bo‘ladi. Biz quyida sanab o‘tadigan odobi shariflarga amal qilinsa, o‘sha kattagina muddat – yigirma yil manfaatli va savobga limmo-lim umrga va har kunlik odat esa ibodatga aylanadi.\n\nQuyida uyquga ketishga oid bir qancha odoblarni keltirib o‘tamiz.\n\n1. Xufton namozidan oldingi uyqu va xuftondan keyingi suhbatning makruhligi:\n\nAbu Barza roziyallohu anhudan rivoyat qilinadi: “Rasullulloh sollallohu alayhi va sallam xuftondan oldingi uyquni va undan keyingi suhbatni yoqtirmasdilar” (Imom Buxoriy rivoyati).\n\nChunki xuftondan oldingi uyqu uyqu uchun xoslangan kechki uyquga putur yetkazadi. Undan keyingi suhbat esa bomdod namoziga uxlab qolish xavfini keltirib chiqaradi. Lekin ulamolarning fikricha, xuftondan keyingi suhbat diniy va ijtimoiy manfaat uchun yoki ilm suhbatlari bo‘lsa u makruh emas, deganlar. Negaki, Rasululloh sollallohu alayhi vasallam Abu Bakr Siddiq bilan tunda suhbat qilganlari haqida Umar roziyallohu anhudan rivoyatlar kelgan.\n\n2. Uyquga tahoratli yotish:\n\nBunga yuqoridagi Baro ibn Ozib roziyallohu anhudan rivoyat qilingan 827-raqamli hadis dalil bo‘ladi:\n\n3. To‘shakni qoqish va “Bismilloh”ni aytish:\n\nAbu Hurayra roziyallohu anhudan rivoyat qilinadi: “Rasulululloh sollallohu alayhi vasallam aytdilar: “Qaysi biringiz yotog‘iga yotsa, izorining ichki tarafi bilan to‘shagini qoqib yuborsin. Zero, u o‘zidan keyin to‘shagiga nima kirganini bilmaydi. So‘ngra shunday deydi: “Rabbim! Noming ila yotdim va Sen ila turaman. Agar jonimni olsang rahm qil. Agar jonimni yuborsang (ya’ni, uyg‘onganda ruhi qaytarilishi) uni solih bandalaringni saqlaganingdek asra” (Imom Buxoriy rivoyati).\n\n4. O‘ng tomon bilan yotish:\n\nJuda ko‘p hadisi shariflarda o‘ng tomon bilan yotishga targ‘ib qilingan. Baro ibn Ozibdan rivoyat qilingan yuqoridagi hadis ham shular jumlasidandir. Chunki inson o‘ng tomon bilan yotganda oshqozonda ovqat hazm uchun yaxshi joylashadi va sergakroq uxlaydi. Chap tomonga yotganda esa yurakka og‘irroq bo‘ladi.\n\n5. O‘ng qo‘lni yuzining tagiga qo‘yib yotish va ba’zi zikrlarni aytish:\n\nBunga hozirda o‘rganayotganimiz Huzayfa roziyallohu anhudan qilingan rivoyat dalil bo‘ladi:\n\n6. Chalqancha yotish makruh:\n\nBunga keyingi hadisda keladigan Ya’ish ibn Tixfa al-G‘iforiy roziyallohu anhumodan qilingan rivoyat dalil bo‘ladi.\n\n7. Uyqudan oldin Qur’ondan ba’zi oyatlarni tilovat qilish:\n\nOisha roziyallohu anhodan rivoyat qilinadi: “Rasululloh sollallohu alayhi vasallam tungi yotoqlariga borsalar, ikki kaftlarini birlashtirib, ularga dam urib – “Ixlos”, “Falaq”, “Nos” suralarini qiroat qilardilar. So‘ngra ikki kaftlarini badanlarining qo‘llari yetgarlik joylariga surtardilar. Boshlaridan boshlab, so‘ngra yuzlari va ketma-ket boshqa a’zolariga. Bu ishni uch marta qilardilar” (Imom Buxoriy rivoyati).\n\nAlloma Qozi Iyoz: “Qur’on oyatlari va zikrdan hosil bo‘lgan havo (nafas) va undagi namlikda tabarruklik bor”, degan.\n\nBundan tashqari, uxlashdan oldin Oyatul kursiy o‘qilsa, Alloh taolo tomonidan asrovchi farishta tushirilishi, Baqara surasining oxirgi ikki oyati o‘qilsa, omonda bo‘lishi, Kafirun surasini o‘qisa esa shirkdan omonda bo‘lishi, Zumar, Sajda, Taborak va boshqa suralarni o‘qishning fazilatlari haqida hadisi shariflar mavjud.\n\n8. Tungi (tahajjud) namoziga turishni niyat qilib uxlash:\n\nAbu Dardo roziyallohu anhudan rivoyat qilinadi: Nabiy sollallohu alayhi va sallam aytdilar: “Kim yotog‘iga tungi namozga (tahajjudga) turishni niyat qilib yotsa va tungi namozga uxlab qolib tong orttirsa, unga niyat qilgani bo‘libdi. Uyqusi esa Rabbisi azza va jalladan u uchun sadaqa bo‘libdi”.\n\n9. Uyqudan oldin chiroqlarni o‘chirib, eshiklarni yopish:\n\nJobir ibn Abdulloh roziyallohu anhumo rivoyat qiladilar: “Rasululloh sollallohu alayhi va sallam: “Idishlarning og‘zini yopib, eshiklarni tambalab va chiroqlarni o‘chirib yotinglar, chunki sichqon pilikni tortib yuborib, uy ahlini yoqib yuborishi mumkin”, dedilar” (Imom Buxoriy rivoyati).\n\nHadisdan olinadigan foyda shuki, o‘t chiqishiga sabab bo‘ladigan jihozlar, ya’ni gaz va elektr jihozlariga uyqudan oldin e’tibor berish ham dinimiz odoblaridan ekan. Bu hadis nafaqat dunyoviy manfaatlarni, balki diniy manfaatlarni ham o‘z ichiga olgan. U asrash lozim bo‘lgan har bir jonga e’tibor va behuda sarflash gunoh bo‘lgan molni saqlashga undovdir.\n\nBoshqa hadisda esa:\n\nJobir roziyallohu anhudan rivoyat qilinadi: “Rasululloh sollallohu alayhi vasallam shunday dedilar: “Tunda chiroqlarni o‘chirib, eshiklarni yopib, meshlarningsh og‘zini bog‘lab hamda ovqat va ichimliklarni yopib yotingiz” (Imom Buxoriy rivoyati).\n\n10. Qo‘rqib uyg‘onsa ma’lum bir duo va zikrlarni aytish:\n\nAmr ibn Shuayb roziyallohu anhudan naql qilinadi: “Rasululloh sollallohu alayhi vasallam aytdilar: “Birortangiz uyquda qo‘rqsa: “A’uzu bikalimatillahit tammati min g‘ozobihi va iqobihi va sharri ibadihi va min hamazatish shayatiyn va ay-yahzurun”, desin.\n\n(Tarjimasi: “Allohning mukammal kalimalari ila Uning g‘azabi va jazosi, bandalarining yomonliklari, shaytonlarning vasvaslari va ularni mening oldimga kelishlaridan panoh tilayman”) (Sunani Termiziy).\n\n11. Yaxshi va yomon tush ko‘rish:\n\nAbu Said Xudriy roziyallohu anhudan naql qilinadi: “Nabiy sollallohu alayhi vasallam: “Birortangiz o‘ziga yoqadigan tush ko‘rsa, uni Alloh taolo sizga marhamat qilgan bo‘lib, buning uchun darhol Rabbingizga hamdu sano aytsin va ko‘rgan tushini (yaxshi odamlarga) aytsin. Agar ko‘ngli xushlamaydigan tushni ko‘rsa, demak, u shayton tarafidan bo‘lib, uning yomonligidan Alloh taolodan panoh tilasin (ya’ni, “A’uzu billahi minash shaytonir rojiym” desin) va uni hech kimga aytib bermasin. Shunda ko‘rgan yomon tushi unga zarar keltira olmaydi!” dedilar” (Imom Buxoriy rivoyati).\n\nJobir ibn Abdulloh roziyallohu anhumodan naql qilinadi: “Rasululloh sollallohu alayhi vasallam: “Birortangiz o‘zi yoqtirmaydigan tush ko‘rsa, chap tarafiga uch marta tuflasin va shaytondan Alloh taolodan panoh tilasin hamda boshqa tarafga o‘girilib olsin”, dedilar” (Imom Muslim rivoyati).\n\nUyquda yomon tush ko‘rganda nima qilish kerak ekani yuqoridagi hadislarda bayon qilindi. Lekin ularning eng afzali Abu Hurayra roziyallohu anhudan rivoyat qilingan hadisda Rasululloh sollallohu alayhi vasallama aytganlaridek: “…Birortangiz o‘zi yoqtirmaydigan tush ko‘rsa turib namoz o‘qisin va u tushini hech kimga aytib bermasin…”\n\nUyqudan turish odoblari:\n\nUyqudan uyg‘onganda zikr qilish, tahorat qilish va namoz o‘qish sunnatdir:\n\nAbu Hurayra roziyallohu anhudan naql qilinadi: “Rasululloh sollallohu alayhi vasallam: “Shayton sizlardan biringiz uyqudaligida gardaniga uchta tugun tugadi va har bir tugunga: “Senda uzun tun bor, shunday ekan uxla!” deydi. U uyg‘onganda Allohni zikr qilsa bitta tugun yechiladi. Tahorat qilsa yana bir tugun yechiladi. Namoz o‘qisa esa yana bitta tugun yechiladi. Shunda u g‘ayratli-tetik va ko‘ngli ravshan holda tong orttiradi. Ammo unday qilmasa ko‘ngli xira, dangasa holda tong orttiradi”, dedilar.\n\nBoshqa hadisi sharifda esa:\n\nUboda ibn Somit roziyallohu anhudan rivoyat qilinadi: “Rasululloh sollallohu alayhi vasallam bunday deganlar: “Kim kechasi uyg‘onib: “Laa ilaha illallohu vahdahu laa sharika lah. Lahul mulku va lahul hamdu va huva ’ala kulli shay’in qodiyr. Alhamdu lillahi va subhanalllohi va la ilaha illallohu vallohu akbar va laa havla va laa quvvata illa billah”, degan duoni o‘qib, so‘ng “Allohim, meni kechirgin!” desa, duosi mustajob bo‘ladi, keyin tahorat olib namoz o‘qisa, namozi qabul bo‘ladi” (Imom Buxoriy rivoyati).\n\n(Ma’nosi: “Allohdan boshqa iloh yo‘qdir, Uning yolg‘iz O‘zigina mavjuddir, uning sherigi yo‘qdir, jamiki mulk Unikidir, barcha maqtovlar Unga xos va U har bir narsaga Qodirdir! Allohga madhu maqtovlar bo‘lsin. Allohdan o‘zga iloh yo‘q, Alloh eng buyukdir, Allohning irodasisiz hech narsa bo‘lmaydi”)\n\nUyqudan turganda sunnat hisoblangan yana bir qancha zikr va duolar mavjud. Ularni batafsil hadis, odob-axloq mavzusidagi kitoblardan topish mumkin.",
       "sharh_ref": "Riyozus solihiyn sharhi, 830-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/830"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/830",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-12",
@@ -196,17 +232,21 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/845",
       "sharh": "",
       "sharh_ref": "",
-      "sharh_url": ""
+      "sharh_url": "",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-13",
       "category": "Sunnat",
       "title": "Islomning eng yaxshi amali",
       "paper_text": "Bir kishi Rasululloh ﷺdan: “Qaysi Islom (amali) yaxshiroq?” deb so‘radi. U zot: “Taom berishing hamda tanigan-tanimaganingga salom berishing”, dedilar.",
-      "paper_source_line": "Abdulloh ibn Amr ibn Os roziyallohu anhudan — Buxoriy va Muslim",
+      "paper_source_line": "Abdulloh ibn Amr ibn Oss roziyallohu anhudan — Buxoriy va Muslim",
       "arabic_text": "وَعَنْ عَبْدِ اللهِ بْنِ عَمْرٍو بْنِ العَاصِ رَضِيَ اللهُ عَنْهُمَا: أَنَّ رَجُلًا سَأَلَ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ أَيُّ الإْسْلَامِ خَيْرٌ؟ قَالَ: “تُطْعِمُ الطَّعَامَ، وَتَقْرَأُ السَّلَامَ عَلَى مَنْ عَرَفْتَ وَمَنْ لَمْ تَعْرِفْ”. مُتَّفَقٌ عَلَيهِ [خ 12، م 39 وسبق برقم 562].",
-      "uzbek_full": "Abdulloh ibn Amr ibn Oss roziyallohu anhudan rivoyat qilinadi: Bir kishi Rasululloh ﷺdan: “Qaysi Islom (amali) yaxshiroq?” deb so‘radi. U zot: “Taom berishing hamda tanigan-tanimaganingga salom berishing”, dedilar”. Muttafaqun alayh.",
-      "narrator": "Abdulloh ibn Amr ibn Os roziyallohu anhudan",
+      "uzbek_full": "Abdulloh ibn Amr ibn Oss roziyallohu anhudan rivoyat qilinadi:\n\nBir kishi Rasululloh sollallohu alayhi vasallamdan:\n\n“Qaysi Islom (amali) yaxshiroq?” deb so‘radi. U zot: “Taom berishing hamda tanigan-tanimaganingga salom berishing”, dedilar”.\n\nMuttafaqun alayh.",
+      "narrator": "Abdulloh ibn Amr ibn Oss roziyallohu anhudan",
       "collection": "Buxoriy va Muslim",
       "collection_no": "Buxoriy 12, Muslim 39",
       "grade": "Muttafaqun alayh",
@@ -214,7 +254,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/858",
       "sharh": "Bu hadisning sharhi 562-raqamli hadis ostida kelgan.\n\nUshbu hadisi sharif ham Abdulloh ibn Amr roziyallohu anhudan rivoyat qilinmoqda. Bir kishi Payg‘ambarimizdan Islomning eng yaxshi fazilatlari haqida so‘radi. Islom o‘zi yaxshi narsa, lekin so‘rovchi o‘sha yaxshi narsaning ham eng afzali haqida so‘ragan. Payg‘ambarimiz sollallohu alayhi vasallam esa, Islomning eng yaxshi fazilatlaridan ikkitasini aytib berganlar. Nima uchun aynan shu ikki narsani zikr qilganlari haqida gapiradigan bo‘lsak, ulamolarimizning aytishlaricha, birovga yaxshilik qilish, asosan, ikki xil bo‘ladi:\n\nBirinchisi, moddiy yaxshilik bo‘lib, uning eng boshi boshqalarni taomlantirish.\n\nIkkinchisi, badaniy yaxshilik bo‘lib, uning boshi salom berishdir, deganlar.\n\nShu bilan birga, savol berilgan joy, vaqt va odamlarning holati ham e’tiborga olingan. Ayniqsa, Payg‘ambarimiz boshchiliklarida sahobalar yangi hijrat qilib kelganlarida Madinai Munavvarada ochlik hukm surar edi. Payg‘ambarimiz sollallohu alayhi vasallam o‘sha vaqtda birovga ovqat berish, ochning qornini to‘ydirishga juda ko‘p targ‘ib qilganlar. Shuningdek, taniganu tanimagan odamga salom berishni ham lozim sanaganlar.\n\nIslom dinining ushbu ikki fazilati haqida qancha ko‘p gapirilsa, shuncha oz. Chunki bu ikki narsa insoniyatga ko‘plab xayr-baraka keltiradi.\n\nOch kishilarga taom berishni dinning eng afzal amallaridan qilgan yana boshqa qaysi din yoki mafkura bor?! Faqat Qur’oni Karim o‘z oyatlarida ochlarga taom berishni eng yaxshi amallardan biri hisoblagan, o‘zi muhtoj bo‘lsa-da, taomini miskin, yetim va asirlarga berish musulmonlikning oliymaqom sifatlaridan ekanini ta’kidlagan.\n\nFaqat Islom dini iymon komilligini ochlarga taom berishga bog‘lagan. Ha, faqat Islomgina–Allohning oxirgi va mukammal dinigina shunday qilishi mumkin. Bu ishni iymon darajasiga ko‘targan, Islom tarbiyasini topgan haqiqiy musulmonlargina dunyo xalqlari tarixida misli ko‘rilmagan darajada saxiy bo‘lishlari ham shundan. Faqat Muhammad mustafo sollallohu alayhi vasallamning dorulfununlarida tahsil ko‘rganlargina bu ishni qoyilmaqom qilib ado etishlari mumkin.\n\nOcharchilik payti. Madinai Munavvaraga hazrati Usmonga tegishli oziq-ovqat karvoni yetib keldi. Bozor chaqqonligidan xabardor savdogarlar ertalabdan karvonni o‘rab oldilar. Kim oshdi savdosi boshlandi. Bir savdogar bir narxni aytdi. Mol egasi hazrati Usmon:\n\n“Menga bu narxdan yuqori narx va’da qilingan”, dedilar.\n\nSavdogarlar birin-ketin o‘z imkonlari yetadigan narxlarni aytib chiqdilar. Hammasiga ham hazrati Usmon roziyallohu anhu:\n\nOxiri savdogarlar:\n\n“Madinada bizdan boshqa savdogar qolmadi, kim senga bundoq yuqori narx va’da qildi, axir?” deb so‘rashdi.\n\nHazrati Usmon:\n\n“Alloh taolo, kim ochlarga taom bersa, o‘n barobar qilib savob beraman, degan. Hamma molim Madina fuqaro va miskinlariga sadaqa bo‘lsin”, dedilar.\n\nQani, hazrati Usmondan boshqa bu ishni kim ham qila oladi?\n\nXalifa Umari Odil kechasi hech kimga bildirmay odamlar holidan xabar olib yurardi. Bir ayol ovqat topa olmaganidan qozonga quruq suv quyib, tagiga olov yoqarkan: “Sabr qilinglar, hozir taom pishadi”, deb bolalarni uxlatishga urinayotganini ko‘rdi.\n\nXalifa darhol ortga qaytib Baytulmoldan bir qop taomni ajratib, hamrohidan qopni orqalatib qo‘yishda yordam so‘radi. Hamrohi:\n\n“Ey mo‘minlarning amiri, ijozat bering, yukni men ko‘tarib boray”, dedi. Shunda hazrati Umar roziyallohu anhu:\n\n“Agar qiyomat kuni o‘sha oilaning och qolgani gunohini ham mening o‘rnimga ko‘taradigan bo‘lsang, bu yukni ko‘tar, bo‘lmasa, o‘zimga qo‘yib ber, o‘zim ko‘taray”, dedilar. So‘ngra qopni o‘zlari ko‘tarib olib bordilar.\n\nOddiy musulmonlar, hatto o‘zi ovqatga muhtojlari ham qo‘lidagi taomini o‘zgaga tutishi faqat Islom tarbiyasidandir.\n\n“Assalomu alaykum” islomiy so‘rashish, islomiy tabrikdir. Turli xalq, millat va elatlar turlicha so‘rashadilar. Bir-biri bilan ko‘rishgan odamlar “xayrli erta”, “yaxshimisiz”, “saodatli bo‘ling”, kabi iboralar orqali o‘zaro istak bildiradilar. Lekin hech kim, hech bir tuzum, hech bir jamiyat yoki falsafa “Assalomu alaykum va rahmatullohi va barakatuhu”, ya’ni, “Sizga tinchlik, salomatlik, Allohning rahmati va barakalari bo‘lsin”, deb so‘rashishni o‘zining eng afzal ishlaridan qilmagan, ibodat darajasiga ko‘tarmagan. Tanisa-tanimasa, ko‘rgan odamiga salom bersin, demagan. Salom berish–sunnat, alik olish–vojib, demagan. Ko‘rinishidan oddiygina bu narsa olamshumul ahamiyat kashf etishini musulmonlargina biladilar.\n\nIslom dini ushbu hadisda ko‘targan ikki masalaning hikmati qanchalik katta ekani bugungi kunimizda yaqqol namoyon bo‘lmoqda. Dunyoda har daqiqada bir qancha go‘daklar, keksa kishilar, erkak va ayollar ochlikdan o‘lmoqda. Ha, aynan taom yetishmaganidan o‘lmoqdalar. Aslida esa, ular taom tanqisligidan emas, Islom yetishmaganidan o‘lmoqdalar. Chunki Islomdan bexabarlar, Islomga amal qilmaydiganlar shuncha odam ochdan o‘layotgan bir paytda, ularga o‘xshaganlardan bir necha marta ko‘p odamga yetib-ortadigan taomni isrof qilib, tashlab yubormoqdalar. Savdogarlar narx tushmasin, deb ortib qolgan taomlarini kambag‘allarga bermay, boshqa yo‘l bilan yo‘q qilmoqdalar.\n\nOchlarga taom berish haqidagi xabarlarning ko‘pi soxta, riyo uchun qilinayotgan tashviqot, xolos. Islomsiz bu muammoni hal qilish qiyinligi kundan-kunga oydinlashib bormoqda.\n\nSalom berish va undan ko‘zlangan maqsadlar ham bugungi kunimizning juda muhim masalasidir. Kishilar bir-birlari bilan yaxshi munosabatda bo‘lishlari zarur. Bir-birlari bilan har ko‘rganda salomlashib, bir-birlariga tinchlik-omonlik, salomatlik, Allohning rahmati va barakasini so‘rab turmoqlari, tinch-totuv, do‘st-birodar bo‘lib yashamoqlari lozim.",
       "sharh_ref": "Riyozus solihiyn sharhi, 858-hadis; 562-hadis ostidagi sharh",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/858"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/858",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-14",
@@ -222,8 +266,8 @@
       "title": "Salomni yoyish",
       "paper_text": "Rasululloh ﷺ shunday dedilar: “Iymon keltirmaguningizcha jannatga kirmaysiz. Bir-biringizni yaxshi ko‘rmaguningizcha iymon keltirmaysiz. Sizlarga bir narsani o‘rgataymi? Agar uni qilsangiz, o‘zaro muhabbatli bo‘lasiz: oralaringizda salomni yoyinglar!”",
       "paper_source_line": "Abu Hurayra roziyallohu anhudan — Muslim",
-      "arabic_text": "وَعَنْ أَبِي هُرَيرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ “لَا تَدْخُلُوا الْجَنَّةَ حَتَّى تُؤْمِنُوا، وَلَا تُؤْمِنُوا حَتَّى تَحَابُّوا، أَوَلَا أَدُلُّكُمْ عَلَى شَيءٍ إِذَا فَعَلْتُمُوهُ تَحَابَبْتُمْ؟ أَفْشُوا السَّلَامَ بَيْنَكُمْ”. رَوَاهُ مُسْلِمٌ [54].",
-      "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi: “Rasululloh ﷺ shunday dedilar: “Iymon keltirmaguningizcha jannatga kirmaysiz. Bir-biringizni yaxshi ko‘rmaguningizcha iymon keltirmaysiz. Sizlarga bir narsani o‘rgataymi? Agar uni qilsangiz, o‘zaro muhabbatli bo‘lasiz: oralaringizda salomni yoyinglar!” Imom Muslim rivoyati.",
+      "arabic_text": "وَعَنْ أَبِي هُرَيرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ “لَا تَدْخُلُوا الْجَنَّةَ حَتَّى تُؤْمِنُوا، وَلَا تُؤْمِنُوا حَتَّى تَحَابُّوا، أَوَلَا أَدُلُّكُمْ عَلَى شَيءٍ إِذَا فَعَلْتُمُوهُ تَحَابَبْتُمْ؟ أَفْشُوا السَّلَامَ بَيْنَكُمْ” رَوَاهُ مُسْلِمٌ [54].",
+      "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallam shunday dedilar: “Iymon keltirmaguningizcha jannatga kirmaysiz. Bir-biringizni yaxshi ko‘rmaguningizcha iymon keltirmaysiz. Sizlarga bir narsani o‘rgataymi? Agar uni qilsangiz, o‘zaro muhabbatli bo‘lasiz: oralaringizda salomni yoyinglar!”\n\nImom Muslim rivoyati.",
       "narrator": "Abu Hurayra roziyallohu anhudan",
       "collection": "Muslim",
       "collection_no": "Muslim 54",
@@ -232,17 +276,21 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/861",
       "sharh": "“Salomni yoyinglar”.\n\nMusulmonlarning salomlashish so‘zlari, bir-birlarini ko‘rganlarida birinchi aytadigan iboralari “Assalomu alaykum”ni taratish unga odatlanish, doimo kanda qilmay aytib yurish, tanigangayu tanimaganga salom berish ma’nolarini bildiradi.\n\n“Salom” so‘zining lug‘atdagi ma’nosi “tinchlik” ekanini e’tiborga oladigan bo‘lsak, “tinchlik” va salomatlikni butun yer yuzi bo‘ylab tarqating ma’nosi chiqadi. Bunda mislsiz ulkan ma’no borligi hammaga ma’lum.\n\nDemak, jannatga salomatlik bilan kirayin, degan niyati bor musulmon insonning qiladigan amallaridan biri salomni taratish bo‘lmog‘i kerak ekan.",
       "sharh_ref": "Riyozus solihiyn sharhi, 861-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/861"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/861",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-15",
       "category": "Sunnat",
       "title": "Salomlashish odobi",
       "paper_text": "Rasululloh ﷺning huzurlariga borib, “Alaykas-salomu, yaa Rasulalloh!” degan edim, u zot menga: “Alaykas-salom” demagin, chunki “Alaykas-salom” o‘liklarning salomlashishidir”, dedilar.",
-      "paper_source_line": "Abu Jurayy al-Hujaymiy roziyallohu anhudan — Abu Dovud va Termiziy",
-      "arabic_text": "وَعَنْ أَبِي جُرَيِّ الْهُجَيْمِيِّ رَضِيَ اللهُ عَنْهُ قَالَ: أَتَيتُ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ فَقُلْتُ: عَلَيكَ السَّلَامُ يَا رَسُولَ اللهِ، قَالَ: لَا تَقُلْ عَلَيْكَ السَّلاَمُ؛ فَإِنَّ عَلَيْكَ السَّلَامُ تَحِيَّةُ الْمَوتَى”. رَوَاهُ أَبُو دَاوُدَ، وَالتِّرْمِذِيُّ وَقَالَ: حَدِيثٌ حَسَنٌ صَحِيحٌ [د 5209، ت 2721].",
-      "uzbek_full": "Abu Juray Hujaymiy roziyallohu anhudan rivoyat qilinadi: “Rasululloh ﷺning huzurlariga borib, “Alaykas-salomu, yaa Rasulalloh!” degan edim, u zot menga: “Alaykas-salom” demagin, chunki “Alaykas-salom” o‘liklarning salomlashishidir”, dedilar”. Abu Dovud va Termiziy rivoyati. Termiziy hasan, sahih hadis dedilar.",
-      "narrator": "Abu Jurayy al-Hujaymiy roziyallohu anhudan",
+      "paper_source_line": "Abu Juray Hujaymiy roziyallohu anhudan — Abu Dovud va Termiziy",
+      "arabic_text": "وَعَنْ أَبِي جُرَيِّ الْهُجَيْمِيِّ رَضِيَ اللهُ عَنْهُ قَالَ: أَتَيتُ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ فَقُلْتُ: عَلَيكَ السَّلَامُ يَا رَسُولَ اللهِ، قَالَ: لَا تَقُلْ عَلَيْكَ السَّلاَمُ؛ فَإِنَّ عَلَيْكَ السَّلَامُ تَحِيَّةُ الْمَوتَى”. رَوَاهُ أَبُو دَاوُدَ، وَالتِّرْمِذِيُّ وَقَالَ: حَدِيثٌ حَسَنٌ صَحِيحٌ [د 5209، ت 2721]. وَقَدْ سَبَقَ بِطُولِهِ [برقم 809].",
+      "uzbek_full": "Abu Juray Hujaymiy roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallamning huzurlariga borib, “Alaykas-salomu, yaa Rasulalloh!” degan edim, u zot menga: “Alaykas-salom” demagin, chunki “Alaykas-salom” o‘liklarning salomlashishidir”, dedilar”.\n\nAbu Dovud va Termiziy rivoyati. Termiziy hasan, sahih hadis dedilar.\n\nUzunicha yuqorida o‘tdi.",
+      "narrator": "Abu Juray Hujaymiy roziyallohu anhudan",
       "collection": "Abu Dovud va Termiziy",
       "collection_no": "Abu Dovud 5209, Termiziy 2721",
       "grade": "Sahih hadis (Abu Dovud va Termiziy rivoyati)",
@@ -250,7 +298,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/869",
       "sharh": "Bu hadisning sharhi 809-raqamli hadis ostida keltirilgan.\n\nGapning siyoqidan ko‘rinib turibdiki, Jobir ibn Sulaym roziyallohu anhu ushbu o‘zlari rivoyat qilib berayotgan hodisadan oldin musulmon bo‘lsalar ham, Payg‘ambar sollallohu alayhi vasallamni ko‘rmagan ekanlar.\n\n“Bir kishini ko‘rdim, odamlar uning fikri bilan ish ko‘rishar, u nima desa, o‘shani albatta qabul qilishar edi”.\n\nBu holat Jobir ibn Sulaym roziyallohu anhuni qiziqtirib qoldi. Chunki bir gap bo‘lmasa, o‘sha paytda u yerning odamlari bir kishiga bunchalik bo‘ysunadigan emas edilar. Gap hammaning hurmat-e’tiboriga sazovor bo‘lgan shaxsda edi. Keling, keyin nima bo‘lganini Jobir ibn Sulaym roziyallohu anhuning o‘zidan naql qilaylik:\n\n“Bu kim?” dedim.\n\n“Rasululloh sollallohu alayhi vasallam”, deyishdi”.\n\nBu javobni eshitgandan keyin Jobir ibn Sulaym roziyallohu anhu darhol o‘ziga keldi. Xabarlarini eshitib, o‘zlarini ko‘rishni orzu qilib yurgan zotni uchratib qolganidan behad xursand bo‘ldi-da:\n\n“Alaykassalamu, ya Rasulalloh!” deb ikki marta” aytdi.\n\nEhtimol, shoshilib qolganidan ikki marta salom bergandir. Ehtimol, shoshilib qolganidan salomni noto‘g‘ri bergandir. Shuning uchun ham, Rasululloh sollallohu alayhi vasallam uning xatosini to‘g‘rilab:\n\n“Alaykassalamu” dema, bu o‘liklarga aytiladi. Assalamu alayka, degin”, dedilar”.\n\nDemak, salom berishda ham ehtiyot bo‘lib, to‘g‘ri talaffuz qilish kerak ekan. Jobir ibn Sulaym roziyallohu anhu bu tanbehni eshitib, undan tegishli xulosa chiqarib olgandan keyin, asosiy maqsadga o‘tdi.\n\n“Siz Allohning Rasulimisiz?” dedim”.\n\nU kishi bu savol bilan odamlardan eshitgan gapni tasdiqlab olmoqchi bo‘ldi. Rasululloh sollallohu alayhi vasallam fursatdan foydalanib, o‘zlari qandoq zotning Rasuli ekanliklarini batafsilroq bayon etdilar.\n\n“Ha. Men – senga zarar yetganda duo qilsang, kushoyish beradigan, qahatchilik yetganda duo qilsang, senga ekinlarni o‘stirib beradigan, dashtu biyobonda yurganingda uloving yo‘qolib qolganda duo qilsang, senga uni qaytarib beradigan Allohning Rasuliman”.\n\nKo‘rinib turibdiki, ortiqcha gapga o‘rin qo‘ymaydigan javob bo‘ldi. Shuning uchun Jobir ibn Sulaym roziyallohu anhu Rasululloh sollallohu alayhi vasallamdan foydalanib qolish yo‘liga o‘tdi.\n\n“Mendan ahd oling”, dedim.\n\nO‘zini bilgan har bir odam ulug‘ zotlarni ko‘rganda ulardan o‘zlari uchun bir umrga yetadigan pand-nasihat eshitib qolishga urinadilar. Jobir ibn Sulaym roziyallohu anhu ham xuddi shuni xohlagan edi va maqsadiga erishdi ham.\n\n“Zinhor va zinhor birortani so‘kma” dedilar. Bas, shundan keyin hurni ham, qulni ham, tuyani ham, qo‘yni ham hech-hech so‘kmadim”.\n\nJobir ibn Sulaym roziyallohu anhu Payg‘ambar sollallohu alayhi vasallamning bergan birinchi tavsiyalariga qandoq amal qilganlarini ham qo‘shib zikr qilmoqdalar.\n\nAlbatta, so‘kish yomon narsa, uning shaxsga va jamiyatga yetkazadigan zararlari cheksiz. Bu noqulay odatning mazammatida ko‘plab hadisi shariflar kelgan. Islom dini musulmonlarning so‘kishdan yiroq bo‘lishlarini ta’minlash uchun alohida tarbiyaviy ishlarni yo‘lga qo‘ygan. Bu borada kezi kelganda, inshaalloh, batafsil so‘z yuritiladi.\n\nJobir ibn Sulaym roziyallohu anhu Payg‘ambar sollallohu alayhi vasallamdan so‘kish haqida olgan nasihatlariga umr bo‘yi og‘ishmay amal qilganlari ila faxrlanmoqdalar. Darhaqiqat, bu har qancha maqtovga sazovor ish. Qarang-a, u kishi hatto hayvonlarni ham so‘kmaptilar!\n\n“Yaxshilikdan hech bir narsani zinhor haqir sanama”.\n\nYa’ni, bu arzimagan ish-ku, deb yaxshilikni qilmay qo‘yma. Kichik, arzimagan bo‘lsa ham, yaxshilikni hech qoldirmay qilishga urin.\n\n“Birodaringga ochiq yuz bilan gapirishing ham yaxshilikdandir”.\n\nShuning uchun birodaringga ochiq yuz bilan boqishni zinhor kanda qilma.\n\n“Izoringni boldirning yarmigacha ko‘tar. Agar ko‘nmasang ikki to‘piqqacha. Izorni osiltirib yurishdan saqlan. Chunki, bu ish takabburlikdandir. Albatta, Alloh takabburlikni suymas”.\n\nUshbu hadisi sharifni mana shu bobda zikr qilinishiga aynan shu iqtibos sabab bo‘lgan. Bu rivoyatda ham oldingi rivoyatlarda kelgan ma’no ta’kidlanmoqda. Kiyimni uzun qilib sudrab yurish qoralanmoqda.\n\nKimdir seni so‘kib, senda bor sifatni ayblasa, sen ham unda bor narsa bilan uni ayblamagin, buning gunohi o‘ziga”, dedilar”.\n\nHa, bir tomon bir og‘iz gapdan qolsa, olam guliston. Agar ikki tomon ham bir-biridan qolishmay o‘z sherigini so‘kaversa, ayblayversa ish madda olib ketib, oqibati yomonlik bilan tugashi turgan gap.\n\nUshbu hadisi sharifdan olinadigan xulosalar:\n\n1. Payg‘ambar sollallohu alayhi vasallam so‘zlari so‘zsiz qabul bo‘ladigan zot bo‘lganlari.\n\n2. Sahobai kiromlar Payg‘ambar sollallohu alayhi vasallamga itoat qilishda oliy darajali namuna bo‘lganlari.\n\n3. “Alaykassalamu” iborasi o‘liklarga beriladigan salom ekani.\n\n4. Tirik odamga salom berish “Assalamu alaykum” lafzi ila bo‘lishi.\n\n5. Ulug‘ odamlarni ko‘rganda ulardan pand-nasihat, ko‘rsatmalar so‘rab qolish kerakligi.\n\n6. So‘kish yomon narsa ekani.\n\n7. Payg‘ambar sollallohu alayhi vasallamning sunnatlariga ixlos ila amal qilish kerakligi.\n\n8. Yaxshilikning eng kichigini ham haqir sanamaslik kerakligi.\n\n9. Kiyimni uzun qilib sudrab yurish joiz emasligi.\n\n10. Ikki musulmon orasida bir-birini so‘kish, ayblash xavfi tug‘ilib qolganda o‘zini tiygani salomat qolib, so‘kkanga yomonlik urishi.",
       "sharh_ref": "Riyozus solihiyn sharhi, 869-hadis; 809-hadis ostidagi sharh",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/869"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/869",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-16",
@@ -258,7 +310,7 @@
       "title": "Kimga birinchi salom berilishi",
       "paper_text": "Rasululloh ﷺ: “Suvoriy piyodaga, piyoda o‘tirganga va ozchilik ko‘pchilikka salom beradi”, dedilar.",
       "paper_source_line": "Abu Hurayra roziyallohu anhudan — Buxoriy va Muslim",
-      "arabic_text": "وَعَنْ أَبِي هُرَيرَةَ رَضِيَ اللهُ عَنْهُ: أَنَّ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ قَالَ: “يُسَلِّمُ الرَّاكِبُ عَلَى الْمَاشِي، وَالْمَاشِي عَلَى القَاعِدِ، وَالْقَلِيلُ عَلَى الكَثِيِرِ”. مُتَّفَقٌ عَلَيهِ [خ 6232، م 2160].",
+      "arabic_text": "وَعَنْ أَبِي هُرَيرَةَ رَضِيَ اللهُ عَنْهُ: أَنَّ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ قَالَ: “يُسَلِّمُ الرَّاكِبُ عَلَى الْمَاشِي، وَالْمَاشِي عَلَى القَاعِدِ، وَالْقَلِيلُ عَلَى الكَثِيِرِ”. مُتَّفَقٌ عَلَيهِ [خ 6232، م 2160]. وَفِي رِوَايَةِ البُخَارِيِّ: وَالصَّغِيرُ عَلَى الْكَبِيرِ” [6231].",
       "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi:\n\nRasululloh sollallohu alayhi vasallam:\n\n“Suvoriy piyodaga, piyoda o‘tirganga va ozchilik ko‘pchilikka salom beradi”, dedilar.\n\nMuttafaqun alayh.\n\nImom Buxoriy rivoyatida: “Kichik kattaga”, bo‘lib kelgan.",
       "narrator": "Abu Hurayra roziyallohu anhudan",
       "collection": "Buxoriy va Muslim",
@@ -268,7 +320,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/870",
       "sharh": "Mana shu tarzda salom berish mahbubdir. Imom Muhallab buni hikmatini quyidagicha sharhlaydilar. Chunki piyoda yuruvchi, kiruvchi kishiga o‘xshaydi. Shuning uchun salomni avval bo‘lib berishi a’loroq. Kichik yoshli kattalarni hurmat qilib, ularga nisbatan tavozu’li bo‘lishga buyurilgan. Suvoriy ya’ni, biror narsa minib olgan kishi o‘sha minib olgan narsasiga faxrlanib kibrlanmasligi uchun salomni avval bo‘lib beradi. Ozchilik ko‘pchilikka salom berishiga sabab, chunki ko‘pchilikni haqqi ozchilikka qaraganda ko‘proqdir. Islomda salom berish odobi mana shu ko‘rinishda bo‘ladi.",
       "sharh_ref": "Riyozus solihiyn sharhi, 870-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/870"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/870",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-17",
@@ -277,7 +333,7 @@
       "paper_text": "Nabiy ﷺ uyda edilar, “Kiraveraymi?” deb izn so‘radim. Rasululloh ﷺ xizmatkorlariga: “Chiqib, anavi kishiga: “Assalomu alaykum, kiraveraymi?” degin” deb, izn so‘rashni o‘rgatgin”, dedilar. Men u zotni gaplarini eshitib, “Assalomu alaykum, kiraveraymi?” degan edim, Nabiy ﷺ izn berdilar, so‘ng kirdim.",
       "paper_source_line": "Rib’iy ibn Hirosh — Abu Dovud",
       "arabic_text": "وَعَنْ رِبْعِيِّ بْنِ حِرَاشٍ قَالَ: حَدَّثَنَا رَجُلٌ مِنْ بَنِي عَامِرٍ اسْتَأْذَنَ عَلَى النَّبِيِّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ وَهُوَ فِي بَيْتٍ، فَقَالَ: أَأَلِجُ؟ فَقَالَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ لِخَادِمِهِ: “اُخْرُجْ إِلَى هَذَا فَعَلِّمْهُ الاِسْتِئْذَانَ؛ فَقُلْ لَهُ: قُلْ: السَّلَامُ عَلَيْكُمْ، أَأَدْخُلُ؟” فَسَمِعَهُ الرَّجُلُ فَقَالَ: السَّلَامُ عَلَيْكُمْ، أَأَدْخُلُ؟ فَأَذِنَ لَهُ النَّبِيُّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ فَدَخَلَ. رَوَاهُ أَبُو دَاوُدَ بِإِسْنَادٍ صَحِيحٍ [5177].",
-      "uzbek_full": "Rib’iy ibn Hiroshdan rivoyat qilinadi: “Banu Omirlik bir kishi menga shunday dedi: “Nabiy ﷺ uyda edilar, “Kiraveraymi?” deb izn so‘radim. Rasululloh ﷺ xizmatkorlariga: “Chiqib, anavi kishiga: “Assalomu alaykum, kiraveraymi?” degin” deb, izn so‘rashni o‘rgatgin”, dedilar. Men u zotni gaplarini eshitib, “Assalomu alaykum, kiraveraymi?” degan edim, Nabiy ﷺ izn berdilar, so‘ng kirdim”. Abu Dovud sahih isnod bilan rivoyat qildilar.",
+      "uzbek_full": "Rib’iy ibn Hiroshdan rivoyat qilinadi:\n\n“Banu Omirlik bir kishi menga shunday dedi: “Nabiy sollallohu alayhi vasallam uyda edilar, “Kiraveraymi?” deb izn so‘radim. Rasululloh sollallohu alayhi vasallam xizmatkorlariga: “Chiqib, anavi kishiga: “Assalomu alaykum, kiraveraymi?” degin” deb, izn so‘rashni o‘rgatgin”, dedilar. Men u zotni gaplarini eshitib, “Assalomu alaykum, kiraveraymi?” degan edim, Nabiy sollallohu alayhi vasallam izn berdilar, so‘ng kirdim”.\n\nAbu Dovud sahih isnod bilan rivoyat qildilar.",
       "narrator": "Rib’iy ibn Hirosh",
       "collection": "Abu Dovud",
       "collection_no": "Abu Dovud 5177",
@@ -286,7 +342,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/885",
       "sharh": "",
       "sharh_ref": "",
-      "sharh_url": ""
+      "sharh_url": "",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-18",
@@ -311,10 +371,10 @@
       "category": "Sunnat",
       "title": "Esnaganda og‘izni to‘sish",
       "paper_text": "Rasululloh ﷺ: “Qachon biringizni esnoq tutsa, og‘zini qo‘li bilan to‘ssin, chunki shayton kirib ketadi”, dedilar.",
-      "paper_source_line": "Abu Sa’id al-Xudriy roziyallohu anhudan — Muslim",
+      "paper_source_line": "Abu Said al-Xudriy roziyallohu anhudan — Muslim",
       "arabic_text": "وَعَنْ أَبِي سَعِيدٍ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ: “إذَا تَثَاءَبَ أَحَدُكُمْ فَلْيُمْسِكْ بَيَدِهِ عَلَى فِيهِ؛ فَإِنَّ الشَّيْطَانَ يَدْخُلُ”. رَوَاهُ مُسْلِمٌ [2995].",
-      "uzbek_full": "Abu Said al-Xudriy roziyallohu anhudan rivoyat qilinadi: “Rasululloh ﷺ: “Qachon biringizni esnoq tutsa, og‘zini qo‘li bilan to‘ssin, chunki shayton kirib ketadi”, dedilar”. Imom Muslim rivoyati.",
-      "narrator": "Abu Sa’id al-Xudriy roziyallohu anhudan",
+      "uzbek_full": "Abu Said al-Xudriy roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallam: “Qachon biringizni esnoq tutsa, og‘zini qo‘li bilan to‘ssin, chunki shayton kirib ketadi”, dedilar”.\n\nImom Muslim rivoyati.",
+      "narrator": "Abu Said al-Xudriy roziyallohu anhudan",
       "collection": "Muslim",
       "collection_no": "Muslim 2995",
       "grade": "Sahih hadis (Muslim rivoyati)",
@@ -322,17 +382,21 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/897",
       "sharh": "Shayton odam bolasini g‘aflatda qolishini doim kuzatib turadi. Qulay fursat bo‘lgani uchun esnaganda og‘zidan kirib oladi va uning ustidan kuladi. Shayton uchun inson esnagandagi lahzachalik qulay fursat bo‘lmaydi. Bu hadisda shaytonning o‘sha hiylasini bartaraf qilish yo‘li ko‘rsatilmoqda. Demak inson esnaganida qo‘lini og‘ziga to‘sishi lozim ekan.",
       "sharh_ref": "Riyozus solihiyn sharhi, 897-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/897"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/897",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-20",
       "category": "Sunnat",
       "title": "Qo‘l berib ko‘rishish (musofaha)",
       "paper_text": "Rasululloh ﷺ: “Ikki musulmon uchrashib, qo‘l berib so‘rashsa, bir-biridan uzoqlashmay turib albatta mag‘firat qilinadi”, dedilar.",
-      "paper_source_line": "Baro ibn Ozib roziyallohu anhudan — Abu Dovud",
+      "paper_source_line": "Baro roziyallohu anhudan — Abu Dovud",
       "arabic_text": "وَعَنِ البَرَاءِ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ: “مَا مِنْ مُسْلِمَيْنِ يَلْتَقِيَانِ فَيَتَصَافَحَانِ إِلَّا غُفِرَ لَهُمَا قَبْلَ أَنْ يَفْتَرِقَا”. رَوَاهُ أَبُو دَاوُدَ [5212].",
-      "uzbek_full": "Baro roziyallohu anhudan rivoyat qilinadi: “Rasululloh ﷺ: “Ikki musulmon uchrashib, qo‘l berib so‘rashsa, bir-biridan uzoqlashmay turib albatta mag‘firat qilinadi”, dedilar”. Abu Dovud rivoyati.",
-      "narrator": "Baro ibn Ozib roziyallohu anhudan",
+      "uzbek_full": "Baro roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallam: “Ikki musulmon uchrashib, qo‘l berib so‘rashsa, bir-biridan uzoqlashmay turib albatta mag‘firat qilinadi”, dedilar”.\n\nAbu Dovud rivoyati.",
+      "narrator": "Baro roziyallohu anhudan",
       "collection": "Abu Dovud",
       "collection_no": "Abu Dovud 5212",
       "grade": "Sahih hadis (Abu Dovud rivoyati)",
@@ -340,7 +404,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/900",
       "sharh": "",
       "sharh_ref": "",
-      "sharh_url": ""
+      "sharh_url": "",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-21",
@@ -348,8 +416,8 @@
       "title": "Safardan qaytishga shoshilish",
       "paper_text": "Rasululloh ﷺ: “Safar ham azobning bir turidir, birovingizni yemak-ichmagidan va uyqusidan qoldiradi. Qachon biringiz safardan ko‘zlab borgan ishini bitirsa, ahliga shoshilsin”, deb aytdilar.",
       "paper_source_line": "Abu Hurayra roziyallohu anhudan — Buxoriy va Muslim",
-      "arabic_text": "عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللهُ عَنْهُ: أَنَّ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ قَالَ: “السَّفَرُ قِطْعَةٌ مِنَ العَذَابِ؛ يَمْنَعُ أَحَدَكُمْ طَعَامَهُ، وَشَرَابَهُ وَنَوْمَهُ، فَإِذَا قَضَى أَحَدُكُمْ نَهْمَتَهُ مِنْ سَفَرِهِ، فَلْيُعَجِّلْ إِلَى أَهْلِهِ”. مُتَّفَقٌ عَلَيهِ [خ 1804، م 1927].",
-      "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi: “Rasululloh ﷺ: “Safar ham azobning bir turidir, birovingizni yemak-ichmagidan va uyqusidan qoldiradi. Qachon biringiz safardan ko‘zlab borgan ishini bitirsa, ahliga shoshilsin”, deb aytdilar. Muttafaqun alayh.",
+      "arabic_text": "عَنْ أَبِي هُرَيْرَةَ رَضِيَ اللهُ عَنْهُ: أَنَّ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ قَالَ: “السَّفَرُ قِطْعَةٌ مِنَ العَذَابِ؛ يَمْنَعُ أَحَدَكُمْ طَعَامَهُ، وَشَرَابَهُ وَنَوْمَهُ، فَإِذَا قَضَى أَحَدُكُمْ نَهْمَتَهُ مِنْ سَفَرِهِ، فَلْيُعَجِّلْ إِلَى أَهْلِهِ”. مُتَّفَقٌ عَلَيهِ [خ 1804، م 1927]. “نَهْمَتَهُ”: مَقْصُودَهُ.",
+      "uzbek_full": "Abu Hurayra roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallam:\n\n“Safar ham azobning bir turidir, birovingizni yemak-ichmagidan va uyqusidan qoldiradi. Qachon biringiz safardan ko‘zlab borgan ishini bitirsa, ahliga shoshilsin”, deb aytdilar.\n\nMuttafaqun alayh.",
       "narrator": "Abu Hurayra roziyallohu anhudan",
       "collection": "Buxoriy va Muslim",
       "collection_no": "Buxoriy 1804, Muslim 1927",
@@ -358,7 +426,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/999",
       "sharh": "Nima maqsadda bo‘lishidan qatiy nazar o‘z uyini yaqinlarini qoldirib safarga chiqish, bir qancha muammolarga sabab bo‘ladi. Inson uchun muammo bo‘lganar narsa bir turli azobdir. Safar ham shunday. Shuningdek hadisning davomida safarning mashaqqati, yeb-ichish va uxlash kabi odatlarning buzilishi deb bildirilmoqda. Vaqtida va yetarlicha yeb ichish va dam olish imkoni, insonnig yaqinlaridan olisda bo‘lishi kabi bir qancha mashaqqatlarga sabab bo‘lgan safarga chiqish qanchalik mashaqqatli.",
       "sharh_ref": "Riyozus solihiyn sharhi, 999-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/999"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/999",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-22",
@@ -367,7 +439,7 @@
       "paper_text": "Rasululloh ﷺ qachon safardan qaytsalar, avval masjidda ikki rakat namoz o‘qishdan boshlardilar.",
       "paper_source_line": "Ka’b ibn Molik roziyallohu anhudan — Buxoriy va Muslim",
       "arabic_text": "عَنْ كَعْبِ بْنِ مَالِكٍ رَضِيَ اللهُ عَنْهُ: أَنَّ رَسُولَ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ كَانَ إِذَا قَدِمَ مِنْ سَفَرٍ بَدَأَ بِالْمَسْجِدِ فَرَكَعَ فِيْهِ رَكْعَتَيْنِ. مُتَّفَقٌ عَلَيهِ [خ 4418، م 2769].",
-      "uzbek_full": "Ka’b ibn Molik roziyallohu anhudan rivoyat qilinadi: “Rasululloh ﷺ qachon safardan qaytsalar, avval masjidda ikki rakat namoz o‘qishdan boshlardilar”. Muttafaqun alayh.",
+      "uzbek_full": "Ka’b ibn Molik roziyallohu anhudan rivoyat qilinadi:\n\n“Rasululloh sollallohu alayhi vasallam qachon safardan qaytsalar, avval masjidda ikki rakat namoz o‘qishdan boshlardilar.\n\nMuttafaqun alayh.",
       "narrator": "Ka’b ibn Molik roziyallohu anhudan",
       "collection": "Buxoriy va Muslim",
       "collection_no": "Buxoriy 4418, Muslim 2769",
@@ -376,7 +448,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/1003",
       "sharh": "Payg‘ambarimiz nima maqsadda safarga chiqqan bo‘lishlaridan qat’iy nazar safardan qaytgach to‘g‘ri masjidga borib ikki rakat “tahiyyatul masjid” namozini o‘qib, u yerda biroz qolar edilar. Shu vaqtda biror masala bo‘lsa, uni hal qilar edilar. Rasululloh sollallohu alayhi vasallam buni odat qilib olgan edilar.\n\nBu hadis Tabuk g‘azotidan qaytganda Madinada jangga qatnashmaganlar bilan Payg‘ambarimizning so‘zlari aytilgan rivoyatning bir qismida joy olgan. Roviy Ka’b ibn Molik ham Tabuk g‘azotiga sababsiz ishtirok etmaganlardan biri edi. U o‘zining masalasini aytar ekan Rasululloh s.a.v.ning safardan qaytganlarida birinchi masjidda uchrashishganini xabar qilmoqda.",
       "sharh_ref": "Riyozus solihiyn sharhi, 1003-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/1003"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/1003",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-23",
@@ -384,17 +460,21 @@
       "title": "Bomdoddan keyin o‘tirib zikr qilish",
       "paper_text": "Nabiy ﷺ bomdodni o‘qib bo‘lgach, quyosh charaqlab chiqqunicha chordana qurib o‘tirar edilar.",
       "paper_source_line": "Jobir ibn Samura roziyallohu anhudan — Abu Dovud",
-      "arabic_text": "834 - وَعَنْ جَابِرِ بْنِ سَمُرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: “كَانَ النَّبِيُّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ إذَا صَلَّى الْفَجْرَ تَرَبَّعَ في مَجْلِسِهِ حَتَّى تَطْلُعَ الشَّمْسُ حَسَناً” حَدِيثٌ صَحِيحٌ، رَوَاهُ أَبُو دَاوُدَ وَغَيْرُهُ بِأَسَانِيدَ صَحِيحَةٍ [د 4850، م 670/287، خز 757].",
-      "uzbek_full": "Jobir ibn Samura roziyallohu anhudan rivoyat qilinadi: “Nabiy ﷺ bomdodni o‘qib bo‘lgach, quyosh charaqlab chiqqunicha chordana qurib o‘tirar edilar”. Sahih hadis bo‘lib, Abu Dovud va boshqalar sahih sanadlar bilan qilgan rivoyati.",
+      "arabic_text": "وَعَنْ جَابِرِ بْنِ سَمُرَةَ رَضِيَ اللهُ عَنْهُ قَالَ: “كَانَ النَّبِيُّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ إذَا صَلَّى الْفَجْرَ تَرَبَّعَ في مَجْلِسِهِ حَتَّى تَطْلُعَ الشَّمْسُ حَسَناً” حَدِيثٌ صَحِيحٌ، رَوَاهُ أَبُو دَاوُدَ وَغَيْرُهُ بِأَسَانِيدَ صَحِيحَةٍ [د 4850، م 670/287، خز 757].",
+      "uzbek_full": "Jobir ibn Samura roziyallohu anhudan rivoyat qilinadi:\n\n“Nabiy sollallohu alayhi vasallam bomdodni o‘qib bo‘lgach, quyosh charaqlab chiqqunicha chordana qurib o‘tirar edilar”.\n\nSahih hadis bo‘lib, Abu Dovud va boshqalar sahih sanadlar bilan qilgan rivoyati.",
       "narrator": "Jobir ibn Samura roziyallohu anhudan",
       "collection": "Abu Dovud",
-      "collection_no": "Abu Dovud 4850",
+      "collection_no": "Muslim 670, Abu Dovud 4850",
       "grade": "Sahih hadis (Abu Dovud rivoyati)",
       "ref_book": "Riyozus solihiyn, 834-hadis",
       "ref_url": "https://hadis.islom.uz/kitob/28/0/834",
       "sharh": "",
       "sharh_ref": "",
-      "sharh_url": ""
+      "sharh_url": "",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-24",
@@ -402,8 +482,8 @@
       "title": "Juma kuni g‘usl, atir va erta masjidga borish",
       "paper_text": "Rasululloh ﷺ: “Biror kishi juma kuni g‘usl qilsa, imkon qadar tozalansa, (soch-soqolini) moy bilan moylasa yoki uyidagi xushbo‘y narsadan surib, so‘ng (masjidga) chiqsa va ikki kishining o‘rtasidan oralab o‘tmasa, so‘ngra nasib qilinganicha namoz o‘qisa, keyin imom so‘zlaganda jim quloq solsa, uning bu (juma) bilan narigi juma orasidagilari (gunohlari) albatta mag‘firat qilinadi”, dedilar.",
       "paper_source_line": "Abu Abdulloh Salmon Forsiy roziyallohu anhudan — Buxoriy",
-      "arabic_text": "841 - وَعَنْ أَبِي عَبْدِ اللهِ سَلْمَانَ الفَارِسِيِّ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ: “لَا يَغْتَسِلُ رَجُلٌ يَوْمَ الْجُمُعَةِ، وَيَتَطَهَّرُ مَا اسْتَطاعَ مِنْ طُهْرٍ، وَيَدَّهِنُ مِنْ دُهْنِهِ، أَوْ يَمسُّ مِنْ طِيبِ بَيْتِهِ، ثُمَّ يَخْرُجُ فَلَا يُفَرِّقُ بَيْنَ اثْنَينِ، ثُمَّ يُصَلِّي مَا كُتِبَ لَهُ، ثُمَّ يُنْصِتُ إِذَا تَكَلَّمَ الإمَامُ إلَّا غُفِرَ لَهُ مَا بَيْنَهُ وَبَيْنَ الْجُمُعَةِ الأُخْرَى”. رَوَاهُ البُخَارِيُّ [883].",
-      "uzbek_full": "Abu Abdulloh Salmon Forsiy roziyallohu anhudan rivoyat qilinadi: Rasululloh ﷺ: “Biror kishi juma kuni g‘usl qilsa, imkon qadar tozalansa, (soch-soqolini) moy bilan moylasa yoki uyidagi xushbo‘y narsadan surib, so‘ng (masjidga) chiqsa va ikki kishining o‘rtasidan oralab o‘tmasa, so‘ngra nasib qilinganicha namoz o‘qisa, keyin imom so‘zlaganda jim quloq solsa, uning bu (juma) bilan narigi juma orasidagilari (gunohlari) albatta mag‘firat qilinadi”, dedilar”. Imom Buxoriy rivoyati.",
+      "arabic_text": "وَعَنْ أَبِي عَبْدِ اللهِ سَلْمَانَ الفَارِسِيِّ رَضِيَ اللهُ عَنْهُ قَالَ: قَالَ رَسُولُ اللهِ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ: “لَا يَغْتَسِلُ رَجُلٌ يَوْمَ الْجُمُعَةِ، وَيَتَطَهَّرُ مَا اسْتَطاعَ مِنْ طُهْرٍ، وَيَدَّهِنُ مِنْ دُهْنِهِ، أَوْ يَمسُّ مِنْ طِيبِ بَيْتِهِ، ثُمَّ يَخْرُجُ فَلَا يُفَرِّقُ بَيْنَ اثْنَينِ، ثُمَّ يُصَلِّي مَا كُتِبَ لَهُ، ثُمَّ يُنْصِتُ إِذَا تَكَلَّمَ الإمَامُ إلَّا غُفِرَ لَهُ مَا بَيْنَهُ وَبَيْنَ الْجُمُعَةِ الأُخْرَى”. رَوَاهُ البُخَارِيُّ [883].",
+      "uzbek_full": "Abu Abdulloh Salmon Forsiy roziyallohu anhudan rivoyat qilinadi:\n\nRasululloh sollallohu alayhi vasallam:\n\n“Biror kishi juma kuni g‘usl qilsa, imkon qadar tozalansa, (soch-soqolini) moy bilan moylasa yoki uyidagi xushbo‘y narsadan surib, so‘ng (masjidga) chiqsa va ikki kishining o‘rtasidan oralab o‘tmasa, so‘ngra nasib qilinganicha namoz o‘qisa, keyin imom so‘zlaganda jim quloq solsa, uning bu (juma) bilan narigi juma orasidagilari (gunohlari) albatta mag‘firat qilinadi”, dedilar”.\n\nImom Buxoriy rivoyati.",
       "narrator": "Abu Abdulloh Salmon Forsiy roziyallohu anhudan",
       "collection": "Buxoriy",
       "collection_no": "Buxoriy 883",
@@ -412,7 +492,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/841",
       "sharh": "Ochiq-oydin ko‘rinib turibdiki, juma namozi har bir mo‘min-musulmon banda uchun har haftada bir marta beriladigan qulay fursat. Bu fursatdan foydalana olish kerak. Bu haftalik qulay fursatni ba’zi rivoyatlarda Alloh musulmonlarga bayram qilib qo‘ygan kun deyilgan. Ana o‘sha kunda musulmon kishiga odatdagi kunlardan ko‘ra ko‘proq savob ishlab olish imkoni berilgan.\n\nQolaversa, tahorat va besh vaqt namoz kabi ibodatlar bilan ham yuvilmay qolgan haftalik kichik gunohlar yuvib yuboriladi.\n\nAna shu baxtga muyassar bo‘lish uchun quyidagi ishlarni qilish kerak:\n\n1. “G‘usl qilish”.\n\nBu haqda oldin batafsil aytdik.\n\n2. “Iloji boricha poklanish”.\n\nBunga qovuq va qo‘ltiq ostidagi tuklarni tozalash, tirnoqlarni olib yurish va mo‘ylabni tekislash kabi ishlar kiradi. Juma kuni shu ishlarni qilish zarur.\n\n3. “Moy surtish”.\n\nBunda sochni moylash ko‘zda tutiladi. Ayniqsa, issiq o‘lkalarda sochni yaxshilab tarab, unga xushbo‘y moy surtish odat bo‘lgan.\n\n4. “Xushbo‘y narsalar surtish”.\n\nAtir, mushk kabi noxush hidlarni ketkazadigan xushbo‘y narsalarni sepib jumaga borilsa, jamoatda ajoyib bir yaxshi hid paydo bo‘lishiga hissa qo‘shiladi.\n\n5. Jumaga ketayotib eng yaxshi kiyimlarni ki-yib olish. Chunki juma haftalik bayram, musulmonlarning to‘planish kuni. Do‘st-dushmanning oldida musulmonlar o‘zini ko‘rsatadigan kun. Bu kunda yarashadigan chiroyli kiyimlar bilan ko‘rinish yaxshi.\n\n6. Masjidga borganda o‘zidan oldin kelib o‘tirganlarni yorib oldinga o‘tmaslik. Balki bo‘sh joyni topib, hech kimga xalaqit bermay o‘tirish juda ham matlubdir.\n\n7. Jumaga borgan odam imom xutba qilmayotgan bo‘lsa, darhol namoz o‘qib olishi kerak.\n\n8. Imom xutbaga chiqsa, jim turib quloq solish lozim.\n\nKim shu ishlarni qilsa o‘tgan jumadan buyon qilgan kichik gunohlari mag‘firat qilinadi.",
       "sharh_ref": "Riyozus solihiyn sharhi, 841-hadis",
-      "sharh_url": "https://hadis.islom.uz/kitob/32/0/841"
+      "sharh_url": "https://hadis.islom.uz/kitob/32/0/841",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     },
     {
       "id": "sunnat-25",
@@ -420,7 +504,7 @@
       "title": "Bemor ziyorati va shifo duosi",
       "paper_text": "Nabiy ﷺ ba’zi ahllarini bemorligida ko‘rgani kelib, o‘ng qo‘llari bilan silab: “Allohumma Rabban naasi azhibil ba’sa ishfi vantash shaafiy laa shifaa illa shifauka shifaan laa yug‘odiru saqoma”, deb aytar edilar.",
       "paper_source_line": "Oisha roziyallohu anhodan — Buxoriy va Muslim",
-      "arabic_text": "915 – وَعَنْهَا رَضِيَ اللهُ عَنْهَا: أَنَّ النَّبِيَّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ كَانَ يَعُودُ بَعْضَ أَهْلِهِ، يَمْسَحُ بِيَدِهِ اليُمْنَى وَيَقُولُ: “اللَّهُمَّ رَبَّ النَّاسِ؛ أَذْهِبِ الْبَأْسَ، اشْفِ وَأَنْتَ الشَّافِي، لَا شِفَاءَ إِلَّا شِفَاؤُكَ، شِفَاءً لَا يُغَادِرُ سَقَماً”. مُتَّفَقٌ عَلَيهِ [خ 5743، م 2191].",
+      "arabic_text": "وَعَنْهَا رَضِيَ اللهُ عَنْهَا: أَنَّ النَّبِيَّ صَلَّى اللهُ عَلَيهِ وَسَلَّمَ كَانَ يَعُودُ بَعْضَ أَهْلِهِ، يَمْسَحُ بِيَدِهِ اليُمْنَى وَيَقُولُ: “اللَّهُمَّ رَبَّ النَّاسِ؛ أَذْهِبِ الْبَأْسَ، اشْفِ وَأَنْتَ الشَّافِي، لَا شِفَاءَ إِلَّا شِفَاؤُكَ، شِفَاءً لَا يُغَادِرُ سَقَماً”. مُتَّفَقٌ عَلَيهِ [خ 5743، م 2191].",
       "uzbek_full": "Yana u kishidan rivoyat qilinadi:\n\n“Nabiy sollallohu alayhi vasallam ba’zi ahllarini bemorligida ko‘rgani kelib, o‘ng qo‘llari bilan silab:\n\n“Allohumma Rabban naasi azhibil ba`sa ishfi vantash shaafiy laa shifaa illa shifauka shifaan laa yug‘odiru saqoma”, deb aytar edilar”.\n\nMa’nosi: “Insonlarning Robbi Allohim! Ziyonni ketkaz! Bunga shifo ber, shifo beruvchi O‘zingsan! Sening shifoingdan o‘zga shifo yo‘q! Dard qoldirmaydigan shifo (ber!)”",
       "narrator": "Oisha roziyallohu anhodan",
       "collection": "Buxoriy va Muslim",
@@ -430,7 +514,11 @@
       "ref_url": "https://hadis.islom.uz/kitob/28/0/915",
       "sharh": "",
       "sharh_ref": "",
-      "sharh_url": ""
+      "sharh_url": "",
+      "published": true,
+      "parent_hadith": {
+        "bor": false
+      }
     }
   ]
 }
