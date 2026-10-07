@@ -430,7 +430,7 @@
     var back = document.getElementById("back");
     if (back) back.addEventListener("click", function (e) {
       e.preventDefault();
-      if (history.length > 1) history.back(); else navigate("/");
+      if (history.length > 1) history.back(); else navigate("/h/");
     });
     Array.prototype.forEach.call(document.querySelectorAll(".tab"), function (b) {
       b.addEventListener("click", function () { state.tab = b.dataset.tab; render(); });
