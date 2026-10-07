@@ -115,6 +115,18 @@ solishtirilishi va diniy ma'lumotli mutaxassis tomonidan tekshirilishi kerak.
 
 ---
 
+## Sayt manzillari
+
+| Manzil | Nima |
+|---|---|
+| `https://nurulhadis.uz/` | Sotuv sayti (`landing/index.html`) — SEO sozlangan |
+| `https://nurulhadis.uz/landing` | Eski reklama havolasi, `/` ga 301 yo'naltiradi (query saqlanadi) |
+| `https://nurulhadis.uz/h/` | Hadislar ro'yxati (`index.html`, noindex) |
+| `https://nurulhadis.uz/h/<slug>` | Hadis sahifasi — **QR kodlar shu manzilga olib boradi, o'zgartirmang** |
+| `https://nurulhadis.uz/admin/` | Admin panel (Statistika bo'limida kirish va tugma bosishlar) |
+
+Nginx sozlamasining nusxasi: `deploy/nginx-nurulhadis.conf`.
+
 ## 7. Foydali buyruqlar
 
 Barchasi `backend/` papkada, venv faol holda ishga tushiriladi:
