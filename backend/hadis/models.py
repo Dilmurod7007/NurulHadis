@@ -171,3 +171,35 @@ class FullText(models.Model):
 
     def __str__(self):
         return f"{self.hadith.slug} — to'liq matn"
+
+
+class Event(models.Model):
+    """
+    Sayt statistikasi: sahifaga kirish va tugmani bosish.
+
+    Cookie ishlatilmaydi, IP manzil saqlanmaydi. `visitor` — brauzerda
+    tasodifiy yaratilgan anonim belgi (bitta odamni qayta sanamaslik uchun).
+    """
+
+    KIND_CHOICES = [("view", "Kirish"), ("click", "Bosish")]
+
+    created = models.DateTimeField("Vaqt", auto_now_add=True, db_index=True)
+    kind = models.CharField("Turi", max_length=10, choices=KIND_CHOICES)
+    name = models.CharField("Nomi", max_length=60)
+    path = models.CharField("Sahifa", max_length=200, blank=True)
+    visitor = models.CharField("Tashrifchi", max_length=40, db_index=True)
+    device = models.CharField("Qurilma", max_length=10, blank=True)
+    from_ad = models.BooleanField("Reklamadan", default=False)
+    utm_source = models.CharField(max_length=80, blank=True)
+    utm_medium = models.CharField(max_length=80, blank=True)
+    utm_campaign = models.CharField(max_length=80, blank=True)
+    utm_content = models.CharField(max_length=80, blank=True)
+    referrer = models.CharField("Qayerdan", max_length=200, blank=True)
+
+    class Meta:
+        verbose_name = "Statistika yozuvi"
+        verbose_name_plural = "Statistika"
+        ordering = ["-created"]
+
+    def __str__(self):
+        return f"{self.created:%Y-%m-%d %H:%M} {self.kind} {self.name}"

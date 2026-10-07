@@ -1,7 +1,13 @@
+from datetime import timedelta
+
 from django.contrib import admin
+from django.db.models import Count
+from django.db.models.functions import TruncDate
+from django.template.response import TemplateResponse
+from django.utils import timezone
 from django.utils.html import format_html
 
-from .models import QOGOZCHA_CHEGARASI, Category, FullText, Hadith
+from .models import QOGOZCHA_CHEGARASI, Category, Event, FullText, Hadith
 
 
 @admin.register(Category)
@@ -148,6 +154,102 @@ class HadithAdmin(admin.ModelAdmin):
     def chop_etishni_bekor_qilish(self, request, queryset):
         yangilandi = queryset.update(published=False)
         self.message_user(request, f"{yangilandi} ta hadis chop etishdan olib tashlandi.")
+
+
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    """Statistika: sahifaga kirganlar va tugma bosganlar (faqat o'qish uchun)."""
+
+    list_display = ("created", "kind", "name", "device", "from_ad",
+                    "utm_campaign", "referrer")
+    list_filter = ("kind", "name", "from_ad", "device")
+    date_hierarchy = "created"
+    search_fields = ("utm_campaign", "utm_source", "referrer", "visitor")
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def changelist_view(self, request, extra_context=None):
+        # ?xom=1 — alohida yozuvlar ro'yxati; aks holda umumiy statistika
+        if "xom" in request.GET:
+            request.GET = request.GET.copy()
+            request.GET.pop("xom")
+            return super().changelist_view(request, extra_context)
+        if request.GET.keys() - {"days"}:
+            return super().changelist_view(request, extra_context)
+
+        try:
+            days = int(request.GET.get("days", 7))
+        except ValueError:
+            days = 7
+        qs = Event.objects.all()
+        if days > 0:
+            qs = qs.filter(created__gte=timezone.now() - timedelta(days=days))
+        views = qs.filter(kind="view", name="landing")
+        clicks = qs.filter(kind="click")
+
+        def odam(q):
+            return q.values("visitor").distinct().count()
+
+        visitors, clickers = odam(views), odam(clicks)
+
+        def foiz(a, b):
+            return round(100 * a / b, 1) if b else 0
+
+        tugmalar = [
+            {"name": r["name"], "soni": r["soni"], "odam": r["odam"]}
+            for r in clicks.values("name").annotate(
+                soni=Count("id"), odam=Count("visitor", distinct=True)
+            ).order_by("-odam", "name")
+        ]
+
+        def bolim(maydon, bosh):
+            rows = []
+            for r in views.values(maydon).annotate(
+                    odam=Count("visitor", distinct=True)).order_by("-odam"):
+                key = r[maydon]
+                bosganlar = odam(clicks.filter(**{maydon: key}))
+                rows.append({"nomi": key or bosh, "odam": r["odam"],
+                             "bosgan": bosganlar,
+                             "foiz": foiz(bosganlar, r["odam"])})
+            return rows
+
+        kunlik = []
+        kunlar = views.annotate(kun=TruncDate("created")).values("kun")             .annotate(odam=Count("visitor", distinct=True)).order_by("-kun")[:14]
+        for r in kunlar:
+            bosgan = odam(clicks.annotate(kun=TruncDate("created"))
+                          .filter(kun=r["kun"]))
+            kunlik.append({"kun": r["kun"], "odam": r["odam"], "bosgan": bosgan})
+
+        reklama = []
+        for flag, nomi in ((True, "Reklamadan"), (False, "Boshqa kirishlar")):
+            kirgan = odam(views.filter(from_ad=flag))
+            bosgan = odam(clicks.filter(from_ad=flag))
+            if kirgan or bosgan:
+                reklama.append({"nomi": nomi, "odam": kirgan, "bosgan": bosgan,
+                                "foiz": foiz(bosgan, kirgan)})
+
+        context = {
+            **self.admin_site.each_context(request),
+            "title": "Statistika",
+            "days": days,
+            "davrlar": [(1, "Bugun"), (7, "7 kun"), (30, "30 kun"), (0, "Hammasi")],
+            "visitors": visitors,
+            "kirish": views.count(),
+            "clickers": clickers,
+            "bosish": clicks.count(),
+            "konversiya": foiz(clickers, visitors),
+            "tugmalar": tugmalar,
+            "kampaniyalar": bolim("utm_campaign", "(kampaniyasiz)"),
+            "qurilmalar": bolim("device", "—"),
+            "reklama": reklama,
+            "kunlik": kunlik,
+        }
+        return TemplateResponse(
+            request, "admin/hadis/event/statistika.html", context)
 
 
 admin.site.site_header = "Nurul Hadis"
