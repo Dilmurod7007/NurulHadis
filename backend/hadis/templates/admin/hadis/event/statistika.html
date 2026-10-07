@@ -61,6 +61,15 @@
     </tbody>
   </table>
 
+  <h2>Sahifa (til): / — o'zbekcha, /ru/ — ruscha</h2>
+  <table style="width:100%">
+    <thead><tr><th>Sahifa</th><th>Kirgan</th><th>Bosgan</th><th>%</th></tr></thead>
+    <tbody>
+    {% for r in sahifalar %}<tr><td>{{ r.nomi }}</td><td>{{ r.odam }}</td><td>{{ r.bosgan }}</td><td>{{ r.foiz }}</td></tr>
+    {% empty %}<tr><td colspan="4">Hali ma'lumot yo'q</td></tr>{% endfor %}
+    </tbody>
+  </table>
+
   <h2>Kunlar bo'yicha (oxirgi 14 kun)</h2>
   <table style="width:100%">
     <thead><tr><th>Kun</th><th>Kirgan</th><th>Bosgan</th></tr></thead>

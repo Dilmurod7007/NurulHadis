@@ -245,6 +245,7 @@ class EventAdmin(admin.ModelAdmin):
             "tugmalar": tugmalar,
             "kampaniyalar": bolim("utm_campaign", "(kampaniyasiz)"),
             "qurilmalar": bolim("device", "—"),
+            "sahifalar": bolim("path", "—"),
             "reklama": reklama,
             "kunlik": kunlik,
         }
