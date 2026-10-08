@@ -120,7 +120,7 @@ solishtirilishi va diniy ma'lumotli mutaxassis tomonidan tekshirilishi kerak.
 | Manzil | Nima |
 |---|---|
 | `https://nurulhadis.uz/` | Sotuv sayti (`landing/index.html`) — SEO sozlangan |
-| `https://nurulhadis.uz/landing` | Eski reklama havolasi, `/` ga 301 yo'naltiradi (query saqlanadi) |
+| `https://nurulhadis.uz/landing` | Reklama havolasi: o'sha sotuv sayti, to'g'ridan-to'g'ri 200 (canonical `/`) |
 | `https://nurulhadis.uz/h/` | Hadislar ro'yxati (`index.html`, noindex) |
 | `https://nurulhadis.uz/h/<slug>` | Hadis sahifasi — **QR kodlar shu manzilga olib boradi, o'zgartirmang** |
 | `https://nurulhadis.uz/admin/` | Admin panel (Statistika bo'limida kirish va tugma bosishlar) |
