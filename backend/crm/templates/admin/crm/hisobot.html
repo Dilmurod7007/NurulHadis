@@ -1,0 +1,106 @@
+{% extends "admin/base_site.html" %}
+{% load humanize %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  .kartalar{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:16px 0}
+  .karta{border:1px solid var(--border-color,#ddd);border-radius:10px;padding:12px 14px;background:var(--body-bg,#fff)}
+  .karta b{display:block;font-size:22px;margin-bottom:2px}
+  .karta small{color:var(--body-quiet-color,#666)}
+  .yaxshi{color:#1b7f3b}.yomon{color:#b3261e}
+  .hisobot h2{margin-top:26px}
+  .hisobot table{width:100%}
+  .hisobot td.n,.hisobot th.n{text-align:right}
+  .ogoh{background:#fff4e5;border:1px solid #ffcf99;border-radius:8px;padding:10px 14px;margin:10px 0;color:#7a4a00}
+  .davr a{display:inline-block;padding:6px 14px;margin:0 6px 6px 0;border:1px solid var(--border-color,#ccc);border-radius:18px;text-decoration:none}
+  .davr a.on{background:var(--primary,#417690);color:#fff;border-color:transparent}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hisobot" style="max-width:1000px">
+  <div class="davr">
+    {% for k, nom in davrlar %}<a href="?davr={{ k }}" class="{% if k == davr %}on{% endif %}">{{ nom }}</a>{% endfor %}
+  </div>
+
+  {% if r.tannarxsiz %}
+  <div class="ogoh">Tannarx kiritilmagan: <b>{{ r.tannarxsiz|join:", " }}</b>. Foyda noto'g'ri chiqadi.
+    <a href="{% url 'admin:crm_mahsulot_changelist' %}">Mahsulotlarga o'ting</a>.</div>
+  {% endif %}
+
+  <div class="kartalar">
+    <div class="karta"><b>{{ r.tushum|intcomma }}</b><small>Tushum (so'm)</small></div>
+    <div class="karta"><b>{{ r.tannarx|intcomma }}</b><small>Tannarx (so'm)</small></div>
+    <div class="karta"><b class="{% if r.sof_foyda >= 0 %}yaxshi{% else %}yomon{% endif %}">{{ r.sof_foyda|intcomma }}</b><small>Sof foyda (so'm) · {{ r.marja }}%</small></div>
+    <div class="karta"><b>{{ r.buyurtma_soni }}</b><small>Buyurtma ({{ r.pullik_soni }} pullik, {{ r.tekin_soni }} tekin)</small></div>
+    <div class="karta"><b>{{ r.dona }}</b><small>Dona ({{ r.dona_pullik }} pullik)</small></div>
+    <div class="karta"><b class="{% if r.qarz %}yomon{% endif %}">{{ r.qarz|intcomma }}</b><small>Qarz: to'lanmagan (so'm)</small></div>
+  </div>
+
+  <h2>Foyda qanday chiqdi</h2>
+  <table>
+    <tr><td>Mahsulotlar summasi (pullik sotuvlar)</td><td class="n">{{ r.mahsulot_summasi|intcomma }}</td></tr>
+    <tr><td>− Chegirmalar</td><td class="n">{{ r.chegirma|intcomma }}</td></tr>
+    <tr><td>+ Mijozdan olingan yetkazish haqi</td><td class="n">{{ r.yetkazish_haqi|intcomma }}</td></tr>
+    <tr><th>Tushum</th><th class="n">{{ r.tushum|intcomma }}</th></tr>
+    <tr><td>− Tannarx (jami)</td><td class="n">{{ r.tannarx|intcomma }}</td></tr>
+    <tr><td>&nbsp;&nbsp;shundan bonus sovg'alar</td><td class="n">{{ r.bonus_tannarx|intcomma }}</td></tr>
+    <tr><td>&nbsp;&nbsp;shundan tekin reklama / sovg'a buyurtmalari</td><td class="n">{{ r.tekin_tannarx|intcomma }}</td></tr>
+    <tr><td>− Yetkazish xarajati (o'zingiz to'lagan)</td><td class="n">{{ r.yetkazish_xarajati|intcomma }}</td></tr>
+    <tr><th>Yalpi foyda</th><th class="n">{{ r.yalpi_foyda|intcomma }}</th></tr>
+    <tr><td>− Xarajatlar (reklama va boshqalar)</td><td class="n">{{ r.operatsion|intcomma }}</td></tr>
+    <tr><th>Sof foyda</th><th class="n {% if r.sof_foyda >= 0 %}yaxshi{% else %}yomon{% endif %}">{{ r.sof_foyda|intcomma }}</th></tr>
+  </table>
+
+  <h2>Pul oqimi</h2>
+  <table>
+    <tr><td>Kelgan pul (to'langan summalar)</td><td class="n">{{ r.tolangan|intcomma }}</td></tr>
+    <tr><td>− Xarajatlar</td><td class="n">{{ r.operatsion|intcomma }}</td></tr>
+    <tr><td>− Material xaridi (ombor kirimi)</td><td class="n">{{ r.material_xaridi|intcomma }}</td></tr>
+    <tr><td>− Yetkazish xarajati</td><td class="n">{{ r.yetkazish_xarajati|intcomma }}</td></tr>
+    <tr><th>Qo'ldagi farq</th><th class="n {% if r.pul_oqimi >= 0 %}yaxshi{% else %}yomon{% endif %}">{{ r.pul_oqimi|intcomma }}</th></tr>
+  </table>
+  <p><small>Material xaridi (ombor kirimi) foydaga kirmaydi, chunki u tannarxda hisobga olingan; u faqat pul oqimida ko'rinadi.</small></p>
+
+  <h2>Xarajatlar</h2>
+  <table>
+    {% for x in r.xarajatlar %}<tr><td>{{ x.nom }}{% if not x.foydaga %} <small>(foydaga kirmaydi)</small>{% endif %}</td><td class="n">{{ x.summa|intcomma }}</td></tr>
+    {% empty %}<tr><td colspan="2">Xarajat kiritilmagan</td></tr>{% endfor %}
+  </table>
+
+  <h2>Qayerdan buyurtma keldi</h2>
+  <table>
+    <thead><tr><th>Manba</th><th class="n">Buyurtma</th><th class="n">Tushum</th><th class="n">Foyda</th></tr></thead>
+    {% for m in r.manbalar %}<tr><td>{{ m.nom }}</td><td class="n">{{ m.soni }}</td><td class="n">{{ m.tushum|intcomma }}</td><td class="n">{{ m.foyda|intcomma }}</td></tr>
+    {% empty %}<tr><td colspan="4">Ma'lumot yo'q</td></tr>{% endfor %}
+  </table>
+
+  <h2>Reklama kampaniyalari</h2>
+  <table>
+    <thead><tr><th>Kampaniya</th><th class="n">Xarajat</th><th class="n">Kirgan</th><th class="n">Bosgan</th><th class="n">Buyurtma</th><th class="n">Tushum</th><th class="n">Bir buyurtma narxi</th><th class="n">ROI</th></tr></thead>
+    {% for k in r.kampaniyalar %}<tr><td>{{ k.nom }}</td><td class="n">{{ k.xarajat|intcomma }}</td><td class="n">{{ k.kirish }}</td><td class="n">{{ k.bosgan }}</td><td class="n">{{ k.buyurtma }}</td><td class="n">{{ k.tushum|intcomma }}</td><td class="n">{% if k.buyurtma_narxi is None %}—{% else %}{{ k.buyurtma_narxi|intcomma }}{% endif %}</td><td class="n">{% if k.roi is None %}—{% else %}×{{ k.roi }}{% endif %}</td></tr>
+    {% empty %}<tr><td colspan="8">Kampaniya nomi yozilgan buyurtma yoki reklama xarajati yo'q</td></tr>{% endfor %}
+  </table>
+  <p><small>"Kirgan" va "Bosgan" saytdagi Statistikadan olinadi (utm_campaign bo'yicha). ROI = tushum ÷ reklama xarajati.</small></p>
+
+  <h2>Ombor</h2>
+  <table>
+    <thead><tr><th>Tovar</th><th class="n">Qoldiq</th><th>Holat</th></tr></thead>
+    {% for t in r.ombor %}<tr><td>{{ t.nom }}</td><td class="n">{{ t.qoldiq }} {{ t.birlik }}</td><td>{% if t.kam %}<b class="yomon">Kam qoldi (chegara {{ t.min }})</b>{% else %}Yetarli{% endif %}</td></tr>
+    {% empty %}<tr><td colspan="3">Ombor bo'sh. Ombor bo'limida tovarlarni qo'shing.</td></tr>{% endfor %}
+  </table>
+
+  <h2>Qarzdorlar</h2>
+  <table>
+    {% for q in r.qarzdorlar %}<tr><td><a href="{% url 'admin:crm_buyurtma_change' q.id %}">#{{ q.id }}</a> {{ q.mijoz }} <small>({{ q.sana|date:"d.m.Y" }})</small></td><td class="n yomon">{{ q.qarz|intcomma }}</td></tr>
+    {% empty %}<tr><td colspan="2">Qarz yo'q</td></tr>{% endfor %}
+  </table>
+
+  <h2>Kunlar bo'yicha</h2>
+  <table>
+    <thead><tr><th>Kun</th><th class="n">Buyurtma</th><th class="n">Tushum</th><th class="n">Foyda</th></tr></thead>
+    {% for k in r.kunlar %}<tr><td>{{ k.kun|date:"d.m.Y" }}</td><td class="n">{{ k.soni }}</td><td class="n">{{ k.tushum|intcomma }}</td><td class="n">{{ k.foyda|intcomma }}</td></tr>
+    {% empty %}<tr><td colspan="4">Ma'lumot yo'q</td></tr>{% endfor %}
+  </table>
+</div>
+{% endblock %}
