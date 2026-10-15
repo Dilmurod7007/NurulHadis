@@ -105,3 +105,82 @@ class AdminTests(TestCase):
         self.assertEqual(c.get("/admin/crm/buyurtma/add/", HTTP_HOST="localhost").status_code, 200)
         r = c.get("/admin/crm/mahsulot/", HTTP_HOST="localhost")
         self.assertNotContains(r, "Tannarx")
+
+
+class ApiTests(TestCase):
+    """Alohida CRM (crm/) ishlatadigan JSON API."""
+
+    def setUp(self):
+        from django.contrib.auth.models import Group
+        from django.core.management import call_command
+        call_command("migrate", verbosity=0)
+        U = get_user_model()
+        self.egasi = U.objects.create_superuser("egasi", "e@e.uz", "x")
+        self.yord = U.objects.create_user("yord", password="x", is_staff=True)
+        self.yord.groups.add(Group.objects.get(name="Yordamchi"))
+        self.banka = Mahsulot.objects.first()
+        self.banka.tannarx = 120000
+        self.banka.save()
+
+    def klient(self, user=None):
+        c = Client(HTTP_HOST="localhost")
+        if user:
+            c.force_login(user)
+        return c
+
+    def test_login_va_me(self):
+        c = self.klient()
+        self.assertEqual(c.get("/api/crm/me/").json(), {"kirgan": False})
+        r = c.post("/api/crm/kirish/", {"username": "egasi", "password": "x"}, content_type="application/json")
+        self.assertEqual(r.status_code, 200)
+        self.assertTrue(r.json()["foyda"])
+        self.assertEqual(c.post("/api/crm/kirish/", {"username": "egasi", "password": "no"},
+                                content_type="application/json").status_code, 400)
+
+    def test_buyurtma_yaratish_hisob_va_ombor(self):
+        import json
+        quti = OmborTovar.objects.create(nom="Quti")
+        Tarkib.objects.create(mahsulot=self.banka, tovar=quti, miqdor=1)
+        OmborHarakat.objects.create(tovar=quti, turi="kirim", miqdor=10)
+        m = Mijoz.objects.create(ism="Ali")
+        c = self.klient(self.egasi)
+        data = {"mijoz": m.id, "sana": "2026-10-10", "tur": "sotuv", "holat": "yetkazildi", "manba": "telegram",
+                "chegirma": 20000, "yetkazish_haqi": 15000, "yetkazish_xarajati": 25000, "tolov_usuli": "naqd",
+                "tolangan": 0, "qatorlar": [{"mahsulot": self.banka.id, "miqdor": 2},
+                                              {"mahsulot": self.banka.id, "miqdor": 1, "sovga": True}]}
+        r = c.post("/api/crm/buyurtmalar/", json.dumps(data), content_type="application/json")
+        self.assertEqual(r.status_code, 201, r.content)
+        b = r.json()
+        self.assertEqual(b["tushum"], 2 * 235000 - 20000 + 15000)
+        self.assertEqual(b["bonus_tannarxi"], 120000)
+        self.assertEqual(b["foyda"], 465000 - 360000 - 25000)
+        self.assertEqual(quti.qoldiq, 7)  # 3 dona chiqdi (2 + 1 bonus)
+        # tahrirlash: bitta qatorni olib tashlaymiz, ombor tiklanadi
+        data["qatorlar"] = [{"id": b["qatorlar"][0]["id"], "mahsulot": self.banka.id, "miqdor": 1}]
+        r = c.put(f"/api/crm/buyurtmalar/{b['id']}/", json.dumps(data), content_type="application/json")
+        self.assertEqual(r.status_code, 200, r.content)
+        self.assertEqual(quti.qoldiq, 9)
+
+    def test_yordamchi_cheklovlari(self):
+        import json
+        m = Mijoz.objects.create(ism="Ali")
+        c = self.klient(self.yord)
+        self.assertEqual(c.get("/api/crm/dashboard/").status_code, 403)
+        self.assertEqual(c.get("/api/crm/xarajatlar/").status_code, 403)
+        self.assertEqual(c.get("/api/crm/ombor/").status_code, 403)
+        r = c.get("/api/crm/mahsulotlar/")
+        self.assertEqual(r.status_code, 200)
+        self.assertNotIn("tannarx", r.json()[0] if isinstance(r.json(), list) else r.json()["results"][0])
+        data = {"mijoz": m.id, "sana": "2026-10-10", "tur": "sotuv", "holat": "yangi", "manba": "telegram",
+                "yetkazish_xarajati": 999, "qatorlar": [{"mahsulot": self.banka.id, "miqdor": 1}]}
+        r = c.post("/api/crm/buyurtmalar/", json.dumps(data), content_type="application/json")
+        self.assertEqual(r.status_code, 201, r.content)
+        self.assertNotIn("foyda", r.json())
+        self.assertEqual(Buyurtma.objects.get(pk=r.json()["id"]).yetkazish_xarajati, 0)
+
+    def test_dashboard_egasi(self):
+        c = self.klient(self.egasi)
+        r = c.get("/api/crm/dashboard/?davr=30")
+        self.assertEqual(r.status_code, 200)
+        self.assertIn("seriya", r.json())
+        self.assertEqual(c.get("/api/crm/dashboard/?davr=0").status_code, 200)

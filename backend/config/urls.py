@@ -5,6 +5,7 @@ from django.views.static import serve
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/crm/", include("crm.urls")),
     path("api/", include("hadis.urls")),
 ]
 
@@ -16,6 +17,7 @@ if settings.DEBUG:
     urlpatterns += [
         re_path(r"^$", serve, {"path": "landing/index.html", "document_root": FRONT}),
         re_path(r"^h/", serve, {"path": "index.html", "document_root": FRONT}),
-        re_path(r"^(?P<path>(assets|data)/.*)$", serve, {"document_root": FRONT}),
+        re_path(r"^crm/$", serve, {"path": "crm/index.html", "document_root": FRONT}),
+        re_path(r"^(?P<path>(assets|data|crm)/.*)$", serve, {"document_root": FRONT}),
         re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     ]

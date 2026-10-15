@@ -20,7 +20,7 @@ def davr_boshi(kod):
     return bugun - timedelta(days=kod - 1)
 
 
-def hisobla(boshi=None):
+def hisobla(boshi=None, tugashi=None):
     from hadis.models import Event  # sayt statistikasi
 
     b_qs = Buyurtma.objects.select_related("mijoz").prefetch_related("qatorlar__mahsulot")
@@ -28,6 +28,9 @@ def hisobla(boshi=None):
     if boshi:
         b_qs = b_qs.filter(sana__gte=boshi)
         x_qs = x_qs.filter(sana__gte=boshi)
+    if tugashi:
+        b_qs = b_qs.filter(sana__lte=tugashi)
+        x_qs = x_qs.filter(sana__lte=tugashi)
     buyurtmalar = list(b_qs)
     hisobdagi = [b for b in buyurtmalar if b.hisobga_kiradi]
 
@@ -88,6 +91,8 @@ def hisobla(boshi=None):
     ev = Event.objects.exclude(utm_campaign="")
     if boshi:
         ev = ev.filter(created__date__gte=boshi)
+    if tugashi:
+        ev = ev.filter(created__date__lte=tugashi)
     for row in ev.filter(kind="view", name="landing").values("utm_campaign").annotate(
             n=Count("visitor", distinct=True)):
         kamp[row["utm_campaign"]]["kirish"] = row["n"]
