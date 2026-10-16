@@ -38,6 +38,16 @@ class Mahsulot(models.Model):
     def __str__(self):
         return self.nom
 
+    def save(self, *args, **kwargs):
+        eski = 0
+        if self.pk:
+            eski = Mahsulot.objects.filter(pk=self.pk).values_list("tannarx", flat=True).first() or 0
+        super().save(*args, **kwargs)
+        if self.tannarx and not eski:
+            # tannarx keyin kiritildi: tannarxsiz yozilgan buyurtma qatorlari ham hisoblansin
+            BuyurtmaQator.objects.filter(mahsulot=self).filter(
+                models.Q(tannarx__isnull=True) | models.Q(tannarx=0)).update(tannarx=self.tannarx)
+
 
 class OmborTovar(models.Model):
     """Omborda hisobi yuritiladigan narsa: banka, qopqoq, qog'ozcha, quti, sumka..."""
@@ -140,6 +150,13 @@ class Buyurtma(models.Model):
 
     chegirma = models.PositiveIntegerField("Chegirma (so'm)", default=0)
     chegirma_izoh = models.CharField("Chegirma sababi", max_length=120, blank=True)
+    YETKAZISH = [
+        ("yandex", "Yandex"),
+        ("pochta", "Pochta orqali"),
+        ("ozim", "O'zim olib beraman"),
+        ("ozi", "O'zi olib ketadi"),
+    ]
+    yetkazish_turi = models.CharField("Yetkazish turi", max_length=8, choices=YETKAZISH, default="yandex")
     yetkazish_xarajati = models.PositiveIntegerField(
         "Yetkazish xarajati (so'm)", default=0,
         help_text="Kuryer/taksi/pochta uchun o'zingiz to'lagan pul.",
@@ -165,6 +182,9 @@ class Buyurtma(models.Model):
             self.chegirma = 0
             self.chegirma_izoh = ""
             self.tolangan = 0
+        # O'zi olib ketsa, yetkazish xarajati yozilmaydi
+        if self.yetkazish_turi == "ozi":
+            self.yetkazish_xarajati = 0
         super().save(*args, **kwargs)
 
     # ── hisob-kitob ────────────────────────────────────────────────
@@ -204,7 +224,7 @@ class Buyurtma(models.Model):
     def tannarx_jami(self):
         if not self.hisobga_kiradi:
             return 0
-        return (sum(q.miqdor * q.tannarx for q in self._qatorlar())
+        return (sum(q.miqdor * q.tannarx_hisob for q in self._qatorlar())
                 + sum(b.tannarx for b in self._bonuslar()))
 
     @property
@@ -286,9 +306,14 @@ class BuyurtmaQator(models.Model):
     def save(self, *args, **kwargs):
         if self.narx is None:
             self.narx = self.mahsulot.narx
-        if self.tannarx is None:
+        if not self.tannarx and self.mahsulot.tannarx:
             self.tannarx = self.mahsulot.tannarx
         super().save(*args, **kwargs)
+
+    @property
+    def tannarx_hisob(self):
+        """Saqlangan tannarx; yo'q bo'lsa mahsulotning hozirgi tannarxi."""
+        return self.tannarx or self.mahsulot.tannarx
 
 
 class BuyurtmaBonus(models.Model):

@@ -114,7 +114,7 @@ class BuyurtmaAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ("sana", "mijoz", "tur", "holat", "manba", "kampaniya")}),
         ("Narx va chegirma", {"fields": (
-            "chegirma", "chegirma_izoh", "yetkazish_xarajati")}),
+            "chegirma", "chegirma_izoh", "yetkazish_turi", "yetkazish_xarajati")}),
         ("To'lov", {"fields": ("tolov_usuli", "tolangan")}),
         ("Izoh", {"fields": ("izoh",)}),
         ("Hisob-kitob", {"fields": ("hisob",)}),
@@ -131,7 +131,7 @@ class BuyurtmaAdmin(admin.ModelAdmin):
         fs = list(super().get_fieldsets(request, obj))
         if not foyda_huquqi(request):
             # yordamchi uchun yetkazish xarajati va foyda ko'rinmaydi
-            fs[1] = ("Narx va chegirma", {"fields": ("chegirma", "chegirma_izoh")})
+            fs[1] = ("Narx va chegirma", {"fields": ("chegirma", "chegirma_izoh", "yetkazish_turi")})
             fs = [f for f in fs if f[0] != "Hisob-kitob"]
         return fs
 

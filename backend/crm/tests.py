@@ -51,6 +51,28 @@ class HisobTests(TestCase):
         b = self.buyurtma([(1, {})], holat="bekor")
         self.assertEqual((b.tushum, b.tannarx_jami, b.foyda), (0, 0, 0))
 
+    def test_tannarx_keyin_kiritilsa_eski_buyurtma_ham_hisoblanadi(self):
+        banka = Mahsulot.objects.create(nom="Yangi banka", narx=200000, tannarx=0)
+        b = Buyurtma.objects.create(mijoz=self.mijoz)
+        BuyurtmaQator.objects.create(buyurtma=b, mahsulot=banka, miqdor=2)
+        self.assertEqual(Buyurtma.objects.get(pk=b.pk).tannarx_jami, 0)
+        banka.tannarx = 90000
+        banka.save()
+        b = Buyurtma.objects.get(pk=b.pk)
+        self.assertEqual(b.tannarx_jami, 180000)
+        self.assertEqual(b.foyda, 400000 - 180000)
+        banka.tannarx = 100000  # keyingi o'zgarish eski buyurtmaga ta'sir qilmaydi
+        banka.save()
+        self.assertEqual(Buyurtma.objects.get(pk=b.pk).tannarx_jami, 180000)
+
+    def test_ozi_olib_ketsa_yetkazish_xarajati_yozilmaydi(self):
+        b = self.buyurtma([(1, {})], yetkazish_turi="ozi", yetkazish_xarajati=30000)
+        b.refresh_from_db()
+        self.assertEqual(b.yetkazish_xarajati, 0)
+        b2 = self.buyurtma([(1, {})], yetkazish_turi="yandex", yetkazish_xarajati=30000)
+        b2.refresh_from_db()
+        self.assertEqual((b2.yetkazish_xarajati, b2.foyda), (30000, 235000 - 120000 - 30000))
+
     def test_tannarx_tarixi_ozgarmaydi(self):
         b = self.buyurtma([(1, {})])
         self.banka.tannarx = 150000

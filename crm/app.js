@@ -142,6 +142,7 @@
   var TUR = [["sotuv", "Oddiy sotuv"], ["reklama", "Reklama uchun tekin"], ["sovga", "Sovg‘a (tekin)"]];
   var HOLAT = [["yangi", "Yangi"], ["tasdiqlandi", "Tasdiqlandi"], ["yolda", "Yetkazilmoqda"], ["yetkazildi", "Yetkazildi"], ["bekor", "Bekor qilindi"], ["qaytarildi", "Qaytarildi"]];
   var MANBA = [["ig_reklama", "Instagram reklama"], ["ig_organik", "Instagram (bio, direct)"], ["telegram", "Telegram"], ["sayt", "Sayt"], ["tanish", "Tanish / og‘zaki"], ["boshqa", "Boshqa"]];
+  var YET = [["yandex", "Yandex"], ["pochta", "Pochta orqali"], ["ozim", "O‘zim olib beraman"], ["ozi", "O‘zi olib ketadi"]];
   var TOLOV = [["naqd", "Naqd"], ["karta", "Karta (Click, Payme)"], ["otkazma", "Hisobga o‘tkazma"], ["yetkazganda", "Yetkazganda to‘laydi"]];
   var XKAT = [["reklama", "Reklama (Instagram, Meta)"], ["qadoqlash", "Qadoqlash, bosma"], ["ish_haqi", "Ish haqi"], ["sayt", "Sayt, server, domen"], ["ijara", "Ijara, kommunal"], ["soliq", "Soliq, to‘lov komissiyasi"], ["boshqa", "Boshqa"], ["material", "Material xaridi"]];
   function nomi(arr, k) { for (var i = 0; i < arr.length; i++) if (arr[i][0] === k) return arr[i][1]; return k; }
@@ -326,10 +327,10 @@
         var box = el.querySelector("#tbl");
         if (!rows.length) { box.innerHTML = '<div class="empty">Buyurtma topilmadi.</div>'; return; }
         var foyda = S.me.foyda;
-        box.innerHTML = '<table class="tbl stack"><thead><tr><th>№</th><th>Sana</th><th>Mijoz</th><th>Turi</th><th>Holati</th><th class="n">Dona</th><th class="n">Tushum</th>' +
+        box.innerHTML = '<table class="tbl stack"><thead><tr><th>№</th><th>Sana</th><th>Mijoz</th><th>Turi</th><th>Holati</th><th>Yetkazish</th><th class="n">Dona</th><th class="n">Tushum</th>' +
           (foyda ? '<th class="n">Foyda</th>' : "") + "<th>To‘lov</th></tr></thead><tbody>" + rows.map(function (b) {
             return '<tr class="click" data-id="' + b.id + '"><td data-l="№">#' + b.id + '</td><td data-l="Sana">' + fdate(b.sana) + '</td><td data-l="Mijoz"><b>' + esc(b.mijoz_nom) +
-              "</b></td><td data-l=\"Turi\">" + turBadge(b.tur) + '</td><td data-l="Holati">' + holatBadge(b.holat) + '</td><td class="n" data-l="Dona">' + b.dona +
+              "</b></td><td data-l=\"Turi\">" + turBadge(b.tur) + '</td><td data-l="Holati">' + holatBadge(b.holat) + '</td><td data-l="Yetkazish">' + esc(b.yetkazish_turi_nom) + '</td><td class="n" data-l="Dona">' + b.dona +
               '</td><td class="n" data-l="Tushum">' + som(b.tushum) + "</td>" +
               (foyda ? '<td class="n ' + (b.foyda < 0 ? "neg" : "") + '" data-l="Foyda">' + som(b.foyda) + "</td>" : "") +
               '<td data-l="To‘lov">' + tolovBadge(b.tolov_holati) + "</td></tr>";
@@ -351,7 +352,7 @@
     loadRef().then(function () {
       var mijozlar = S.cache.mijozlar, mahsulotlar = S.cache.mahsulotlar.filter(function (m) { return m.faol || (b && b.qatorlar.some(function (q) { return q.mahsulot === m.id; })); });
       var edit = !!b;
-      b = b || { sana: today(), tur: "sotuv", holat: "yangi", manba: "telegram", tolov_usuli: "naqd", chegirma: 0, yetkazish_xarajati: 0, tolangan: 0, chegirma_izoh: "", izoh: "", qatorlar: [], bonuslar: [] };
+      b = b || { sana: today(), tur: "sotuv", holat: "yangi", manba: "telegram", tolov_usuli: "naqd", chegirma: 0, yetkazish_turi: "yandex", yetkazish_xarajati: 0, tolangan: 0, chegirma_izoh: "", izoh: "", qatorlar: [], bonuslar: [] };
       var cur = edit ? mijozlar.filter(function (m) { return m.id === b.mijoz; })[0] : null;
       var foyda = S.me.foyda;
       var qator = b.qatorlar.length ? b.qatorlar : [{ mahsulot: mahsulotlar[0] && mahsulotlar[0].id, miqdor: 1, narx: null }];
@@ -372,8 +373,9 @@
         '<div data-pay><div class="sec">Narx va to‘lov</div>' +
         '<div class="row2"><div class="field"><label>Chegirma (so‘m)</label><input type="number" min="0" name="chegirma" value="' + b.chegirma + '"></div>' +
         '<div class="field"><label>Chegirma sababi</label><input name="chegirma_izoh" value="' + esc(b.chegirma_izoh) + '"></div></div></div>' +
-        (foyda ? '<div class="sec">Yetkazish</div>' : "") +
-        (foyda ? '<div class="field"><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "") +
+        '<div class="sec">Yetkazish</div>' +
+        '<div class="row2"><div class="field"><label>Yetkazish turi</label><select name="yetkazish_turi">' + opts(YET, b.yetkazish_turi || "yandex") + "</select></div>" +
+        (foyda ? '<div class="field" data-yx><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "<div></div>") + "</div>" +
         '<div class="row2" data-pay><div class="field"><label>To‘lov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
         '<div class="field"><label>To‘langan summa <a href="#" id="full" style="font-weight:600">to‘liq</a></label><input type="number" min="0" name="tolangan" value="' + b.tolangan + '"></div></div>' +
         '<div class="field"><label>Izoh</label><textarea name="izoh">' + esc(b.izoh) + "</textarea></div>" +
@@ -431,11 +433,13 @@
             var tekin = tur !== "sotuv";
             Array.prototype.forEach.call(ov.querySelectorAll("[data-pay]"), function (e) { e.classList.toggle("hide", tekin); });
             items.classList.toggle("tekin", tekin);
+            var oziOladi = val(ov, "yetkazish_turi") === "ozi";
+            Array.prototype.forEach.call(ov.querySelectorAll("[data-yx]"), function (e) { e.classList.toggle("hide", oziOladi); });
             var ch = tekin ? 0 : Math.min(intv(ov, "chegirma"), jami);
             var tushum = tekin || val(ov, "holat") === "bekor" ? 0 : Math.max(0, jami - ch);
             ov._tushum = tushum;
             var jamiTannarx = tannarx + bonusCost;
-            var f = tushum - jamiTannarx - (foyda ? intv(ov, "yetkazish_xarajati") : 0);
+            var f = tushum - jamiTannarx - (foyda && !oziOladi ? intv(ov, "yetkazish_xarajati") : 0);
             ov.querySelector("#sum").innerHTML =
               '<div class="r"><span>Mahsulotlar</span><span>' + (tekin ? "tekin" : som(jami) + " so‘m") + "</span></div>" +
               '<div class="r"><span>Chegirma</span><span>' + (tekin ? "—" : "− " + som(ch)) + "</span></div>" +
@@ -481,8 +485,9 @@
               chegirma: tekinTur ? 0 : intv(ov, "chegirma"), chegirma_izoh: tekinTur ? "" : val(ov, "chegirma_izoh"),
               tolov_usuli: val(ov, "tolov_usuli"), tolangan: tekinTur ? 0 : intv(ov, "tolangan"),
               izoh: val(ov, "izoh"), qatorlar: qatorlar, bonuslar: bonuslar,
+              yetkazish_turi: val(ov, "yetkazish_turi"),
             };
-            if (S.me.foyda) data.yetkazish_xarajati = intv(ov, "yetkazish_xarajati");
+            if (S.me.foyda) data.yetkazish_xarajati = data.yetkazish_turi === "ozi" ? 0 : intv(ov, "yetkazish_xarajati");
             return api(edit ? "/buyurtmalar/" + b.id + "/" : "/buyurtmalar/", { method: edit ? "PUT" : "POST", body: data });
           }).then(function () { toast("Saqlandi"); S.cache = {}; render(); });
         },
