@@ -369,11 +369,12 @@
         '<button class="btn sm" type="button" id="addrow">' + ic("plus") + "Mahsulot qo‘shish</button>" +
         '<div class="sec">Bonus (sovg‘a)</div><div class="items bonus" id="bonus"></div>' +
         '<button class="btn sm" type="button" id="addbonus">' + ic("plus") + "Bonus qo‘shish</button>" +
-        '<div class="sec">Narx va to‘lov</div>' +
+        '<div data-pay><div class="sec">Narx va to‘lov</div>' +
         '<div class="row2"><div class="field"><label>Chegirma (so‘m)</label><input type="number" min="0" name="chegirma" value="' + b.chegirma + '"></div>' +
-        '<div class="field"><label>Chegirma sababi</label><input name="chegirma_izoh" value="' + esc(b.chegirma_izoh) + '"></div></div>' +
+        '<div class="field"><label>Chegirma sababi</label><input name="chegirma_izoh" value="' + esc(b.chegirma_izoh) + '"></div></div></div>' +
+        (foyda ? '<div class="sec">Yetkazish</div>' : "") +
         (foyda ? '<div class="field"><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "") +
-        '<div class="row2"><div class="field"><label>To‘lov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
+        '<div class="row2" data-pay><div class="field"><label>To‘lov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
         '<div class="field"><label>To‘langan summa <a href="#" id="full" style="font-weight:600">to‘liq</a></label><input type="number" min="0" name="tolangan" value="' + b.tolangan + '"></div></div>' +
         '<div class="field"><label>Izoh</label><textarea name="izoh">' + esc(b.izoh) + "</textarea></div>" +
         '<div class="summary" id="sum"></div>';
@@ -428,7 +429,9 @@
               if (t) bonusCost += parseInt(t.value, 10) || 0;
             });
             var tekin = tur !== "sotuv";
-            var ch = Math.min(intv(ov, "chegirma"), jami);
+            Array.prototype.forEach.call(ov.querySelectorAll("[data-pay]"), function (e) { e.classList.toggle("hide", tekin); });
+            items.classList.toggle("tekin", tekin);
+            var ch = tekin ? 0 : Math.min(intv(ov, "chegirma"), jami);
             var tushum = tekin || val(ov, "holat") === "bekor" ? 0 : Math.max(0, jami - ch);
             ov._tushum = tushum;
             var jamiTannarx = tannarx + bonusCost;
@@ -455,7 +458,7 @@
               narx: null,
             };
             var narx = r.querySelector('[data-f="narx"]').value;
-            if (narx !== "") q.narx = parseInt(narx, 10);
+            if (narx !== "" && val(ov, "tur") === "sotuv") q.narx = parseInt(narx, 10);
             if (r.dataset.id) q.id = +r.dataset.id;
             qatorlar.push(q);
           });
@@ -471,11 +474,12 @@
             ? (mavjud.telefon !== mijozData.telefon || mavjud.username !== mijozData.username
               ? api("/mijozlar/" + mavjud.id + "/", { method: "PATCH", body: mijozData }) : Promise.resolve(mavjud))
             : api("/mijozlar/", { method: "POST", body: mijozData });
+          var tekinTur = val(ov, "tur") !== "sotuv";
           return p.then(function (m) {
             var data = {
               mijoz: m.id, sana: val(ov, "sana"), tur: val(ov, "tur"), holat: val(ov, "holat"), manba: val(ov, "manba"),
-              chegirma: intv(ov, "chegirma"), chegirma_izoh: val(ov, "chegirma_izoh"),
-              tolov_usuli: val(ov, "tolov_usuli"), tolangan: intv(ov, "tolangan"),
+              chegirma: tekinTur ? 0 : intv(ov, "chegirma"), chegirma_izoh: tekinTur ? "" : val(ov, "chegirma_izoh"),
+              tolov_usuli: val(ov, "tolov_usuli"), tolangan: tekinTur ? 0 : intv(ov, "tolangan"),
               izoh: val(ov, "izoh"), qatorlar: qatorlar, bonuslar: bonuslar,
             };
             if (S.me.foyda) data.yetkazish_xarajati = intv(ov, "yetkazish_xarajati");

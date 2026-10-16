@@ -138,6 +138,8 @@ label{display:block;font-size:12.5px;color:var(--muted);font-weight:550;margin:0
 .drawer .ft .sp{flex:1}
 .sec{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--faint);font-weight:700;margin:18px 0 10px}
 .items .it{display:grid;grid-template-columns:minmax(0,1fr) 68px 112px 34px;gap:8px;align-items:center;margin-bottom:8px}
+.items.tekin .it:not(.bn){grid-template-columns:minmax(0,1fr) 68px 34px}
+.items.tekin [data-f=narx]{display:none}
 .items .it.bn{grid-template-columns:minmax(0,1fr) 112px 34px}
 .items .it.bn:has(input:only-of-type){grid-template-columns:minmax(0,1fr) 34px}
 .items .it label{margin:0;display:flex;gap:6px;align-items:center;font-size:12.5px;white-space:nowrap}

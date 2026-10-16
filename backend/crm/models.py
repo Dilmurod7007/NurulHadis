@@ -159,6 +159,14 @@ class Buyurtma(models.Model):
     def __str__(self):
         return f"#{self.pk} {self.mijoz.ism} — {self.sana:%d.%m.%Y}"
 
+    def save(self, *args, **kwargs):
+        # Tekin (reklama / sovg'a) buyurtmada chegirma va to'lov bo'lmaydi
+        if self.tur != "sotuv":
+            self.chegirma = 0
+            self.chegirma_izoh = ""
+            self.tolangan = 0
+        super().save(*args, **kwargs)
+
     # ── hisob-kitob ────────────────────────────────────────────────
     @property
     def hisobga_kiradi(self):

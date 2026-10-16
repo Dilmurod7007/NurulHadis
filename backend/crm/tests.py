@@ -35,6 +35,12 @@ class HisobTests(TestCase):
         self.assertEqual(b.tannarx_jami, 120000 + 15000)
         self.assertEqual(b.foyda, 235000 - 135000)
 
+    def test_tekin_buyurtmada_chegirma_va_tolov_nolga_tushadi(self):
+        b = self.buyurtma([(1, {})], tur="sovga", chegirma=20000, chegirma_izoh="x", tolangan=50000)
+        b.refresh_from_db()
+        self.assertEqual((b.chegirma, b.chegirma_izoh, b.tolangan, b.tushum, b.qarz), (0, "", 0, 0, 0))
+        self.assertEqual(b.tolov_holati, "—")
+
     def test_tekin_reklama(self):
         b = self.buyurtma([(1, {})], tur="reklama")
         self.assertEqual(b.tushum, 0)
