@@ -3,7 +3,7 @@ from django.db.models import Count, Sum
 from rest_framework import serializers
 
 from .models import (
-    Buyurtma, BuyurtmaQator, Mahsulot, Mijoz, OmborHarakat, OmborTovar, Tarkib, Xarajat,
+    Buyurtma, BuyurtmaBonus, BuyurtmaQator, Mahsulot, Mijoz, OmborHarakat, OmborTovar, Tarkib, Xarajat,
 )
 
 
@@ -117,11 +117,18 @@ class QatorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BuyurtmaQator
-        fields = ["id", "mahsulot", "mahsulot_nom", "miqdor", "narx", "sovga"]
+        fields = ["id", "mahsulot", "mahsulot_nom", "miqdor", "narx"]
+
+
+class BonusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BuyurtmaBonus
+        fields = ["nom", "tannarx"]
 
 
 class BuyurtmaSerializer(serializers.ModelSerializer):
     qatorlar = QatorSerializer(many=True)
+    bonuslar = BonusSerializer(many=True, required=False)
     mijoz_nom = serializers.CharField(source="mijoz.ism", read_only=True)
     mijoz_telefon = serializers.CharField(source="mijoz.telefon", read_only=True)
     tur_nom = serializers.CharField(source="get_tur_display", read_only=True)
@@ -141,8 +148,8 @@ class BuyurtmaSerializer(serializers.ModelSerializer):
         model = Buyurtma
         fields = [
             "id", "sana", "mijoz", "mijoz_nom", "mijoz_telefon", "tur", "tur_nom", "holat", "holat_nom",
-            "manba", "manba_nom", "kampaniya", "chegirma", "chegirma_izoh", "yetkazish_haqi",
-            "yetkazish_xarajati", "tolov_usuli", "tolangan", "izoh", "qatorlar",
+            "manba", "manba_nom", "kampaniya", "chegirma", "chegirma_izoh",
+            "yetkazish_xarajati", "tolov_usuli", "tolangan", "izoh", "qatorlar", "bonuslar",
             "dona", "mahsulot_summasi", "chegirma_hisob", "tushum", "tannarx_jami",
             "bonus_tannarxi", "foyda", "qarz", "tolov_holati",
         ]
@@ -152,6 +159,8 @@ class BuyurtmaSerializer(serializers.ModelSerializer):
         if not foyda_korsin(self):
             for k in ("tannarx_jami", "bonus_tannarxi", "foyda", "yetkazish_xarajati"):
                 d.pop(k, None)
+            for bn in d.get("bonuslar", []):
+                bn.pop("tannarx", None)
         return d
 
     def _qatorlarni_yoz(self, b, qatorlar):
@@ -173,6 +182,24 @@ class BuyurtmaSerializer(serializers.ModelSerializer):
         # prefetch keshi eskirdi: hisob-kitob yangi qatorlardan olinsin
         getattr(b, "_prefetched_objects_cache", {}).pop("qatorlar", None)
 
+    def _bonuslarni_yoz(self, b, bonuslar):
+        if bonuslar is None:
+            return
+        b.bonuslar.all().delete()
+        for bn in bonuslar:
+            if not str(bn.get("nom", "")).strip():
+                continue
+            tannarx = bn.get("tannarx", 0) if foyda_korsin(self) else 0
+            BuyurtmaBonus.objects.create(buyurtma=b, nom=bn["nom"].strip(), tannarx=tannarx)
+        getattr(b, "_prefetched_objects_cache", {}).pop("bonuslar", None)
+
+    def _bonuslarni_yoz_saqlab(self, b, bonuslar):
+        b.bonuslar.all().delete()
+        for bn in bonuslar:
+            if str(bn.get("nom", "")).strip():
+                BuyurtmaBonus.objects.create(buyurtma=b, nom=bn["nom"].strip(), tannarx=bn.get("tannarx", 0))
+        getattr(b, "_prefetched_objects_cache", {}).pop("bonuslar", None)
+
     def _huquq(self, data):
         if not foyda_korsin(self):
             data.pop("yetkazish_xarajati", None)
@@ -180,21 +207,32 @@ class BuyurtmaSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, data):
         qatorlar = data.pop("qatorlar")
+        bonuslar = data.pop("bonuslar", None)
         self._huquq(data)
         b = Buyurtma.objects.create(**data)
         self._qatorlarni_yoz(b, qatorlar)
+        self._bonuslarni_yoz(b, bonuslar)
         b.omborni_yangilash()
         return b
 
     @transaction.atomic
     def update(self, b, data):
         qatorlar = data.pop("qatorlar", None)
+        bonuslar = data.pop("bonuslar", None)
         self._huquq(data)
         for k, v in data.items():
             setattr(b, k, v)
         b.save()
         if qatorlar is not None:
             self._qatorlarni_yoz(b, qatorlar)
+        if bonuslar is not None and not foyda_korsin(self):
+            # yordamchi bonus tannarxini ko'rmaydi: mavjud tannarxlarni saqlab qolamiz
+            eski = {x.nom: x.tannarx for x in b.bonuslar.all()}
+            for bn in bonuslar:
+                bn["tannarx"] = eski.get(bn.get("nom", ""), 0)
+            self._bonuslarni_yoz_saqlab(b, bonuslar)
+        else:
+            self._bonuslarni_yoz(b, bonuslar)
         b.omborni_yangilash()
         return b
 

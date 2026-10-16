@@ -3,7 +3,7 @@ from django.test import Client, TestCase
 
 from .hisobot import hisobla
 from .models import (
-    Buyurtma, BuyurtmaQator, Mahsulot, Mijoz, OmborHarakat, OmborTovar, Tarkib, Xarajat,
+    Buyurtma, BuyurtmaBonus, BuyurtmaQator, Mahsulot, Mijoz, OmborHarakat, OmborTovar, Tarkib, Xarajat,
 )
 
 
@@ -20,16 +20,20 @@ class HisobTests(TestCase):
         return b
 
     def test_oddiy_sotuv_chegirma_va_yetkazish(self):
-        b = self.buyurtma([(2, {})], chegirma=20000, yetkazish_haqi=15000, yetkazish_xarajati=25000)
-        self.assertEqual(b.tushum, 2 * 235000 - 20000 + 15000)
+        b = self.buyurtma([(2, {})], chegirma=20000, yetkazish_xarajati=25000)
+        self.assertEqual(b.tushum, 2 * 235000 - 20000)
         self.assertEqual(b.tannarx_jami, 240000)
-        self.assertEqual(b.foyda, 465000 - 240000 - 25000)
+        self.assertEqual(b.foyda, 450000 - 240000 - 25000)
 
-    def test_bonus_sovga_tannarxi_xarajat(self):
-        b = self.buyurtma([(1, {}), (1, {"sovga": True})])
+    def test_bonus_nom_va_tannarx(self):
+        b = self.buyurtma([(1, {})])
+        BuyurtmaBonus.objects.create(buyurtma=b, nom="Tasbeh", tannarx=15000)
+        BuyurtmaBonus.objects.create(buyurtma=b, nom="Kalendar")
+        b = Buyurtma.objects.get(pk=b.pk)
         self.assertEqual(b.tushum, 235000)
-        self.assertEqual(b.bonus_tannarxi, 120000)
-        self.assertEqual(b.foyda, 235000 - 240000)
+        self.assertEqual(b.bonus_tannarxi, 15000)
+        self.assertEqual(b.tannarx_jami, 120000 + 15000)
+        self.assertEqual(b.foyda, 235000 - 135000)
 
     def test_tekin_reklama(self):
         b = self.buyurtma([(1, {})], tur="reklama")
@@ -145,21 +149,25 @@ class ApiTests(TestCase):
         m = Mijoz.objects.create(ism="Ali")
         c = self.klient(self.egasi)
         data = {"mijoz": m.id, "sana": "2026-10-10", "tur": "sotuv", "holat": "yetkazildi", "manba": "telegram",
-                "chegirma": 20000, "yetkazish_haqi": 15000, "yetkazish_xarajati": 25000, "tolov_usuli": "naqd",
-                "tolangan": 0, "qatorlar": [{"mahsulot": self.banka.id, "miqdor": 2},
-                                              {"mahsulot": self.banka.id, "miqdor": 1, "sovga": True}]}
+                "chegirma": 20000, "yetkazish_xarajati": 25000, "tolov_usuli": "naqd",
+                "tolangan": 0, "qatorlar": [{"mahsulot": self.banka.id, "miqdor": 2}],
+                "bonuslar": [{"nom": "Tasbeh", "tannarx": 15000}, {"nom": "Kalendar"}]}
         r = c.post("/api/crm/buyurtmalar/", json.dumps(data), content_type="application/json")
         self.assertEqual(r.status_code, 201, r.content)
         b = r.json()
-        self.assertEqual(b["tushum"], 2 * 235000 - 20000 + 15000)
-        self.assertEqual(b["bonus_tannarxi"], 120000)
-        self.assertEqual(b["foyda"], 465000 - 360000 - 25000)
-        self.assertEqual(quti.qoldiq, 7)  # 3 dona chiqdi (2 + 1 bonus)
-        # tahrirlash: bitta qatorni olib tashlaymiz, ombor tiklanadi
+        self.assertEqual(b["tushum"], 2 * 235000 - 20000)
+        self.assertEqual(b["bonus_tannarxi"], 15000)
+        self.assertEqual([x["nom"] for x in b["bonuslar"]], ["Tasbeh", "Kalendar"])
+        self.assertEqual(b["foyda"], 450000 - 240000 - 15000 - 25000)
+        self.assertEqual(quti.qoldiq, 8)  # bonus ombordan chiqmaydi, faqat 2 banka
+        # tahrirlash: soni 1 ta, bonus olib tashlanadi, ombor tiklanadi
+        data["bonuslar"] = []
         data["qatorlar"] = [{"id": b["qatorlar"][0]["id"], "mahsulot": self.banka.id, "miqdor": 1}]
         r = c.put(f"/api/crm/buyurtmalar/{b['id']}/", json.dumps(data), content_type="application/json")
         self.assertEqual(r.status_code, 200, r.content)
         self.assertEqual(quti.qoldiq, 9)
+        self.assertEqual(r.json()["bonuslar"], [])
+        self.assertEqual(r.json()["tushum"], 235000 - 20000)
 
     def test_yordamchi_cheklovlari(self):
         import json

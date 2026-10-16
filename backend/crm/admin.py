@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 from .hisobot import davr_boshi, hisobla
 from .models import (
-    Buyurtma, BuyurtmaQator, Hisobot, Mahsulot, Mijoz, OmborHarakat, OmborTovar,
+    Buyurtma, BuyurtmaBonus, BuyurtmaQator, Hisobot, Mahsulot, Mijoz, OmborHarakat, OmborTovar,
     Tarkib, Xarajat,
 )
 
@@ -93,12 +93,18 @@ class MijozAdmin(admin.ModelAdmin):
 class QatorInline(admin.TabularInline):
     model = BuyurtmaQator
     extra = 1
-    fields = ("mahsulot", "miqdor", "narx", "sovga")
+    fields = ("mahsulot", "miqdor", "narx")
+
+
+class BonusInline(admin.TabularInline):
+    model = BuyurtmaBonus
+    extra = 0
+    fields = ("nom", "tannarx")
 
 
 @admin.register(Buyurtma)
 class BuyurtmaAdmin(admin.ModelAdmin):
-    inlines = [QatorInline]
+    inlines = [QatorInline, BonusInline]
     date_hierarchy = "sana"
     list_filter = ("holat", "tur", "manba", "tolov_usuli", "sana")
     search_fields = ("mijoz__ism", "mijoz__telefon", "mijoz__username", "izoh", "kampaniya")
@@ -108,7 +114,7 @@ class BuyurtmaAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ("sana", "mijoz", "tur", "holat", "manba", "kampaniya")}),
         ("Narx va chegirma", {"fields": (
-            "chegirma", "chegirma_izoh", "yetkazish_haqi", "yetkazish_xarajati")}),
+            "chegirma", "chegirma_izoh", "yetkazish_xarajati")}),
         ("To'lov", {"fields": ("tolov_usuli", "tolangan")}),
         ("Izoh", {"fields": ("izoh",)}),
         ("Hisob-kitob", {"fields": ("hisob",)}),
@@ -125,13 +131,13 @@ class BuyurtmaAdmin(admin.ModelAdmin):
         fs = list(super().get_fieldsets(request, obj))
         if not foyda_huquqi(request):
             # yordamchi uchun yetkazish xarajati va foyda ko'rinmaydi
-            fs[1] = ("Narx va chegirma", {"fields": ("chegirma", "chegirma_izoh", "yetkazish_haqi")})
+            fs[1] = ("Narx va chegirma", {"fields": ("chegirma", "chegirma_izoh")})
             fs = [f for f in fs if f[0] != "Hisob-kitob"]
         return fs
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("mijoz").prefetch_related(
-            "qatorlar__mahsulot")
+            "qatorlar__mahsulot", "bonuslar")
 
     def save_related(self, request, form, formsets, change):
         super().save_related(request, form, formsets, change)
@@ -169,11 +175,11 @@ class BuyurtmaAdmin(admin.ModelAdmin):
         if not o.pk:
             return "Saqlagandan keyin ko'rinadi."
         return format_html(
-            "Mahsulotlar: <b>{}</b><br>Chegirma: <b>{}</b><br>Yetkazish haqi: <b>{}</b><br>"
+            "Mahsulotlar: <b>{}</b><br>Chegirma: <b>{}</b><br>"
             "<b>Tushum: {}</b><br>Tannarx: <b>{}</b> (shundan bonus sovg'alar: {})<br>"
             "Yetkazish xarajati: <b>{}</b><br><b>Foyda: {}</b><br>"
             "To'langan: <b>{}</b> · Qarz: <b>{}</b>",
-            som(o.mahsulot_summasi), som(o.chegirma_hisob), som(o.yetkazish_haqi), som(o.tushum),
+            som(o.mahsulot_summasi), som(o.chegirma_hisob), som(o.tushum),
             som(o.tannarx_jami), som(o.bonus_tannarxi), som(o.yetkazish_xarajati),
             som(o.foyda), som(o.tolangan), som(o.qarz))
 

@@ -45,7 +45,7 @@ def dashboard(kod):
     def kalit(d):
         return d.replace(day=1) if oylik else d
 
-    b_qs = Buyurtma.objects.filter(sana__gte=grafik_boshi).prefetch_related("qatorlar__mahsulot")
+    b_qs = Buyurtma.objects.filter(sana__gte=grafik_boshi).prefetch_related("qatorlar__mahsulot", "bonuslar")
     for b in b_qs:
         if b.hisobga_kiradi and kalit(b.sana) in bucket:
             x = bucket[kalit(b.sana)]

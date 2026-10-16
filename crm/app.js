@@ -244,10 +244,10 @@
           return '<button data-k="' + x[0] + '" class="' + (x[0] === S.chartKey ? "on" : "") + '">' + x[1] + "</button>";
         }).join("") + '</div></div><div id="chart"></div></div>' +
         '<div class="card"><h3>Foyda qanday chiqdi</h3><div class="pl">' +
-        pl("Mahsulotlar summasi", r.mahsulot_summasi) + pl("− Chegirmalar", -r.chegirma) + pl("+ Yetkazish haqi", r.yetkazish_haqi) +
+        pl("Mahsulotlar summasi", r.mahsulot_summasi) + pl("− Chegirmalar", -r.chegirma) +
         '<div class="r tot"><span>Tushum</span><span>' + som(r.tushum) + "</span></div>" +
         pl("− Tannarx", -r.tannarx) +
-        '<div class="r muted" style="font-size:13px"><span>&nbsp;&nbsp;shundan bonus sovg‘alar</span><span>' + som(r.bonus_tannarx) + "</span></div>" +
+        '<div class="r muted" style="font-size:13px"><span>&nbsp;&nbsp;shundan bonuslar</span><span>' + som(r.bonus_tannarx) + "</span></div>" +
         '<div class="r muted" style="font-size:13px"><span>&nbsp;&nbsp;shundan tekin buyurtmalar</span><span>' + som(r.tekin_tannarx) + "</span></div>" +
         pl("− Yetkazish xarajati", -r.yetkazish_xarajati) + pl("− Xarajatlar", -r.operatsion) +
         '<div class="r tot"><span>Sof foyda</span><span class="' + (r.sof_foyda < 0 ? "neg" : "pos") + '">' + som(r.sof_foyda) + "</span></div>" +
@@ -264,12 +264,18 @@
           return '<div class="r"><span>' + esc(t.nom) + "</span><span>" + (t.kam ? '<span class="badge bad">Kam: ' : "<b>") + t.qoldiq + " " + esc(t.birlik) + (t.kam ? "</span>" : "</b>") + "</span></div>";
         }).join("") + "</div>" : '<div class="muted">Ombor bo‘sh. <a href="#/ombor">Qo‘shing</a>.</div>') + "</div></div>";
 
-      h += '<div class="grid g2e"><div class="card"><h3>Reklama kampaniyalari</h3>' + (r.kampaniyalar.length ?
-        '<table class="tbl"><thead><tr><th>Kampaniya</th><th class="n">Xarajat</th><th class="n">Kirgan</th><th class="n">Bosgan</th><th class="n">Buyurtma</th><th class="n">ROI</th></tr></thead><tbody>' +
-        r.kampaniyalar.map(function (k) {
-          return "<tr><td>" + esc(k.nom) + '</td><td class="n">' + som(k.xarajat) + '</td><td class="n">' + k.kirish + '</td><td class="n">' + k.bosgan +
-            '</td><td class="n">' + k.buyurtma + '</td><td class="n">' + (k.roi === null ? "—" : "×" + k.roi) + "</td></tr>";
-        }).join("") + "</tbody></table>" : '<div class="muted">Kampaniya nomi yozilgan buyurtma yoki reklama xarajati yo‘q.</div>') + "</div>" +
+      h += '<div class="grid g2e"><div class="card"><h3>Instagram reklama</h3>' + (function () {
+        var a = r.reklama;
+        if (!a.xarajat && !a.kirgan && !a.buyurtma) return '<div class="muted">Hali ma‘lumot yo‘q. Reklama xarajatini «Xarajatlar»ga yozing, buyurtmaning manbasini «Instagram reklama» deb belgilang.</div>';
+        return '<div class="pl">' +
+          pl("Reklama xarajati", a.xarajat) +
+          '<div class="r"><span>Saytga kirgan (reklamadan)</span><span>' + a.kirgan + " ta</span></div>" +
+          '<div class="r"><span>Tugma bosgan</span><span>' + a.bosgan + " ta</span></div>" +
+          '<div class="r"><span>Buyurtma (Instagram reklama)</span><span>' + a.buyurtma + " ta</span></div>" +
+          pl("Shu buyurtmalardan tushum", a.tushum) +
+          '<div class="r"><span>Bitta buyurtma narxi</span><span>' + (a.buyurtma_narxi === null ? "—" : som(a.buyurtma_narxi) + " so‘m") + "</span></div>" +
+          '<div class="r tot"><span>ROI (tushum ÷ xarajat)</span><span>' + (a.roi === null ? "—" : "×" + a.roi) + "</span></div></div>";
+      })() + "</div>" +
         '<div class="card"><h3>Oxirgi buyurtmalar</h3>' + (last.length ? '<table class="tbl"><tbody>' + last.map(function (b) {
           return '<tr class="click" data-o="' + b.id + '"><td><b>' + esc(b.mijoz_nom) + '</b><div class="muted" style="font-size:12.5px">' + fdate(b.sana) + " · " + b.dona + ' dona</div></td><td>' + holatBadge(b.holat) +
             '</td><td class="n">' + som(b.tushum) + "</td></tr>";
@@ -345,10 +351,10 @@
     loadRef().then(function () {
       var mijozlar = S.cache.mijozlar, mahsulotlar = S.cache.mahsulotlar.filter(function (m) { return m.faol || (b && b.qatorlar.some(function (q) { return q.mahsulot === m.id; })); });
       var edit = !!b;
-      b = b || { sana: today(), tur: "sotuv", holat: "yangi", manba: "telegram", tolov_usuli: "naqd", chegirma: 0, yetkazish_haqi: 0, yetkazish_xarajati: 0, tolangan: 0, kampaniya: "", chegirma_izoh: "", izoh: "", qatorlar: [] };
+      b = b || { sana: today(), tur: "sotuv", holat: "yangi", manba: "telegram", tolov_usuli: "naqd", chegirma: 0, yetkazish_xarajati: 0, tolangan: 0, chegirma_izoh: "", izoh: "", qatorlar: [], bonuslar: [] };
       var cur = edit ? mijozlar.filter(function (m) { return m.id === b.mijoz; })[0] : null;
       var foyda = S.me.foyda;
-      var qator = b.qatorlar.length ? b.qatorlar : [{ mahsulot: mahsulotlar[0] && mahsulotlar[0].id, miqdor: 1, narx: null, sovga: false }];
+      var qator = b.qatorlar.length ? b.qatorlar : [{ mahsulot: mahsulotlar[0] && mahsulotlar[0].id, miqdor: 1, narx: null }];
 
       var body =
         '<div class="field"><label>Mijoz</label><input name="mijoz_ism" list="mlist" placeholder="Ism yozing yoki tanlang" value="' + esc(cur ? cur.ism : "") + '" autocomplete="off">' +
@@ -358,15 +364,15 @@
         '<div class="row3"><div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(b.sana) + '"></div>' +
         '<div class="field"><label>Turi</label><select name="tur">' + opts(TUR, b.tur) + "</select></div>" +
         '<div class="field"><label>Holati</label><select name="holat">' + opts(HOLAT, b.holat) + "</select></div></div>" +
-        '<div class="row2"><div class="field"><label>Qayerdan keldi</label><select name="manba">' + opts(MANBA, b.manba) + "</select></div>" +
-        '<div class="field"><label>Reklama kampaniyasi</label><input name="kampaniya" placeholder="masalan reklama2_uz" value="' + esc(b.kampaniya) + '"></div></div>' +
+        '<div class="field"><label>Qayerdan keldi</label><select name="manba">' + opts(MANBA, b.manba) + "</select></div>" +
         '<div class="sec">Mahsulotlar</div><div class="items" id="items"></div>' +
-        '<button class="btn sm" type="button" id="addrow">' + ic("plus") + "Qator qo‘shish</button>" +
+        '<button class="btn sm" type="button" id="addrow">' + ic("plus") + "Mahsulot qo‘shish</button>" +
+        '<div class="sec">Bonus (sovg‘a)</div><div class="items bonus" id="bonus"></div>' +
+        '<button class="btn sm" type="button" id="addbonus">' + ic("plus") + "Bonus qo‘shish</button>" +
         '<div class="sec">Narx va to‘lov</div>' +
         '<div class="row2"><div class="field"><label>Chegirma (so‘m)</label><input type="number" min="0" name="chegirma" value="' + b.chegirma + '"></div>' +
         '<div class="field"><label>Chegirma sababi</label><input name="chegirma_izoh" value="' + esc(b.chegirma_izoh) + '"></div></div>' +
-        '<div class="row2"><div class="field"><label>Yetkazish haqi (mijozdan)</label><input type="number" min="0" name="yetkazish_haqi" value="' + b.yetkazish_haqi + '"></div>' +
-        (foyda ? '<div class="field"><label>Yetkazish xarajati (sizniki)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "<div></div>") + "</div>" +
+        (foyda ? '<div class="field"><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "") +
         '<div class="row2"><div class="field"><label>To‘lov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
         '<div class="field"><label>To‘langan summa <a href="#" id="full" style="font-weight:600">to‘liq</a></label><input type="number" min="0" name="tolangan" value="' + b.tolangan + '"></div></div>' +
         '<div class="field"><label>Izoh</label><textarea name="izoh">' + esc(b.izoh) + "</textarea></div>" +
@@ -376,50 +382,62 @@
         title: edit ? "Buyurtma #" + b.id : "Yangi buyurtma",
         body: body,
         onOpen: function (ov) {
-          var items = ov.querySelector("#items");
+          var items = ov.querySelector("#items"), bonus = ov.querySelector("#bonus");
           function row(q) {
             var d = document.createElement("div");
             d.className = "it";
-            d.innerHTML = '<select class="full" data-f="mahsulot">' + opts(mahsulotlar, q.mahsulot) + "</select>" +
-              '<input type="number" min="1" data-f="miqdor" value="' + (q.miqdor || 1) + '">' +
-              '<input type="number" min="0" data-f="narx" placeholder="narx" value="' + (q.narx === null || q.narx === undefined || q.sovga ? "" : q.narx) + '">' +
-              '<label><input type="checkbox" data-f="sovga"' + (q.sovga ? " checked" : "") + ">Bonus</label>" +
-              '<button type="button" class="icon-x" data-rm>' + ic("x") + "</button>";
+            d.innerHTML = '<select data-f="mahsulot">' + opts(mahsulotlar, q.mahsulot) + "</select>" +
+              '<input type="number" min="1" data-f="miqdor" value="' + (q.miqdor || 1) + '" title="Soni">' +
+              '<input type="number" min="0" data-f="narx" placeholder="narx" value="' + (q.narx === null || q.narx === undefined ? "" : q.narx) + '" title="Narxi (bo‘sh = odatdagi narx)">' +
+              '<button type="button" class="icon-x" data-rm title="Olib tashlash">' + ic("x") + "</button>";
             if (q.id) d.dataset.id = q.id;
             d.querySelector("[data-rm]").onclick = function () { d.remove(); calc(); };
             items.appendChild(d);
           }
+          function bonusRow(x) {
+            var d = document.createElement("div");
+            d.className = "it bn";
+            d.innerHTML = '<input data-f="nom" placeholder="Bonus nomi (masalan Tasbeh)" value="' + esc(x.nom || "") + '">' +
+              (foyda ? '<input type="number" min="0" data-f="tannarx" placeholder="tannarx" value="' + (x.tannarx || "") + '" title="Ixtiyoriy: sizga qanchaga tushgan">' : "") +
+              '<button type="button" class="icon-x" data-rm title="Olib tashlash">' + ic("x") + "</button>";
+            d.querySelector("[data-rm]").onclick = function () { d.remove(); calc(); };
+            bonus.appendChild(d);
+          }
           qator.forEach(row);
+          (b.bonuslar || []).forEach(bonusRow);
           ov.querySelector("#addrow").onclick = function () {
-            row({ mahsulot: mahsulotlar[0] && mahsulotlar[0].id, miqdor: 1, narx: null, sovga: false }); calc();
+            row({ mahsulot: mahsulotlar[0] && mahsulotlar[0].id, miqdor: 1, narx: null }); calc();
           };
+          ov.querySelector("#addbonus").onclick = function () { bonusRow({}); calc(); };
           ov.querySelector("#full").onclick = function (e) {
             e.preventDefault(); calc(); ov.querySelector('[name="tolangan"]').value = ov._tushum || 0; calc();
           };
           function mah(id) { return mahsulotlar.filter(function (m) { return String(m.id) === String(id); })[0]; }
           function calc() {
-            var tur = val(ov, "tur"), jami = 0, tannarx = 0, bonus = 0;
+            var tur = val(ov, "tur"), jami = 0, tannarx = 0, bonusCost = 0;
             Array.prototype.forEach.call(items.querySelectorAll(".it"), function (r) {
               var m = mah(r.querySelector('[data-f="mahsulot"]').value) || {};
               var q = parseInt(r.querySelector('[data-f="miqdor"]').value, 10) || 0;
-              var narxEl = r.querySelector('[data-f="narx"]'), sovga = r.querySelector('[data-f="sovga"]').checked;
+              var narxEl = r.querySelector('[data-f="narx"]');
               var narx = narxEl.value === "" ? (m.narx || 0) : parseInt(narxEl.value, 10) || 0;
-              narxEl.disabled = sovga;
-              if (!sovga) jami += q * narx;
+              jami += q * narx;
               tannarx += q * (m.tannarx || 0);
-              if (sovga) bonus += q * (m.tannarx || 0);
+            });
+            Array.prototype.forEach.call(bonus.querySelectorAll(".it"), function (r) {
+              var t = r.querySelector('[data-f="tannarx"]');
+              if (t) bonusCost += parseInt(t.value, 10) || 0;
             });
             var tekin = tur !== "sotuv";
             var ch = Math.min(intv(ov, "chegirma"), jami);
-            var tushum = tekin || val(ov, "holat") === "bekor" ? 0 : Math.max(0, jami - ch) + intv(ov, "yetkazish_haqi");
+            var tushum = tekin || val(ov, "holat") === "bekor" ? 0 : Math.max(0, jami - ch);
             ov._tushum = tushum;
-            var f = tushum - tannarx - (foyda ? intv(ov, "yetkazish_xarajati") : 0);
+            var jamiTannarx = tannarx + bonusCost;
+            var f = tushum - jamiTannarx - (foyda ? intv(ov, "yetkazish_xarajati") : 0);
             ov.querySelector("#sum").innerHTML =
               '<div class="r"><span>Mahsulotlar</span><span>' + (tekin ? "tekin" : som(jami) + " so‘m") + "</span></div>" +
               '<div class="r"><span>Chegirma</span><span>' + (tekin ? "—" : "− " + som(ch)) + "</span></div>" +
-              '<div class="r"><span>Yetkazish haqi</span><span>' + (tekin ? "—" : som(intv(ov, "yetkazish_haqi"))) + "</span></div>" +
               '<div class="r tot"><span>Tushum</span><span>' + som(tushum) + " so‘m</span></div>" +
-              (foyda ? '<div class="r"><span>Tannarx' + (bonus ? " (bonus: " + som(bonus) + ")" : "") + "</span><span>" + som(tannarx) + " so‘m</span></div>" +
+              (foyda ? '<div class="r"><span>Tannarx' + (bonusCost ? " (bonus: " + som(bonusCost) + ")" : "") + "</span><span>" + som(jamiTannarx) + " so‘m</span></div>" +
                 '<div class="r tot"><span>Foyda</span><span class="' + (f < 0 ? "neg" : "pos") + '">' + som(f) + " so‘m</span></div>" : "");
           }
           ov.addEventListener("input", calc);
@@ -429,17 +447,23 @@
         onSave: function (ov) {
           var ism = val(ov, "mijoz_ism").trim();
           if (!ism) { toast("Mijoz ismini yozing.", true); return false; }
-          var qatorlar = [];
+          var qatorlar = [], bonuslar = [];
           Array.prototype.forEach.call(ov.querySelectorAll("#items .it"), function (r) {
             var q = {
               mahsulot: parseInt(r.querySelector('[data-f="mahsulot"]').value, 10),
               miqdor: parseInt(r.querySelector('[data-f="miqdor"]').value, 10) || 1,
-              narx: null, sovga: r.querySelector('[data-f="sovga"]').checked,
+              narx: null,
             };
             var narx = r.querySelector('[data-f="narx"]').value;
-            if (narx !== "" && !q.sovga) q.narx = parseInt(narx, 10);
+            if (narx !== "") q.narx = parseInt(narx, 10);
             if (r.dataset.id) q.id = +r.dataset.id;
             qatorlar.push(q);
+          });
+          if (!qatorlar.length) { toast("Kamida bitta mahsulot qo‘shing.", true); return false; }
+          Array.prototype.forEach.call(ov.querySelectorAll("#bonus .it"), function (r) {
+            var nom = r.querySelector('[data-f="nom"]').value.trim();
+            var t = r.querySelector('[data-f="tannarx"]');
+            if (nom) bonuslar.push({ nom: nom, tannarx: t ? parseInt(t.value, 10) || 0 : 0 });
           });
           var mavjud = S.cache.mijozlar.filter(function (m) { return m.ism.toLowerCase() === ism.toLowerCase(); })[0];
           var mijozData = { ism: ism, telefon: val(ov, "mijoz_tel"), username: val(ov, "mijoz_user") };
@@ -450,9 +474,9 @@
           return p.then(function (m) {
             var data = {
               mijoz: m.id, sana: val(ov, "sana"), tur: val(ov, "tur"), holat: val(ov, "holat"), manba: val(ov, "manba"),
-              kampaniya: val(ov, "kampaniya").trim(), chegirma: intv(ov, "chegirma"), chegirma_izoh: val(ov, "chegirma_izoh"),
-              yetkazish_haqi: intv(ov, "yetkazish_haqi"), tolov_usuli: val(ov, "tolov_usuli"), tolangan: intv(ov, "tolangan"),
-              izoh: val(ov, "izoh"), qatorlar: qatorlar,
+              chegirma: intv(ov, "chegirma"), chegirma_izoh: val(ov, "chegirma_izoh"),
+              tolov_usuli: val(ov, "tolov_usuli"), tolangan: intv(ov, "tolangan"),
+              izoh: val(ov, "izoh"), qatorlar: qatorlar, bonuslar: bonuslar,
             };
             if (S.me.foyda) data.yetkazish_xarajati = intv(ov, "yetkazish_xarajati");
             return api(edit ? "/buyurtmalar/" + b.id + "/" : "/buyurtmalar/", { method: edit ? "PUT" : "POST", body: data });
@@ -525,10 +549,10 @@
     list("/xarajatlar/").then(function (rows) {
       var box = el.querySelector("#tbl");
       if (!rows.length) { box.innerHTML = '<div class="empty">Xarajat kiritilmagan.</div>'; return; }
-      box.innerHTML = '<table class="tbl stack"><thead><tr><th>Sana</th><th>Turi</th><th>Kampaniya</th><th>Izoh</th><th class="n">Summa</th></tr></thead><tbody>' +
+      box.innerHTML = '<table class="tbl stack"><thead><tr><th>Sana</th><th>Turi</th><th>Izoh</th><th class="n">Summa</th></tr></thead><tbody>' +
         rows.map(function (x) {
           return '<tr class="click" data-id="' + x.id + '"><td data-l="Sana">' + fdate(x.sana) + '</td><td data-l="Turi"><span class="badge ' + (x.kategoriya === "material" ? "" : "acc") + '">' + esc(x.kategoriya_nom) +
-            '</span></td><td data-l="Kampaniya">' + esc(x.kampaniya) + '</td><td data-l="Izoh">' + esc(x.izoh) + '</td><td class="n" data-l="Summa"><b>' + som(x.summa) + "</b></td></tr>";
+            '</span></td><td data-l="Izoh">' + esc(x.izoh) + '</td><td class="n" data-l="Summa"><b>' + som(x.summa) + "</b></td></tr>";
         }).join("") + "</tbody></table>";
       Array.prototype.forEach.call(box.querySelectorAll("tr[data-id]"), function (tr) {
         tr.onclick = function () { xarajatForm(rows.filter(function (x) { return x.id === +tr.dataset.id; })[0]); };
@@ -536,16 +560,15 @@
     }).catch(function (e) { el.querySelector("#tbl").innerHTML = '<div class="empty">' + esc(e.message) + "</div>"; });
   }
   function xarajatForm(x) {
-    var edit = !!x; x = x || { sana: today(), kategoriya: "reklama", summa: "", kampaniya: "", izoh: "" };
+    var edit = !!x; x = x || { sana: today(), kategoriya: "reklama", summa: "", izoh: "" };
     drawer({
       title: edit ? "Xarajat" : "Yangi xarajat",
       body: '<div class="row2"><div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(x.sana) + '"></div>' +
         '<div class="field"><label>Turi</label><select name="kategoriya">' + opts(XKAT, x.kategoriya) + "</select></div></div>" +
         '<div class="field"><label>Summa (so‘m)</label><input type="number" min="0" name="summa" value="' + esc(x.summa) + '"></div>' +
-        '<div class="field"><label>Reklama kampaniyasi (reklama bo‘lsa)</label><input name="kampaniya" placeholder="reklama2_uz" value="' + esc(x.kampaniya) + '"></div>' +
         '<div class="field"><label>Izoh</label><input name="izoh" value="' + esc(x.izoh) + '"></div>',
       onSave: function (ov) {
-        var data = { sana: val(ov, "sana"), kategoriya: val(ov, "kategoriya"), summa: intv(ov, "summa"), kampaniya: val(ov, "kampaniya").trim(), izoh: val(ov, "izoh") };
+        var data = { sana: val(ov, "sana"), kategoriya: val(ov, "kategoriya"), summa: intv(ov, "summa"), izoh: val(ov, "izoh") };
         if (!data.summa) { toast("Summani yozing.", true); return false; }
         return api(edit ? "/xarajatlar/" + x.id + "/" : "/xarajatlar/", { method: edit ? "PUT" : "POST", body: data })
           .then(function () { toast("Saqlandi"); render(); });

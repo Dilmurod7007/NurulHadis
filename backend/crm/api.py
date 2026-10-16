@@ -84,7 +84,7 @@ class MijozViewSet(viewsets.ModelViewSet):
     permission_classes = [ModelPerm]
 
     def get_queryset(self):
-        qs = Mijoz.objects.prefetch_related("buyurtmalar__qatorlar__mahsulot")
+        qs = Mijoz.objects.prefetch_related("buyurtmalar__qatorlar__mahsulot", "buyurtmalar__bonuslar")
         q = self.request.query_params.get("q")
         if q:
             qs = qs.filter(Q(ism__icontains=q) | Q(telefon__icontains=q) | Q(username__icontains=q))
@@ -102,7 +102,7 @@ class BuyurtmaViewSet(viewsets.ModelViewSet):
     permission_classes = [ModelPerm]
 
     def get_queryset(self):
-        qs = Buyurtma.objects.select_related("mijoz").prefetch_related("qatorlar__mahsulot")
+        qs = Buyurtma.objects.select_related("mijoz").prefetch_related("qatorlar__mahsulot", "bonuslar")
         p = self.request.query_params
         for maydon in ("holat", "tur", "manba"):
             if p.get(maydon):

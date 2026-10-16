@@ -3,8 +3,8 @@ Nurul Hadis — savdo hisobi (CRM).
 
 Hisob-kitob qoidalari (hammasi so'mda):
 
-    tushum      = mahsulotlar summasi − chegirma + mijozdan olingan yetkazish haqi
-    tannarx     = Σ (miqdor × bankaning o'sha paytdagi tannarxi), bonus sovg'alar ham kiradi
+    tushum      = mahsulotlar summasi − chegirma
+    tannarx     = Σ (miqdor × bankaning o'sha paytdagi tannarxi) + bonus sovg'alar tannarxi
     foyda       = tushum − tannarx − o'zingiz to'lagan yetkazish xarajati
     sof foyda   = Σ foyda − foydaga kiruvchi xarajatlar (reklama, yetkazish va h.k.)
 
@@ -140,12 +140,8 @@ class Buyurtma(models.Model):
 
     chegirma = models.PositiveIntegerField("Chegirma (so'm)", default=0)
     chegirma_izoh = models.CharField("Chegirma sababi", max_length=120, blank=True)
-    yetkazish_haqi = models.PositiveIntegerField(
-        "Yetkazish haqi (mijozdan, so'm)", default=0,
-        help_text="Mijozga alohida hisoblangan yetkazish puli bo'lsa.",
-    )
     yetkazish_xarajati = models.PositiveIntegerField(
-        "Yetkazish xarajati (sizning to'lovingiz, so'm)", default=0,
+        "Yetkazish xarajati (so'm)", default=0,
         help_text="Kuryer/taksi/pochta uchun o'zingiz to'lagan pul.",
     )
 
@@ -183,7 +179,7 @@ class Buyurtma(models.Model):
     def mahsulot_summasi(self):
         if self.tekin:
             return 0
-        return sum(q.miqdor * q.narx for q in self._qatorlar() if not q.sovga)
+        return sum(q.miqdor * q.narx for q in self._qatorlar())
 
     @property
     def tushum(self):
@@ -191,20 +187,24 @@ class Buyurtma(models.Model):
             return 0
         if self.tekin:
             return 0
-        return max(0, self.mahsulot_summasi - self.chegirma) + self.yetkazish_haqi
+        return max(0, self.mahsulot_summasi - self.chegirma)
+
+    def _bonuslar(self):
+        return list(self.bonuslar.all())
 
     @property
     def tannarx_jami(self):
         if not self.hisobga_kiradi:
             return 0
-        return sum(q.miqdor * q.tannarx for q in self._qatorlar())
+        return (sum(q.miqdor * q.tannarx for q in self._qatorlar())
+                + sum(b.tannarx for b in self._bonuslar()))
 
     @property
     def bonus_tannarxi(self):
-        """Pullik buyurtmaga qo'shib berilgan sovg'alar tannarxi."""
-        if not self.hisobga_kiradi or self.tekin:
+        """Buyurtmaga qo'shib berilgan bonus sovg'alar tannarxi (ixtiyoriy kiritiladi)."""
+        if not self.hisobga_kiradi:
             return 0
-        return sum(q.miqdor * q.tannarx for q in self._qatorlar() if q.sovga)
+        return sum(b.tannarx for b in self._bonuslar())
 
     @property
     def tekin_tannarxi(self):
@@ -248,7 +248,7 @@ class Buyurtma(models.Model):
         if not self.hisobga_kiradi:
             return
         sarf = {}
-        for q in self._qatorlar():
+        for q in self.qatorlar.select_related("mahsulot"):
             for t in q.mahsulot.tarkib.select_related("tovar"):
                 sarf[t.tovar_id] = sarf.get(t.tovar_id, 0) + t.miqdor * q.miqdor
         for tovar_id, miqdor in sarf.items():
@@ -266,10 +266,6 @@ class BuyurtmaQator(models.Model):
         "Narxi (so'm)", null=True, blank=True,
         help_text="Bo'sh qoldirsangiz mahsulotning sotuv narxi olinadi.",
     )
-    sovga = models.BooleanField(
-        "Bonus sovg'a", default=False,
-        help_text="Pullik buyurtmaga qo'shib berilgan tekin narsa: narxi 0, tannarxi xarajatga yoziladi.",
-    )
     tannarx = models.PositiveIntegerField("Tannarx (so'm)", null=True, blank=True, editable=False)
 
     class Meta:
@@ -280,13 +276,28 @@ class BuyurtmaQator(models.Model):
         return f"{self.mahsulot} × {self.miqdor}"
 
     def save(self, *args, **kwargs):
-        if self.sovga:
-            self.narx = 0
-        elif self.narx is None:
+        if self.narx is None:
             self.narx = self.mahsulot.narx
         if self.tannarx is None:
             self.tannarx = self.mahsulot.tannarx
         super().save(*args, **kwargs)
+
+
+class BuyurtmaBonus(models.Model):
+    """Buyurtmaga qo'shib berilgan bonus: bazada yo'q, har xil narsa. Faqat nomi yoziladi."""
+
+    buyurtma = models.ForeignKey(Buyurtma, on_delete=models.CASCADE, related_name="bonuslar")
+    nom = models.CharField("Bonus nomi", max_length=120)
+    tannarx = models.PositiveIntegerField(
+        "Tannarx (so'm)", default=0,
+        help_text="Ixtiyoriy: bonus sizga qanchaga tushgan. Bo'sh qoldirsangiz 0.")
+
+    class Meta:
+        verbose_name = "Bonus"
+        verbose_name_plural = "Bonuslar"
+
+    def __str__(self):
+        return self.nom
 
 
 class OmborHarakat(models.Model):

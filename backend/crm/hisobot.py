@@ -23,7 +23,7 @@ def davr_boshi(kod):
 def hisobla(boshi=None, tugashi=None):
     from hadis.models import Event  # sayt statistikasi
 
-    b_qs = Buyurtma.objects.select_related("mijoz").prefetch_related("qatorlar__mahsulot")
+    b_qs = Buyurtma.objects.select_related("mijoz").prefetch_related("qatorlar__mahsulot", "bonuslar")
     x_qs = Xarajat.objects.all()
     if boshi:
         b_qs = b_qs.filter(sana__gte=boshi)
@@ -44,7 +44,6 @@ def hisobla(boshi=None, tugashi=None):
         "dona_pullik": sum(b.dona for b in sotuv),
         "mahsulot_summasi": sum(b.mahsulot_summasi for b in sotuv),
         "chegirma": sum(b.chegirma_hisob for b in sotuv),
-        "yetkazish_haqi": sum(b.yetkazish_haqi for b in sotuv),
         "tushum": sum(b.tushum for b in hisobdagi),
         "tannarx": sum(b.tannarx_jami for b in hisobdagi),
         "bonus_tannarx": sum(b.bonus_tannarxi for b in hisobdagi),
@@ -79,7 +78,26 @@ def hisobla(boshi=None, tugashi=None):
         d["foyda"] += b.foyda
     r["manbalar"] = sorted(({"nom": k, **v} for k, v in manba.items()), key=lambda d: -d["soni"])
 
-    # Kampaniya: reklama xarajati, kirishlar, buyurtmalar, tushum
+    # Instagram reklama samaradorligi (kampaniya nomisiz, umumiy)
+    reklama_xarajat = kat.get("reklama", 0)
+    ig = [b for b in hisobdagi if b.manba == "ig_reklama"]
+    ev = Event.objects.filter(from_ad=True)
+    if boshi:
+        ev = ev.filter(created__date__gte=boshi)
+    if tugashi:
+        ev = ev.filter(created__date__lte=tugashi)
+    ig_tushum = sum(b.tushum for b in ig)
+    r["reklama"] = {
+        "xarajat": reklama_xarajat,
+        "kirgan": ev.filter(kind="view", name="landing").values("visitor").distinct().count(),
+        "bosgan": ev.filter(kind="click").values("visitor").distinct().count(),
+        "buyurtma": len(ig),
+        "tushum": ig_tushum,
+        "buyurtma_narxi": round(reklama_xarajat / len(ig)) if ig else None,
+        "roi": round(ig_tushum / reklama_xarajat, 2) if reklama_xarajat else None,
+    }
+
+    # Kampaniya bo'yicha (faqat Django admin hisobotida; yangi CRM'da ko'rsatilmaydi)
     kamp = defaultdict(lambda: {"xarajat": 0, "buyurtma": 0, "tushum": 0, "kirish": 0, "bosgan": 0})
     for x in x_qs:
         if x.kampaniya and x.kategoriya == "reklama":
@@ -88,15 +106,15 @@ def hisobla(boshi=None, tugashi=None):
         if b.kampaniya:
             kamp[b.kampaniya]["buyurtma"] += 1
             kamp[b.kampaniya]["tushum"] += b.tushum
-    ev = Event.objects.exclude(utm_campaign="")
+    evk = Event.objects.exclude(utm_campaign="")
     if boshi:
-        ev = ev.filter(created__date__gte=boshi)
+        evk = evk.filter(created__date__gte=boshi)
     if tugashi:
-        ev = ev.filter(created__date__lte=tugashi)
-    for row in ev.filter(kind="view", name="landing").values("utm_campaign").annotate(
+        evk = evk.filter(created__date__lte=tugashi)
+    for row in evk.filter(kind="view", name="landing").values("utm_campaign").annotate(
             n=Count("visitor", distinct=True)):
         kamp[row["utm_campaign"]]["kirish"] = row["n"]
-    for row in ev.filter(kind="click").values("utm_campaign").annotate(
+    for row in evk.filter(kind="click").values("utm_campaign").annotate(
             n=Count("visitor", distinct=True)):
         kamp[row["utm_campaign"]]["bosgan"] = row["n"]
     r["kampaniyalar"] = []
