@@ -252,6 +252,13 @@ class Buyurtma(models.Model):
         return self.tushum - self.tannarx_jami - self.yetkazish_xarajati
 
     @property
+    def qolgan_summa(self):
+        """Tushumdan yetkazib berish xarajati ayrilgandan keyin qolgan summa."""
+        if not self.hisobga_kiradi:
+            return 0
+        return self.tushum - self.yetkazish_xarajati
+
+    @property
     def qarz(self):
         if not self.hisobga_kiradi:
             return 0
@@ -347,6 +354,12 @@ class OmborHarakat(models.Model):
         "Miqdor", help_text="Kirimda musbat; kamayganda (buzildi, yo'qoldi) manfiy son yozing.")
     birlik_narx = models.PositiveIntegerField(
         "Birligi narxi (so'm)", default=0, help_text="Faqat kirim uchun: sotib olgan narxingiz.")
+    xarajatga = models.BooleanField(
+        "Xarajat sifatida yozilsin", default=True,
+        help_text="Kirim uchun: belgilansa, xarid summasi Xarajatlar ro'yxatiga ham tushadi.")
+    qoshimcha_xarajat = models.PositiveIntegerField(
+        "Qo'shimcha xarajat (so'm)", default=0,
+        help_text="Yo'l kira, olib kelish, tashish va h.k. Faqat xarajatga yozilsa hisoblanadi.")
     sana = models.DateField("Sana", default=bugun, db_index=True)
     buyurtma = models.ForeignKey(Buyurtma, null=True, blank=True, on_delete=models.CASCADE,
                                  related_name="harakatlar", editable=False)
@@ -362,16 +375,33 @@ class OmborHarakat(models.Model):
 
     @property
     def summa(self):
+        """Xarid summasi (soni × dona narxi)."""
         return abs(self.miqdor) * self.birlik_narx if self.turi == "kirim" else 0
 
+    @property
+    def jami(self):
+        """Xarid summasi + qo'shimcha xarajat (yo'l kira va h.k.)."""
+        return self.summa + (self.qoshimcha_xarajat if self.turi == "kirim" else 0)
+
+    @property
+    def dona_tannarx(self):
+        """Qo'shimcha xarajat bilan bitta dona qanchaga tushgani."""
+        if self.turi != "kirim" or not self.miqdor:
+            return 0
+        return round(self.jami / abs(self.miqdor))
+
     def save(self, *args, **kwargs):
+        if self.turi != "kirim":
+            self.qoshimcha_xarajat = 0
         super().save(*args, **kwargs)
-        # Material xaridi pul oqimiga yozilsin (foydaga ta'sir qilmaydi)
-        if self.turi == "kirim" and self.birlik_narx:
+        # Xarid xarajat sifatida yoziladi (foydaga ta'sir qilmaydi, pul oqimida ko'rinadi)
+        if self.turi == "kirim" and self.xarajatga and self.jami:
             Xarajat.objects.update_or_create(
                 harakat=self, defaults={
-                    "sana": self.sana, "kategoriya": "material", "summa": self.summa,
-                    "izoh": f"Ombor kirimi: {self.tovar} × {self.miqdor}",
+                    "sana": self.sana, "kategoriya": "material", "summa": self.jami,
+                    "izoh": f"Ombor kirimi: {self.tovar} × {self.miqdor}"
+                            + (f" (yo'l/boshqa: {self.qoshimcha_xarajat:,} so'm)".replace(",", " ")
+                               if self.qoshimcha_xarajat else ""),
                 })
         else:
             Xarajat.objects.filter(harakat=self).delete()

@@ -60,6 +60,8 @@
     return fetch(API + path, {
       method: opt.method || "GET", headers: h, credentials: "same-origin",
       body: opt.body !== undefined ? JSON.stringify(opt.body) : undefined,
+    }).catch(function () {
+      throw new Error("Internet yo‘q yoki server javob bermayapti. Ulanishni tekshiring.");
     }).then(function (r) {
       if (r.status === 204) return null;
       return r.json().catch(function () { return null; }).then(function (d) {
@@ -92,6 +94,8 @@
     money: '<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.7c0-1 1-1.7 2.5-1.7s2.5.7 2.5 1.7-1 1.5-2.5 1.8-2.5.8-2.5 1.8 1 1.7 2.5 1.7 2.5-.7 2.5-1.7"/>',
     trend: '<path d="M4 17l5-5 4 4 7-8M15 8h5v5"/>',
     cart: '<path d="M4 5h2l2 11h10l2-8H7M10 20h.01M17 20h.01"/>',
+    install: '<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19h14"/>',
+    more: '<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',
     debt: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   };
   function ic(n, cls) {
@@ -105,16 +109,31 @@
     ov.className = "ov";
     ov.innerHTML =
       '<div class="drawer" role="dialog"><div class="hd"><h2>' + esc(opt.title) + '</h2>' +
-      '<button class="icon-x" data-x>' + ic("x") + '</button></div>' +
+      '<button class="icon-x" data-x aria-label="Yopish">' + ic("x") + '</button></div>' +
       '<div class="bd">' + opt.body + '</div>' +
       '<div class="ft">' + (opt.onDelete ? '<button class="btn bad" data-del>O‘chirish</button><span class="sp"></span>' : "") +
       '<button class="btn" data-x>Bekor</button><button class="btn pri" data-save>Saqlash</button></div></div>';
     document.body.appendChild(ov);
-    function close() { ov.remove(); document.removeEventListener("keydown", esc_); }
+    var oldOverflow = document.body.style.overflow, yopilgan = false;
+    document.body.style.overflow = "hidden";
+    // Telefonda «orqaga» tugmasi ilovadan chiqarib yubormasdan, oynani yopsin
+    history.pushState({ nhDrawer: 1 }, "");
+    function onPop() { close(true); }
+    function close(popdan) {
+      if (yopilgan) return;
+      yopilgan = true;
+      ov.remove();
+      document.body.style.overflow = oldOverflow;
+      document.removeEventListener("keydown", esc_);
+      window.removeEventListener("popstate", onPop);
+      if (!popdan && history.state && history.state.nhDrawer) history.back();
+    }
     function esc_(e) { if (e.key === "Escape") close(); }
+    window.addEventListener("popstate", onPop);
     document.addEventListener("keydown", esc_);
+    ov.close = function () { close(); };
     ov.addEventListener("mousedown", function (e) { if (e.target === ov) close(); });
-    Array.prototype.forEach.call(ov.querySelectorAll("[data-x]"), function (b) { b.onclick = close; });
+    Array.prototype.forEach.call(ov.querySelectorAll("[data-x]"), function (b) { b.onclick = function () { close(); }; });
     var save = ov.querySelector("[data-save]");
     save.onclick = function () {
       save.disabled = true;
@@ -312,13 +331,16 @@
     el.innerHTML = '<div class="toolbar"><input type="search" id="q" placeholder="Mijoz, telefon, izoh…" value="' + esc(f.q) + '">' +
       '<select id="holat"><option value="">Barcha holatlar</option>' + opts(HOLAT, f.holat) + "</select>" +
       '<select id="tur"><option value="">Barcha turlar</option>' + opts(TUR, f.tur) + "</select>" +
-      '<span style="flex:1"></span><button class="btn pri" id="new">' + ic("plus") + "Yangi buyurtma</button></div>" +
+      '<span class="sp"></span><button class="btn pri desk-only" id="new">' + ic("plus") + "Yangi buyurtma</button></div>" +
+      (S.mijozFilter ? '<div class="alert" style="display:flex;justify-content:space-between;align-items:center;gap:10px">Bitta mijozning buyurtmalari ko‘rsatilmoqda <button class="btn sm" id="clrf">Hammasini ko‘rsat</button></div>' : "") +
       '<div class="card tcard" id="tbl"><div class="empty">Yuklanmoqda…</div></div>';
     var timer;
     el.querySelector("#q").oninput = function (e) { f.q = e.target.value; clearTimeout(timer); timer = setTimeout(load, 250); };
     el.querySelector("#holat").onchange = function (e) { f.holat = e.target.value; load(); };
     el.querySelector("#tur").onchange = function (e) { f.tur = e.target.value; load(); };
     el.querySelector("#new").onclick = function () { buyurtmaForm(null); };
+    var clr = el.querySelector("#clrf");
+    if (clr) clr.onclick = function () { S.mijozFilter = null; render(); };
     load();
 
     function load() {
@@ -327,13 +349,13 @@
         var box = el.querySelector("#tbl");
         if (!rows.length) { box.innerHTML = '<div class="empty">Buyurtma topilmadi.</div>'; return; }
         var foyda = S.me.foyda;
-        box.innerHTML = '<table class="tbl stack"><thead><tr><th>№</th><th>Sana</th><th>Mijoz</th><th>Turi</th><th>Holati</th><th>Yetkazish</th><th class="n">Dona</th><th class="n">Tushum</th>' +
-          (foyda ? '<th class="n">Foyda</th>' : "") + "<th>To‘lov</th></tr></thead><tbody>" + rows.map(function (b) {
-            return '<tr class="click" data-id="' + b.id + '"><td data-l="№">#' + b.id + '</td><td data-l="Sana">' + fdate(b.sana) + '</td><td data-l="Mijoz"><b>' + esc(b.mijoz_nom) +
-              "</b></td><td data-l=\"Turi\">" + turBadge(b.tur) + '</td><td data-l="Holati">' + holatBadge(b.holat) + '</td><td data-l="Yetkazish">' + esc(b.yetkazish_turi_nom) + '</td><td class="n" data-l="Dona">' + b.dona +
-              '</td><td class="n" data-l="Tushum">' + som(b.tushum) + "</td>" +
-              (foyda ? '<td class="n ' + (b.foyda < 0 ? "neg" : "") + '" data-l="Foyda">' + som(b.foyda) + "</td>" : "") +
-              '<td data-l="To‘lov">' + tolovBadge(b.tolov_holati) + "</td></tr>";
+        box.innerHTML = '<table class="tbl stack"><thead><tr><th class="hide-l">№</th><th>Sana</th><th>Mijoz</th><th>Turi</th><th>Holati</th><th class="hide-l">Yetkazish</th><th class="n">Dona</th><th class="n">Tushum</th>' +
+          (foyda ? '<th class="n">Qolgan summa</th>' : "") + "<th>To‘lov</th></tr></thead><tbody>" + rows.map(function (b) {
+            return '<tr class="click" data-id="' + b.id + '"><td class="hide-m hide-l">#' + b.id + '</td><td class="c-sub">' + fdate(b.sana) + '</td><td class="c-main">' + esc(b.mijoz_nom) +
+              '</td><td class="c-sub">' + turBadge(b.tur) + '</td><td class="c-sub">' + holatBadge(b.holat) + '</td><td class="c-sub hide-l">' + esc(b.yetkazish_turi_nom) +
+              '</td><td class="n c-sub">' + b.dona + ' dona</td><td class="n c-amt">' + (b.tur === "sotuv" ? som(b.tushum) : '<span class="muted">tekin</span>') + '</td><td class="br"></td>' +
+              (foyda ? '<td class="n c-sub' + (b.qolgan_summa ? "" : " hide-m") + '" data-l="Qolgan">' + som(b.qolgan_summa) + "</td>" : "") +
+              '<td class="c-sub' + (b.tolov_holati === "—" ? " hide-m" : "") + '">' + tolovBadge(b.tolov_holati) + "</td></tr>";
           }).join("") + "</tbody></table>";
         Array.prototype.forEach.call(box.querySelectorAll("tr[data-id]"), function (tr) {
           tr.onclick = function () { buyurtmaForm(rows.filter(function (b) { return b.id === +tr.dataset.id; })[0]); };
@@ -360,12 +382,12 @@
       var body =
         '<div class="field"><label>Mijoz</label><input name="mijoz_ism" list="mlist" placeholder="Ism yozing yoki tanlang" value="' + esc(cur ? cur.ism : "") + '" autocomplete="off">' +
         '<datalist id="mlist">' + mijozlar.map(function (m) { return '<option value="' + esc(m.ism) + '">' + esc(m.telefon) + "</option>"; }).join("") + "</datalist></div>" +
-        '<div class="row2"><div class="field"><label>Telefon</label><input name="mijoz_tel" placeholder="+998 90 123 45 67" value="' + esc(cur ? cur.telefon : "") + '"></div>' +
+        '<div class="row2"><div class="field"><label>Telefon</label><input name="mijoz_tel" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" value="' + esc(cur ? cur.telefon : "") + '"></div>' +
         '<div class="field"><label>Telegram / Instagram</label><input name="mijoz_user" placeholder="@username" value="' + esc(cur ? cur.username : "") + '"></div></div>' +
-        '<div class="row3"><div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(b.sana) + '"></div>' +
-        '<div class="field"><label>Turi</label><select name="tur">' + opts(TUR, b.tur) + "</select></div>" +
+        '<div class="row2 keep"><div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(b.sana) + '"></div>' +
         '<div class="field"><label>Holati</label><select name="holat">' + opts(HOLAT, b.holat) + "</select></div></div>" +
-        '<div class="field"><label>Qayerdan keldi</label><select name="manba">' + opts(MANBA, b.manba) + "</select></div>" +
+        '<div class="row2 keep"><div class="field"><label>Turi</label><select name="tur">' + opts(TUR, b.tur) + "</select></div>" +
+        '<div class="field"><label>Qayerdan keldi</label><select name="manba">' + opts(MANBA, b.manba) + "</select></div></div>" +
         '<div class="sec">Mahsulotlar</div><div class="items" id="items"></div>' +
         '<button class="btn sm" type="button" id="addrow">' + ic("plus") + "Mahsulot qo‘shish</button>" +
         '<div class="sec">Bonus (sovg‘a)</div><div class="items bonus" id="bonus"></div>' +
@@ -400,7 +422,7 @@
           function bonusRow(x) {
             var d = document.createElement("div");
             d.className = "it bn";
-            d.innerHTML = '<input data-f="nom" placeholder="Bonus nomi (masalan Tasbeh)" value="' + esc(x.nom || "") + '">' +
+            d.innerHTML = '<input data-f="nom" placeholder="Bonus nomi" value="' + esc(x.nom || "") + '">' +
               (foyda ? '<input type="number" min="0" data-f="tannarx" placeholder="tannarx" value="' + (x.tannarx || "") + '" title="Ixtiyoriy: sizga qanchaga tushgan">' : "") +
               '<button type="button" class="icon-x" data-rm title="Olib tashlash">' + ic("x") + "</button>";
             d.querySelector("[data-rm]").onclick = function () { d.remove(); calc(); };
@@ -438,14 +460,13 @@
             var ch = tekin ? 0 : Math.min(intv(ov, "chegirma"), jami);
             var tushum = tekin || val(ov, "holat") === "bekor" ? 0 : Math.max(0, jami - ch);
             ov._tushum = tushum;
-            var jamiTannarx = tannarx + bonusCost;
-            var f = tushum - jamiTannarx - (foyda && !oziOladi ? intv(ov, "yetkazish_xarajati") : 0);
+            var yetkazish = foyda && !oziOladi ? intv(ov, "yetkazish_xarajati") : 0;
             ov.querySelector("#sum").innerHTML =
               '<div class="r"><span>Mahsulotlar</span><span>' + (tekin ? "tekin" : som(jami) + " so‘m") + "</span></div>" +
-              '<div class="r"><span>Chegirma</span><span>' + (tekin ? "—" : "− " + som(ch)) + "</span></div>" +
+              (tekin ? "" : '<div class="r"><span>Chegirma</span><span>− ' + som(ch) + "</span></div>") +
               '<div class="r tot"><span>Tushum</span><span>' + som(tushum) + " so‘m</span></div>" +
-              (foyda ? '<div class="r"><span>Tannarx' + (bonusCost ? " (bonus: " + som(bonusCost) + ")" : "") + "</span><span>" + som(jamiTannarx) + " so‘m</span></div>" +
-                '<div class="r tot"><span>Foyda</span><span class="' + (f < 0 ? "neg" : "pos") + '">' + som(f) + " so‘m</span></div>" : "");
+              (foyda ? '<div class="r"><span>Yetkazib berish narxi</span><span>− ' + som(yetkazish) + " so‘m</span></div>" +
+                '<div class="r tot"><span>Qolgan summa</span><span class="' + (tushum - yetkazish < 0 ? "neg" : "") + '">' + som(tushum - yetkazish) + " so‘m</span></div>" : "");
           }
           ov.addEventListener("input", calc);
           ov.addEventListener("change", calc);
@@ -501,7 +522,7 @@
   /* ── mijozlar ─────────────────────────────────────────────────── */
   function pageMijozlar(el) {
     el.innerHTML = '<div class="toolbar"><input type="search" id="q" placeholder="Ism, telefon, username…">' +
-      '<span style="flex:1"></span><button class="btn pri" id="new">' + ic("plus") + "Yangi mijoz</button></div>" +
+      '<span class="sp"></span><button class="btn pri" id="new">' + ic("plus") + "Yangi mijoz</button></div>" +
       '<div class="card tcard" id="tbl"><div class="empty">Yuklanmoqda…</div></div>';
     var timer;
     el.querySelector("#q").oninput = function (e) { clearTimeout(timer); timer = setTimeout(function () { load(e.target.value); }, 250); };
@@ -514,9 +535,9 @@
         var foyda = S.me.foyda;
         box.innerHTML = '<table class="tbl stack"><thead><tr><th>Ism</th><th>Telefon</th><th>Username</th><th>Manzil</th><th class="n">Buyurtma</th>' +
           (foyda ? '<th class="n">Jami</th>' : "") + "</tr></thead><tbody>" + rows.map(function (m) {
-            return '<tr class="click" data-id="' + m.id + '"><td data-l="Ism"><b>' + esc(m.ism) + '</b></td><td data-l="Telefon">' + esc(m.telefon) + '</td><td data-l="Username">' + esc(m.username) +
-              '</td><td data-l="Manzil">' + esc(m.manzil) + '</td><td class="n" data-l="Buyurtma">' + m.buyurtma_soni + "</td>" +
-              (foyda ? '<td class="n" data-l="Jami">' + som(m.jami_summa) + "</td>" : "") + "</tr>";
+            return '<tr class="click" data-id="' + m.id + '"><td class="c-main">' + esc(m.ism) + '</td><td class="c-sub">' + esc(m.telefon) + '</td><td class="c-sub">' + esc(m.username) +
+              '</td><td class="c-sub">' + esc(m.manzil) + '</td><td class="n c-amt">' + m.buyurtma_soni + ' ta</td><td class="br"></td>' +
+              (foyda ? '<td class="n c-sub" data-l="Jami">' + som(m.jami_summa) + "</td>" : "") + "</tr>";
           }).join("") + "</tbody></table>";
         Array.prototype.forEach.call(box.querySelectorAll("tr[data-id]"), function (tr) {
           tr.onclick = function () { mijozForm(rows.filter(function (m) { return m.id === +tr.dataset.id; })[0]); };
@@ -529,14 +550,14 @@
     drawer({
       title: edit ? m.ism : "Yangi mijoz",
       body: '<div class="field"><label>Ism</label><input name="ism" value="' + esc(m.ism) + '"></div>' +
-        '<div class="row2"><div class="field"><label>Telefon</label><input name="telefon" value="' + esc(m.telefon) + '"></div>' +
+        '<div class="row2"><div class="field"><label>Telefon</label><input name="telefon" type="tel" inputmode="tel" value="' + esc(m.telefon) + '"></div>' +
         '<div class="field"><label>Telegram / Instagram</label><input name="username" value="' + esc(m.username) + '"></div></div>' +
         '<div class="field"><label>Manzil / shahar</label><input name="manzil" value="' + esc(m.manzil) + '"></div>' +
         '<div class="field"><label>Izoh</label><textarea name="izoh">' + esc(m.izoh) + "</textarea></div>" +
         (edit ? '<a class="btn sm" href="#/buyurtmalar" id="ords">Buyurtmalarini ko‘rish</a>' : ""),
       onOpen: function (ov) {
         var a = ov.querySelector("#ords");
-        if (a) a.onclick = function () { S.mijozFilter = m.id; ov.remove(); };
+        if (a) a.onclick = function () { S.mijozFilter = m.id; ov.close(); };
       },
       onSave: function (ov) {
         var data = { ism: val(ov, "ism").trim(), telefon: val(ov, "telefon"), username: val(ov, "username"), manzil: val(ov, "manzil"), izoh: val(ov, "izoh") };
@@ -552,7 +573,7 @@
 
   /* ── xarajatlar ───────────────────────────────────────────────── */
   function pageXarajatlar(el) {
-    el.innerHTML = '<div class="toolbar"><span style="flex:1"></span><button class="btn pri" id="new">' + ic("plus") + "Xarajat qo‘shish</button></div>" +
+    el.innerHTML = '<div class="toolbar"><span class="sp"></span><button class="btn pri" id="new">' + ic("plus") + "Xarajat qo‘shish</button></div>" +
       '<div class="card tcard" id="tbl"><div class="empty">Yuklanmoqda…</div></div>';
     el.querySelector("#new").onclick = function () { xarajatForm(null); };
     list("/xarajatlar/").then(function (rows) {
@@ -560,8 +581,8 @@
       if (!rows.length) { box.innerHTML = '<div class="empty">Xarajat kiritilmagan.</div>'; return; }
       box.innerHTML = '<table class="tbl stack"><thead><tr><th>Sana</th><th>Turi</th><th>Izoh</th><th class="n">Summa</th></tr></thead><tbody>' +
         rows.map(function (x) {
-          return '<tr class="click" data-id="' + x.id + '"><td data-l="Sana">' + fdate(x.sana) + '</td><td data-l="Turi"><span class="badge ' + (x.kategoriya === "material" ? "" : "acc") + '">' + esc(x.kategoriya_nom) +
-            '</span></td><td data-l="Izoh">' + esc(x.izoh) + '</td><td class="n" data-l="Summa"><b>' + som(x.summa) + "</b></td></tr>";
+          return '<tr class="click" data-id="' + x.id + '"><td class="c-sub">' + fdate(x.sana) + '</td><td class="c-main"><span class="badge ' + (x.kategoriya === "material" ? "" : "acc") + '">' + esc(x.kategoriya_nom) +
+            '</span></td><td class="c-sub">' + esc(x.izoh) + '</td><td class="n c-amt"><b>' + som(x.summa) + '</b></td><td class="br"></td></tr>';
         }).join("") + "</tbody></table>";
       Array.prototype.forEach.call(box.querySelectorAll("tr[data-id]"), function (tr) {
         tr.onclick = function () { xarajatForm(rows.filter(function (x) { return x.id === +tr.dataset.id; })[0]); };
@@ -590,26 +611,31 @@
 
   /* ── ombor ────────────────────────────────────────────────────── */
   function pageOmbor(el) {
-    el.innerHTML = '<div class="toolbar"><span style="flex:1"></span><button class="btn" id="nt">' + ic("plus") + "Yangi tovar</button>" +
+    el.innerHTML = '<div class="toolbar"><span class="sp"></span><button class="btn" id="nt">' + ic("plus") + "Yangi tovar</button>" +
       '<button class="btn pri" id="kirim">' + ic("plus") + "Kirim / tuzatish</button></div>" +
       '<div class="grid g2e"><div class="card tcard" id="tov"><div class="empty">Yuklanmoqda…</div></div>' +
       '<div class="card tcard" id="har"><div class="empty">Yuklanmoqda…</div></div></div>';
     Promise.all([list("/ombor/"), list("/harakatlar/")]).then(function (res) {
       var tov = res[0], har = res[1];
-      el.querySelector("#nt").onclick = function () { tovarForm(null); };
-      el.querySelector("#kirim").onclick = function () { harakatForm(tov); };
-      el.querySelector("#tov").innerHTML = tov.length ? '<table class="tbl"><thead><tr><th>Tovar</th><th class="n">Qoldiq</th><th>Holat</th></tr></thead><tbody>' +
+      function yangiTovar() { tovarForm(null); }
+      function kirim() { harakatForm(tov); }
+      el.querySelector("#nt").onclick = yangiTovar; el.querySelector("#kirim").onclick = kirim;
+      el.querySelector("#tov").innerHTML = tov.length ? '<table class="tbl stack"><thead><tr><th>Tovar</th><th class="n">Qoldiq</th><th>Holat</th></tr></thead><tbody>' +
         tov.map(function (t) {
-          return '<tr class="click" data-id="' + t.id + '"><td><b>' + esc(t.nom) + '</b></td><td class="n">' + t.qoldiq + " " + esc(t.birlik) + "</td><td>" +
+          return '<tr class="click" data-id="' + t.id + '"><td class="c-main">' + esc(t.nom) + '</td><td class="n c-amt">' + t.qoldiq + " " + esc(t.birlik) + '</td><td class="br"></td><td class="c-sub">' +
             (t.kam ? '<span class="badge bad">Kam qoldi</span>' : '<span class="badge ok">Yetarli</span>') + "</td></tr>";
         }).join("") + "</tbody></table>" : '<div class="empty">Ombor bo‘sh. «Yangi tovar» bilan boshlang (banka, quti, sumka…).</div>';
       Array.prototype.forEach.call(el.querySelectorAll("#tov tr[data-id]"), function (tr) {
         tr.onclick = function () { tovarForm(tov.filter(function (t) { return t.id === +tr.dataset.id; })[0]); };
       });
-      el.querySelector("#har").innerHTML = har.length ? '<table class="tbl"><thead><tr><th>Sana</th><th>Tovar</th><th class="n">Miqdor</th><th>Izoh</th></tr></thead><tbody>' +
+      el.querySelector("#har").innerHTML = har.length ? '<table class="tbl stack"><thead><tr><th>Sana</th><th>Tovar</th><th class="n">Miqdor</th><th class="n">Dona narxi</th><th class="n">Jami</th><th>Izoh</th></tr></thead><tbody>' +
         har.map(function (h) {
-          return '<tr data-id="' + h.id + '" class="' + (h.buyurtma ? "" : "click") + '"><td>' + fdate(h.sana) + "</td><td>" + esc(h.tovar_nom) + '</td><td class="n ' + (h.miqdor < 0 ? "neg" : "pos") + '">' + (h.miqdor > 0 ? "+" : "") + h.miqdor +
-            "</td><td>" + esc(h.izoh) + "</td></tr>";
+          var kirim = h.turi === "kirim";
+          return '<tr data-id="' + h.id + '" class="' + (h.buyurtma ? "" : "click") + '"><td class="c-sub">' + fdate(h.sana) + '</td><td class="c-main">' + esc(h.tovar_nom) +
+            '</td><td class="n c-amt ' + (h.miqdor < 0 ? "neg" : "pos") + '">' + (h.miqdor > 0 ? "+" : "") + h.miqdor + '</td><td class="br"></td>' +
+            '<td class="n c-sub' + (kirim && h.birlik_narx ? "" : " hide-m") + '" data-l="Dona narxi">' + (kirim && h.birlik_narx ? som(h.birlik_narx) : "") +
+            '</td><td class="n c-sub' + (kirim && h.jami ? "" : " hide-m") + '" data-l="Jami">' + (kirim && h.jami ? som(h.jami) : "") +
+            '</td><td class="c-sub">' + esc(h.izoh) + "</td></tr>";
         }).join("") + "</tbody></table>" : '<div class="empty">Harakat yo‘q.</div>';
       Array.prototype.forEach.call(el.querySelectorAll("#har tr.click"), function (tr) {
         tr.onclick = function () { harakatForm(tov, har.filter(function (h) { return h.id === +tr.dataset.id; })[0]); };
@@ -634,19 +660,47 @@
     });
   }
   function harakatForm(tov, h) {
-    var edit = !!h; h = h || { tovar: tov[0] && tov[0].id, turi: "kirim", miqdor: "", birlik_narx: 0, sana: today(), izoh: "" };
+    var edit = !!h;
+    h = h || { tovar: tov[0] && tov[0].id, turi: "kirim", miqdor: "", birlik_narx: "", sana: today(), izoh: "", xarajatga: true, qoshimcha_xarajat: "" };
     if (!tov.length) { toast("Avval ombor tovarini qo‘shing.", true); return; }
     drawer({
       title: edit ? "Ombor harakati" : "Kirim / tuzatish",
       body: '<div class="field"><label>Tovar</label><select name="tovar">' + opts(tov, h.tovar) + "</select></div>" +
-        '<div class="row2"><div class="field"><label>Turi</label><select name="turi">' + opts([["kirim", "Kirim (sotib olindi / tayyorlandi)"], ["tuzatish", "Tuzatish (buzildi, yo‘qoldi)"]], h.turi) + "</select></div>" +
+        '<div class="row2"><div class="field"><label>Turi</label><select name="turi">' + opts([["kirim", "Kirim (sotib olindi)"], ["tuzatish", "Tuzatish (buzildi, yo‘qoldi)"]], h.turi) + "</select></div>" +
         '<div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(h.sana) + '"></div></div>' +
-        '<div class="row2"><div class="field"><label>Miqdor</label><input type="number" name="miqdor" value="' + esc(h.miqdor) + '"><small class="muted">Tuzatishda kamayish uchun manfiy son (−3).</small></div>' +
-        '<div class="field"><label>Birligi narxi (faqat kirim)</label><input type="number" min="0" name="birlik_narx" value="' + h.birlik_narx + '"></div></div>' +
-        '<div class="field"><label>Izoh</label><input name="izoh" value="' + esc(h.izoh) + '"></div>',
+        '<div class="row2 keep"><div class="field"><label id="mlabel">Omborga kirgan soni</label><input type="number" inputmode="numeric" name="miqdor" value="' + esc(h.miqdor) + '" placeholder="0"></div>' +
+        '<div class="field" data-k><label>Dona narxi (so‘m)</label><input type="number" inputmode="numeric" min="0" name="birlik_narx" value="' + esc(h.birlik_narx || "") + '" placeholder="0"></div></div>' +
+        '<div data-k><div class="summary" id="ksum"></div>' +
+        '<div class="field" style="margin-top:14px"><label class="chk"><input type="checkbox" name="xarajatga"' + (h.xarajatga !== false ? " checked" : "") + '> Xarajat sifatida yozilsin</label></div>' +
+        '<div class="field" data-x><label>Qo‘shimcha xarajat (yo‘l kira, olib kelish…) (so‘m)</label><input type="number" inputmode="numeric" min="0" name="qoshimcha_xarajat" value="' + esc(h.qoshimcha_xarajat || "") + '" placeholder="0">' +
+        "<small>Xarid summasiga qo‘shilib, bitta xarajat bo‘lib yoziladi.</small></div></div>" +
+        '<div class="field"><label>Izoh</label><input name="izoh" value="' + esc(h.izoh) + '" placeholder="Masalan: Chorsudan olindi"></div>',
+      onOpen: function (ov) {
+        function calc() {
+          var kirim = val(ov, "turi") === "kirim";
+          Array.prototype.forEach.call(ov.querySelectorAll("[data-k]"), function (e) { e.classList.toggle("hide", !kirim); });
+          ov.querySelector("#mlabel").textContent = kirim ? "Omborga kirgan soni" : "Miqdor (kamayish uchun −3)";
+          var xg = ov.querySelector('[name="xarajatga"]').checked;
+          ov.querySelector("[data-x]").classList.toggle("hide", !xg);
+          var soni = Math.abs(intv(ov, "miqdor")), narx = intv(ov, "birlik_narx"), qosh = xg ? intv(ov, "qoshimcha_xarajat") : 0;
+          var xarid = soni * narx, jami = xarid + qosh;
+          ov.querySelector("#ksum").innerHTML =
+            '<div class="r"><span>Xarid jami (' + soni + " × " + som(narx) + ")</span><span>" + som(xarid) + " so‘m</span></div>" +
+            (xg ? '<div class="r"><span>Qo‘shimcha xarajat</span><span>+ ' + som(qosh) + " so‘m</span></div>" +
+              '<div class="r tot"><span>Xarajatga yoziladi</span><span>' + som(jami) + " so‘m</span></div>"
+              : '<div class="r tot"><span>Xarajatga yozilmaydi</span><span>—</span></div>') +
+            (soni && jami ? '<div class="r"><span>Bitta dona tannarxi' + (qosh ? " (yo‘l bilan)" : "") + "</span><span>" + som(Math.round(jami / soni)) + " so‘m</span></div>" : "");
+        }
+        ov.addEventListener("input", calc);
+        ov.addEventListener("change", calc);
+        calc();
+      },
       onSave: function (ov) {
-        var data = { tovar: parseInt(val(ov, "tovar"), 10), turi: val(ov, "turi"), miqdor: parseInt(val(ov, "miqdor"), 10), birlik_narx: intv(ov, "birlik_narx"), sana: val(ov, "sana"), izoh: val(ov, "izoh") };
-        if (!data.miqdor) { toast("Miqdorni yozing.", true); return false; }
+        var kirim = val(ov, "turi") === "kirim", xg = ov.querySelector('[name="xarajatga"]').checked;
+        var data = { tovar: parseInt(val(ov, "tovar"), 10), turi: val(ov, "turi"), miqdor: parseInt(val(ov, "miqdor"), 10), sana: val(ov, "sana"), izoh: val(ov, "izoh"),
+          birlik_narx: kirim ? intv(ov, "birlik_narx") : 0, xarajatga: kirim ? xg : false,
+          qoshimcha_xarajat: kirim && xg ? intv(ov, "qoshimcha_xarajat") : 0 };
+        if (!data.miqdor) { toast("Sonini yozing.", true); return false; }
         return api(edit ? "/harakatlar/" + h.id + "/" : "/harakatlar/", { method: edit ? "PUT" : "POST", body: data }).then(function () { toast("Saqlandi"); render(); });
       },
       onDelete: edit ? function () {
@@ -721,13 +775,25 @@
     });
   }
 
-  /* ── ramka, login, router ─────────────────────────────────────── */
+  /* ── ramka, login, PWA, router ────────────────────────────────── */
+  var installEvt = null;
+  function standalone() { return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; }
+  window.addEventListener("beforeinstallprompt", function (e) {
+    e.preventDefault(); installEvt = e;
+    var b = document.getElementById("install"); if (b) b.classList.remove("hide");
+  });
+  window.addEventListener("appinstalled", function () {
+    installEvt = null;
+    var b = document.getElementById("install"); if (b) b.classList.add("hide");
+    toast("Ilova o‘rnatildi");
+  });
+
   function loginView() {
-    root.innerHTML = '<div class="login"><form class="box" id="lf"><div class="brand-logo" style="width:46px;height:46px"><img src="/assets/landing/logo-icon.png" alt=""></div>' +
+    root.innerHTML = '<div class="login"><form class="box" id="lf"><div class="brand-logo"><img src="/crm/icons/icon-192.png" alt=""></div>' +
       "<h1>Nurul Hadis CRM</h1><p>Hisobingizga kiring</p><div id=\"err\"></div>" +
-      '<div class="field"><label>Login</label><input name="username" autocomplete="username" autofocus></div>' +
+      '<div class="field"><label>Login</label><input name="username" autocomplete="username" autocapitalize="none" autocorrect="off" autofocus></div>' +
       '<div class="field"><label>Parol</label><input type="password" name="password" autocomplete="current-password"></div>' +
-      '<button class="btn pri" style="width:100%;justify-content:center;padding:12px" type="submit">Kirish</button></form></div>';
+      '<button class="btn pri" style="width:100%" type="submit">Kirish</button></form></div>';
     document.getElementById("lf").onsubmit = function (e) {
       e.preventDefault();
       var f = e.target;
@@ -745,31 +811,62 @@
     window.onresize = null;
     if (!S.me) return loginView();
     var visible = PAGES.filter(function (p) { return !p[3] || S.me.foyda; });
-    var p = (location.hash.replace("#/", "") || "").split("?")[0];
+    var hash = location.hash.replace("#/", "");
+    var p = hash.split("?")[0];
+    var yangi = /[?&]yangi=1/.test(hash);
     if (!visible.some(function (x) { return x[0] === p; })) p = visible[0][0];
     S.page = p;
     if (p !== "buyurtmalar") S.mijozFilter = null;
     var title = visible.filter(function (x) { return x[0] === p; })[0][1];
+    var tabs = visible.slice(0, 3);
+    function tab(x) { return '<a href="#/' + x[0] + '" class="' + (x[0] === p ? "on" : "") + '">' + ic(x[2]) + "<span>" + x[1] + "</span></a>"; }
+
     root.innerHTML =
-      '<div class="app"><aside class="side" id="side"><div class="brand"><span class="brand-logo"><img src="/assets/landing/logo-icon.png" alt=""></span>' +
+      '<div class="app"><aside class="side" id="side"><div class="brand"><span class="brand-logo"><img src="/crm/icons/icon-192.png" alt=""></span>' +
       "<div><b>Nurul Hadis</b><small>Savdo CRM</small></div></div>" +
       '<nav class="nav">' + visible.map(function (x) {
         return '<a href="#/' + x[0] + '" class="' + (x[0] === p ? "on" : "") + '">' + ic(x[2]) + x[1] + "</a>";
       }).join("") + '</nav><div class="grow"></div>' +
+      '<button class="install' + (installEvt && !standalone() ? "" : " hide") + '" id="install">' + ic("install") + "Telefonga o‘rnatish</button>" +
+      (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone() ? '<div class="hint"><b>iPhone:</b> Safari’da pastdagi «Ulashish» tugmasini bosing, so‘ng «Bosh ekranga qo‘shish»ni tanlang.</div>' : "") +
       '<div class="user"><span class="avatar">' + esc((S.me.ism || "?").charAt(0).toUpperCase()) + '</span><div class="t"><b>' + esc(S.me.ism) +
       "</b><small>" + (S.me.foyda ? "Egasi" : "Yordamchi") + '</small></div><button class="linkbtn" id="out" title="Chiqish">' + ic("out") + "</button></div></aside>" +
-      '<div class="main"><header class="top"><button class="burger" id="bg">' + ic("menu") + "</button><h1>" + esc(title) + "</h1>" +
+      '<div class="scrim" id="scrim"></div>' +
+      '<div class="main"><header class="top"><span class="mlogo"><img src="/crm/icons/icon-192.png" alt=""></span><h1>' + esc(title) + "</h1>" +
       '<button class="btn pri" id="topnew">' + ic("plus") + "<span>Yangi buyurtma</span></button></header>" +
-      '<div class="page" id="page"></div></div></div>';
+      '<div class="page" id="page"></div></div>' +
+      '<nav class="tabbar">' + tab(tabs[0]) + (tabs[1] ? tab(tabs[1]) : "<span></span>") +
+      '<button class="fab" id="fab" aria-label="Yangi buyurtma"><span>' + ic("plus") + "</span><b style=\"margin-top:34px;font-weight:600\">Yangi</b></button>" +
+      (tabs[2] ? tab(tabs[2]) : "<span></span>") + '<button id="more">' + ic("more") + "<span>Yana</span></button></nav></div>";
+
+    function menu(ochiq) {
+      document.getElementById("side").classList.toggle("open", ochiq);
+      document.getElementById("scrim").classList.toggle("on", ochiq);
+    }
     document.getElementById("out").onclick = function () {
       api("/chiqish/", { method: "POST" }).then(function () { S.me = null; S.cache = {}; render(); });
     };
-    document.getElementById("bg").onclick = function () { document.getElementById("side").classList.toggle("open"); };
+    document.getElementById("more").onclick = function () { menu(true); };
+    document.getElementById("scrim").onclick = function () { menu(false); };
+    Array.prototype.forEach.call(document.querySelectorAll("#side .nav a"), function (a) { a.onclick = function () { menu(false); }; });
+    var inst = document.getElementById("install");
+    if (inst) inst.onclick = function () {
+      if (!installEvt) return;
+      installEvt.prompt();
+      installEvt.userChoice.then(function () { installEvt = null; inst.classList.add("hide"); });
+    };
     document.getElementById("topnew").onclick = function () { buyurtmaForm(null); };
+    document.getElementById("fab").onclick = function () { buyurtmaForm(null); };
     var page = document.getElementById("page");
     ({ dashboard: pageDashboard, buyurtmalar: pageBuyurtmalar, mijozlar: pageMijozlar, xarajatlar: pageXarajatlar, ombor: pageOmbor, mahsulotlar: pageMahsulotlar }[p])(page);
+    if (yangi) { history.replaceState(null, "", "#/buyurtmalar"); buyurtmaForm(null); }
   }
 
   window.addEventListener("hashchange", function () { if (S.me) render(); });
   api("/me/").then(function (d) { S.me = d.kirgan ? d : null; render(); }).catch(function () { S.me = null; render(); });
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/crm/sw.js", { scope: "/crm/" }).catch(function () {});
+    });
+  }
 })();

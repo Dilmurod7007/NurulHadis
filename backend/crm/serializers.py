@@ -88,12 +88,16 @@ class OmborTovarSerializer(serializers.ModelSerializer):
 class OmborHarakatSerializer(serializers.ModelSerializer):
     tovar_nom = serializers.CharField(source="tovar.nom", read_only=True)
     turi_nom = serializers.CharField(source="get_turi_display", read_only=True)
+    summa = serializers.IntegerField(read_only=True)
+    jami = serializers.IntegerField(read_only=True)
+    dona_tannarx = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = OmborHarakat
         fields = ["id", "tovar", "tovar_nom", "turi", "turi_nom", "miqdor", "birlik_narx",
+                  "xarajatga", "qoshimcha_xarajat", "summa", "jami", "dona_tannarx",
                   "sana", "izoh", "buyurtma"]
-        read_only_fields = ["buyurtma"]
+        read_only_fields = ["buyurtma", "summa", "jami", "dona_tannarx"]
 
     def validate(self, d):
         if d.get("turi") == "chiqim":
@@ -142,6 +146,7 @@ class BuyurtmaSerializer(serializers.ModelSerializer):
     tannarx_jami = serializers.IntegerField(read_only=True)
     bonus_tannarxi = serializers.IntegerField(read_only=True)
     foyda = serializers.IntegerField(read_only=True)
+    qolgan_summa = serializers.IntegerField(read_only=True)
     qarz = serializers.IntegerField(read_only=True)
     tolov_holati = serializers.CharField(read_only=True)
 
@@ -153,13 +158,13 @@ class BuyurtmaSerializer(serializers.ModelSerializer):
             "yetkazish_turi", "yetkazish_turi_nom", "yetkazish_xarajati", "tolov_usuli", "tolangan", "izoh",
             "qatorlar", "bonuslar",
             "dona", "mahsulot_summasi", "chegirma_hisob", "tushum", "tannarx_jami",
-            "bonus_tannarxi", "foyda", "qarz", "tolov_holati",
+            "bonus_tannarxi", "foyda", "qolgan_summa", "qarz", "tolov_holati",
         ]
 
     def to_representation(self, o):
         d = super().to_representation(o)
         if not foyda_korsin(self):
-            for k in ("tannarx_jami", "bonus_tannarxi", "foyda", "yetkazish_xarajati"):
+            for k in ("tannarx_jami", "bonus_tannarxi", "foyda", "qolgan_summa", "yetkazish_xarajati"):
                 d.pop(k, None)
             for bn in d.get("bonuslar", []):
                 bn.pop("tannarx", None)

@@ -91,6 +91,26 @@ class HisobTests(TestCase):
         b.omborni_yangilash()
         self.assertEqual(quti.qoldiq, 10)
 
+    def test_kirim_xarajatga_yoli_xarajati_bilan(self):
+        quti = OmborTovar.objects.create(nom="Quti")
+        h = OmborHarakat.objects.create(tovar=quti, turi="kirim", miqdor=10, birlik_narx=5000,
+                                        qoshimcha_xarajat=8000)
+        self.assertEqual((h.summa, h.jami, h.dona_tannarx), (50000, 58000, 5800))
+        x = Xarajat.objects.get(harakat=h)
+        self.assertEqual((x.summa, x.kategoriya), (58000, "material"))
+        h.xarajatga = False
+        h.save()
+        self.assertFalse(Xarajat.objects.filter(harakat=h).exists())
+        self.assertEqual(quti.qoldiq, 10)
+        h.xarajatga = True
+        h.qoshimcha_xarajat = 0
+        h.save()
+        self.assertEqual(Xarajat.objects.get(harakat=h).summa, 50000)
+
+    def test_qolgan_summa(self):
+        b = self.buyurtma([(2, {})], chegirma=20000, yetkazish_xarajati=25000)
+        self.assertEqual(b.qolgan_summa, 450000 - 25000)
+
     def test_material_xaridi_foydaga_kirmaydi(self):
         quti = OmborTovar.objects.create(nom="Quti")
         OmborHarakat.objects.create(tovar=quti, turi="kirim", miqdor=10, birlik_narx=5000)

@@ -69,7 +69,7 @@ class OmborTovarAdmin(admin.ModelAdmin):
 
 @admin.register(OmborHarakat)
 class OmborHarakatAdmin(admin.ModelAdmin):
-    list_display = ("sana", "tovar", "turi", "miqdor", "birlik_narx", "izoh")
+    list_display = ("sana", "tovar", "turi", "miqdor", "birlik_narx", "qoshimcha_xarajat", "xarajatga", "izoh")
     list_filter = ("turi", "tovar")
     date_hierarchy = "sana"
     autocomplete_fields = ("tovar",)
