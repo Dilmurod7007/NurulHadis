@@ -2,12 +2,13 @@
    Ilova qobig'i (HTML, CSS, JS, ikonkalar) keshlanadi, shuning uchun telefon tez ochiladi.
    /api/ so'rovlari HECH QACHON keshlanmaydi: pul va buyurtma ma'lumotlari doim yangi bo'lishi kerak. */
 
-var VERSIYA = "nh-crm-v6";
+var VERSIYA = "nh-crm-v7";
 var QOBIQ = [
   "/crm/",
-  "/crm/app.css?v=6",
-  "/crm/lucide.js?v=6",
-  "/crm/app.js?v=6",
+  "/crm/app.css?v=7",
+  "/crm/lucide.js?v=7",
+  "/crm/app.js?v=7",
+  "/crm/bts.json",
   "/crm/manifest.webmanifest",
   "/crm/icons/icon-192.png",
   "/crm/icons/icon-512.png",
@@ -57,4 +58,25 @@ self.addEventListener("fetch", function (e) {
       return hit || tarmoq;
     })
   );
+});
+
+// Push xabarlar (yetkazilmagan buyurtma eslatmalari)
+self.addEventListener("push", function (e) {
+  var d = {};
+  try { d = e.data.json(); } catch (x) { d = { sarlavha: "Nurul Hadis CRM", matn: e.data ? e.data.text() : "" }; }
+  e.waitUntil(self.registration.showNotification(d.sarlavha || "Nurul Hadis CRM", {
+    body: d.matn || "", icon: "/crm/icons/icon-192.png", badge: "/crm/icons/favicon-32.png",
+    data: { url: d.url || "/crm/" }, tag: "nh-crm",
+  }));
+});
+
+self.addEventListener("notificationclick", function (e) {
+  e.notification.close();
+  var url = (e.notification.data && e.notification.data.url) || "/crm/";
+  e.waitUntil(self.clients.matchAll({ type: "window", includeUncontrolled: true }).then(function (list) {
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].url.indexOf("/crm/") >= 0 && "focus" in list[i]) return list[i].focus();
+    }
+    return self.clients.openWindow(url);
+  }));
 });

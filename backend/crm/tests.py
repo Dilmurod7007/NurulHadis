@@ -240,3 +240,68 @@ class ApiTests(TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertIn("seriya", r.json())
         self.assertEqual(c.get("/api/crm/dashboard/?davr=0").status_code, 200)
+
+    def _buyurtma(self, **kw):
+        m = Mijoz.objects.create(ism="Vali")
+        b = Buyurtma.objects.create(mijoz=m, **kw)
+        BuyurtmaQator.objects.create(buyurtma=b, mahsulot=self.banka, miqdor=1)
+        b.omborni_yangilash()
+        return b
+
+    def test_holatni_tez_ozgartirish_va_ombor(self):
+        import json
+        quti = OmborTovar.objects.create(nom="Quti2")
+        Tarkib.objects.create(mahsulot=self.banka, tovar=quti, miqdor=1)
+        OmborHarakat.objects.create(tovar=quti, turi="kirim", miqdor=5)
+        b = self._buyurtma()
+        self.assertEqual(quti.qoldiq, 4)
+        c = self.klient(self.yord)
+        r = c.patch(f"/api/crm/buyurtmalar/{b.id}/holat/", json.dumps({"holat": "bekor"}), content_type="application/json")
+        self.assertEqual(r.status_code, 200, r.content)
+        self.assertEqual(r.json()["holat"], "bekor")
+        self.assertEqual(quti.qoldiq, 5)      # bekor qilinganda ombor tiklandi
+        r = c.patch(f"/api/crm/buyurtmalar/{b.id}/holat/", json.dumps({"holat": "yolda"}), content_type="application/json")
+        self.assertEqual(quti.qoldiq, 4)
+        self.assertEqual(c.patch(f"/api/crm/buyurtmalar/{b.id}/holat/", json.dumps({"holat": "x"}),
+                                 content_type="application/json").status_code, 400)
+
+    def test_pochta_maydonlari(self):
+        b = self._buyurtma(yetkazish_turi="pochta", pochta="bts", viloyat="Toshkent shahri", bts_filial="0101 YAKKASAROY")
+        b.refresh_from_db()
+        self.assertEqual((b.pochta, b.bts_filial), ("bts", "0101 YAKKASAROY"))
+        b.pochta = "emu"; b.save(); b.refresh_from_db()
+        self.assertEqual(b.bts_filial, "")      # BTS emas — filial saqlanmaydi
+        b.yetkazish_turi = "yandex"; b.save(); b.refresh_from_db()
+        self.assertEqual((b.pochta, b.viloyat), ("", ""))
+
+    def test_yolda_eslatma_va_bildirishnomalar(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        from . import bildirish
+        from .models import Bildirishnoma
+        eski = self._buyurtma(holat="yolda")
+        Buyurtma.objects.filter(pk=eski.pk).update(holat_ozgargan=timezone.now() - timedelta(days=4))
+        self._buyurtma(holat="yolda")                       # yangi: eslatma yo'q
+        self.assertEqual(len(bildirish.yolda_eslatma()), 1)
+        self.assertEqual(len(bildirish.yolda_eslatma()), 0)  # ikkinchi marta yaratilmaydi
+        c = self.klient(self.egasi)
+        d = c.get("/api/crm/bildirishnomalar/").json()
+        self.assertEqual((d["oqilmagan"], len(d["royxat"])), (1, 1))
+        c.post("/api/crm/bildirishnomalar/oqildi/")
+        self.assertEqual(c.get("/api/crm/bildirishnomalar/").json()["oqilmagan"], 0)
+        # yetkazilgach yangi eslatma chiqmaydi
+        Buyurtma.objects.filter(pk=eski.pk).update(holat="yetkazildi", holat_ozgargan=timezone.now() - timedelta(days=9))
+        self.assertEqual(len(bildirish.yolda_eslatma()), 0)
+        self.assertEqual(Bildirishnoma.objects.count(), 1)
+
+    def test_push_obuna(self):
+        import json
+        c = self.klient(self.egasi)
+        k = c.get("/api/crm/push/kalit/").json()["kalit"]
+        self.assertGreater(len(k), 60)
+        sub = {"endpoint": "https://push.example/abc", "keys": {"p256dh": "p", "auth": "a"}}
+        self.assertEqual(c.post("/api/crm/push/obuna/", json.dumps(sub), content_type="application/json").status_code, 200)
+        self.assertTrue(c.get("/api/crm/bildirishnomalar/").json()["push"])
+        c.post("/api/crm/push/bekor/", json.dumps({"endpoint": sub["endpoint"]}), content_type="application/json")
+        self.assertFalse(c.get("/api/crm/bildirishnomalar/").json()["push"])
+        self.assertEqual(self.klient().get("/api/crm/bildirishnomalar/").status_code, 403)

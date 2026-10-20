@@ -14,3 +14,4 @@ backend/staticfiles/
 backend/media/
 .venv/
 venv/
+backend/vapid_private.pem

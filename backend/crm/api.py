@@ -3,14 +3,17 @@ from django.db.models import Q
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import permissions, viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny, DjangoModelPermissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from . import bildirish
 from .dashboard import dashboard
-from .models import Buyurtma, Mahsulot, Mijoz, OmborHarakat, OmborTovar, Xarajat
+from .models import (
+    Bildirishnoma, BildirishnomaHolati, Buyurtma, Mahsulot, Mijoz, OmborHarakat, OmborTovar, PushObuna, Xarajat,
+)
 from .serializers import (
     BuyurtmaSerializer, MahsulotSerializer, MijozSerializer, OmborHarakatSerializer,
     OmborTovarSerializer, XarajatSerializer,
@@ -117,6 +120,19 @@ class BuyurtmaViewSet(viewsets.ModelViewSet):
             return qs[:500]
         return qs
 
+    @action(detail=True, methods=["patch"], url_path="holat")
+    def holat(self, request, pk=None):
+        """Holatni tez o'zgartirish (ro'yxatdagi belgidan)."""
+        b = self.get_object()
+        yangi = request.data.get("holat")
+        if yangi not in dict(Buyurtma.HOLAT):
+            raise ValidationError("Noto'g'ri holat.")
+        if yangi != b.holat:
+            b.holat = yangi
+            b.save()
+            b.omborni_yangilash()      # bekor/qaytarilganda ombor tiklanadi
+        return Response(self.get_serializer(self.get_object()).data)
+
 
 class XarajatViewSet(viewsets.ModelViewSet):
     queryset = Xarajat.objects.all()
@@ -153,3 +169,70 @@ class OmborHarakatViewSet(viewsets.ModelViewSet):
         if obj.buyurtma_id:
             raise ValidationError("Buyurtmadan chiqqan chiqimni o'chirib bo'lmaydi.")
         obj.delete()
+
+
+# ── bildirishnomalar va push ───────────────────────────────────────
+
+class XodimHuquqi(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.is_staff
+
+
+def _xabar(b):
+    return {"id": b.id, "turi": b.turi, "sarlavha": b.sarlavha, "matn": b.matn, "buyurtma": b.buyurtma_id,
+            "vaqt": b.yaratilgan.isoformat()}
+
+
+@api_view(["GET"])
+@permission_classes([XodimHuquqi])
+def bildirishnomalar(request):
+    bildirish.yolda_eslatma()          # cron'siz ham ro'yxat yangi bo'lsin
+    holat, _ = BildirishnomaHolati.objects.get_or_create(user=request.user)
+    royxat = list(Bildirishnoma.objects.select_related("buyurtma")[:40])
+    return Response({
+        "oqilmagan": Bildirishnoma.objects.filter(id__gt=holat.oxirgi_id).count(),
+        "royxat": [{**_xabar(x), "yangi": x.id > holat.oxirgi_id} for x in royxat],
+        "push": request.user.push_obunalar.exists(),
+    })
+
+
+@api_view(["POST"])
+@permission_classes([XodimHuquqi])
+def bildirishnomalar_oqildi(request):
+    oxirgi = Bildirishnoma.objects.order_by("-id").values_list("id", flat=True).first() or 0
+    BildirishnomaHolati.objects.update_or_create(user=request.user, defaults={"oxirgi_id": oxirgi})
+    return Response({"ok": True})
+
+
+@api_view(["GET"])
+@permission_classes([XodimHuquqi])
+def push_kalit(request):
+    return Response({"kalit": bildirish.ochiq_kalit()})
+
+
+@api_view(["POST"])
+@permission_classes([XodimHuquqi])
+def push_obuna(request):
+    d = request.data
+    kalitlar = d.get("keys") or {}
+    if not d.get("endpoint") or not kalitlar.get("p256dh") or not kalitlar.get("auth"):
+        raise ValidationError("Obuna ma'lumoti to'liq emas.")
+    PushObuna.objects.update_or_create(
+        endpoint=d["endpoint"],
+        defaults={"user": request.user, "p256dh": kalitlar["p256dh"], "auth": kalitlar["auth"]},
+    )
+    return Response({"ok": True})
+
+
+@api_view(["POST"])
+@permission_classes([XodimHuquqi])
+def push_bekor(request):
+    PushObuna.objects.filter(user=request.user, endpoint=request.data.get("endpoint", "")).delete()
+    return Response({"ok": True})
+
+
+@api_view(["POST"])
+@permission_classes([XodimHuquqi])
+def push_sinov(request):
+    n = bildirish.push_yubor("Nurul Hadis CRM", "Xabarlar ishlayapti ✅", user=request.user)
+    return Response({"yuborildi": n})

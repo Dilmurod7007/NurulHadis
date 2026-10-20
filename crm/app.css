@@ -237,6 +237,41 @@ label.chk{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--te
 .hrow .hq.pos{color:var(--ok)}.hrow .hq.neg{color:var(--bad)}
 div.hist#thist{padding:0;margin-bottom:6px}
 
+/* tez holat o'zgartirish, xabarlar, filial */
+.badge.qs{border:0;cursor:pointer;font-family:inherit}
+.badge.qs svg:last-child{width:12px;height:12px;opacity:.7;margin-left:-1px}
+.badge.qs:active{filter:brightness(.95)}
+.ov.sheetov{align-items:center;justify-content:center}
+.sheet{width:min(440px,100%);max-height:86vh;background:var(--surface);border-radius:18px;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(20,20,43,.25);animation:in .18s ease-out;overflow:hidden}
+.sheet .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+.sheet .hd h2{font-size:16.5px}
+.sheet .bd{overflow-y:auto;padding:14px 16px 18px;overscroll-behavior:contain}
+.pick{display:flex;flex-direction:column;gap:8px}
+.pk{display:flex;align-items:center;gap:12px;min-height:50px;padding:0 14px;border:1px solid var(--line);border-radius:13px;background:var(--surface);font-size:15px;font-weight:600;text-align:left;color:var(--text)}
+.pk svg{width:20px;height:20px;flex:none}
+.pk span{flex:1}
+.pk.blue svg{color:var(--blue)}.pk.acc svg{color:var(--accent)}.pk.warn svg{color:var(--warn)}.pk.ok svg{color:var(--ok)}.pk.bad svg{color:var(--bad)}
+.pk em{font-style:normal;font-size:11.5px;font-weight:700;color:var(--accent);background:var(--accent-s);padding:3px 8px;border-radius:8px}
+.pk.nx{border-color:#CFC4FA;background:#FAF8FF}
+.pk.on{background:#F0F0F6;border-color:#E2E2EC}
+.pk.on>svg:last-child{color:var(--ok);width:18px;height:18px}
+.pk:disabled{opacity:.5}
+.bell{position:relative;width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface);border-radius:12px;color:var(--text);flex:none}
+.bell svg{width:20px;height:20px}
+.bell .dot{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--bad);color:#fff;font-style:normal;font-size:11px;font-weight:700;display:grid;place-items:center;border:2px solid var(--surface);box-sizing:content-box;line-height:1}
+.pushc{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#F8F7FF;border:1px solid #E5DEFF;border-radius:14px;padding:12px 14px}
+.pushc.on{background:var(--ok-s);border-color:#BFE8D0}
+.pushc>div:not(.pa){flex:1;min-width:150px}
+.pushc b{display:block}.pushc small{display:block;color:var(--muted);font-size:12.5px;line-height:1.45;margin-top:2px}
+.pushc .pa{display:flex;gap:8px}
+.xit.new{background:linear-gradient(90deg,#FAF8FF,transparent)}
+.xit .t{color:var(--faint)}
+.btsinfo{margin-top:8px;font-size:13px;line-height:1.5}
+.btsinfo:empty{display:none}
+.btsinfo>div{display:flex;gap:6px;align-items:flex-start}
+.btsinfo svg{width:15px;height:15px;flex:none;margin-top:2px;color:var(--accent)}
+.btsinfo .muted{padding-left:21px}
+
 @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.g2,.g3,.g2e{grid-template-columns:1fr}}
 
 @media (max-width:860px){
@@ -254,6 +289,10 @@ div.hist#thist{padding:0;margin-bottom:6px}
   .top .mlogo{display:block}
   .top h1{font-size:18px}
   .top .btn{display:none}
+  .bell{width:40px;height:40px}
+  .ov.sheetov{align-items:flex-end}
+  .sheet{width:100%;border-radius:20px 20px 0 0;max-height:88vh;animation:up .22s ease-out}
+  .sheet .bd{padding-bottom:calc(18px + var(--safe-b))}
   .page{padding:14px 14px calc(var(--tabbar) + var(--safe-b) + 28px)}
 
   /* pastki navigatsiya */

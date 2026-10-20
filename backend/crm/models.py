@@ -157,6 +157,14 @@ class Buyurtma(models.Model):
         ("ozi", "O'zi olib ketadi"),
     ]
     yetkazish_turi = models.CharField("Yetkazish turi", max_length=8, choices=YETKAZISH, default="yandex")
+    POCHTA = [
+        ("bts", "BTS"),
+        ("emu", "EMU"),
+        ("uzpost", "UZ POST"),
+    ]
+    pochta = models.CharField("Pochta", max_length=8, choices=POCHTA, blank=True)
+    viloyat = models.CharField("Viloyat", max_length=40, blank=True)
+    bts_filial = models.CharField("BTS filiali", max_length=160, blank=True)
     yetkazish_xarajati = models.PositiveIntegerField(
         "Yetkazish xarajati (so'm)", default=0,
         help_text="Kuryer/taksi/pochta uchun o'zingiz to'lagan pul.",
@@ -166,6 +174,7 @@ class Buyurtma(models.Model):
     tolangan = models.PositiveIntegerField("To'langan summa (so'm)", default=0)
     izoh = models.TextField("Izoh", blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    holat_ozgargan = models.DateTimeField("Holat o'zgargan vaqt", null=True, blank=True, editable=False)
 
     class Meta:
         verbose_name = "Buyurtma"
@@ -185,6 +194,15 @@ class Buyurtma(models.Model):
         # O'zi olib ketsa, yetkazish xarajati yozilmaydi
         if self.yetkazish_turi == "ozi":
             self.yetkazish_xarajati = 0
+        # Pochta ma'lumotlari faqat «Pochta orqali» yetkazishda saqlanadi
+        if self.yetkazish_turi != "pochta":
+            self.pochta = self.viloyat = self.bts_filial = ""
+        elif self.pochta != "bts":
+            self.bts_filial = ""
+        # Holat qachon o'zgargani (yetkazilmay qolganlarni eslatish uchun)
+        eski = Buyurtma.objects.filter(pk=self.pk).values_list("holat", flat=True).first() if self.pk else None
+        if eski != self.holat or not self.holat_ozgargan:
+            self.holat_ozgargan = timezone.now()
         super().save(*args, **kwargs)
 
     # ── hisob-kitob ────────────────────────────────────────────────
@@ -449,3 +467,47 @@ class Hisobot(Buyurtma):
         proxy = True
         verbose_name = "Hisobot"
         verbose_name_plural = "Hisobot (foyda va xarajat)"
+
+
+# ── bildirishnomalar ───────────────────────────────────────────────
+
+
+class Bildirishnoma(models.Model):
+    """Ilova ichidagi xabar (qo'ng'iroqcha). Hamma foydalanuvchi bir xil ro'yxatni ko'radi."""
+
+    kalit = models.CharField(max_length=60, unique=True, help_text="Bir xabar ikki marta yaratilmasligi uchun.")
+    turi = models.CharField(max_length=12, default="yolda")
+    sarlavha = models.CharField(max_length=120)
+    matn = models.CharField(max_length=240, blank=True)
+    buyurtma = models.ForeignKey(Buyurtma, null=True, blank=True, on_delete=models.CASCADE, related_name="bildirishnomalar")
+    yaratilgan = models.DateTimeField(auto_now_add=True)
+    push_yuborildi = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Bildirishnoma"
+        verbose_name_plural = "Bildirishnomalar"
+        ordering = ["-id"]
+
+    def __str__(self):
+        return self.sarlavha
+
+
+class BildirishnomaHolati(models.Model):
+    """Foydalanuvchi qaysi xabargacha o'qiganini eslab qoladi."""
+
+    user = models.OneToOneField("auth.User", on_delete=models.CASCADE, related_name="bildirish_holati")
+    oxirgi_id = models.PositiveIntegerField(default=0)
+
+
+class PushObuna(models.Model):
+    """Telefon/brauzerning push-obunasi."""
+
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE, related_name="push_obunalar")
+    endpoint = models.TextField(unique=True)
+    p256dh = models.CharField(max_length=200)
+    auth = models.CharField(max_length=100)
+    yaratilgan = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Push obuna"
+        verbose_name_plural = "Push obunalar"

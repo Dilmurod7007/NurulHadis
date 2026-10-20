@@ -156,8 +156,7 @@
   var TOLOV_IC = { "To'langan": "badge-check", "Qisman": "circle-dashed", "To'lanmagan": "circle-alert" };
   function badge(c, icon, text) { return '<span class="badge ' + c + '">' + (icon ? ic(icon) : "") + esc(text) + "</span>"; }
   function holatBadge(h) {
-    var c = { yangi: "blue", tasdiqlandi: "acc", yolda: "warn", yetkazildi: "ok", bekor: "bad", qaytarildi: "bad" }[h] || "";
-    return badge(c, HOLAT_IC[h], nomi(HOLAT, h));
+    return badge(HOLAT_C[h] || "", HOLAT_IC[h], nomi(HOLAT, h));
   }
   function turBadge(t) {
     return badge(t === "sotuv" ? "" : "warn", TUR_IC[t], t === "sotuv" ? "Sotuv" : t === "reklama" ? "Reklama" : "Sovg‘a");
@@ -185,6 +184,212 @@
           inp.dispatchEvent(new Event("change", { bubbles: true }));
         };
       });
+    });
+  }
+
+  /* ── pastki oyna (sheet): holat tanlash, xabarlar ─────────────── */
+  function sheet(opt) {
+    var ov = document.createElement("div");
+    ov.className = "ov sheetov";
+    ov.innerHTML = '<div class="sheet" role="dialog"><div class="hd"><h2>' + esc(opt.title) + '</h2>' +
+      '<button class="icon-x" data-x aria-label="Yopish">' + ic("x") + '</button></div><div class="bd">' + opt.body + "</div></div>";
+    document.body.appendChild(ov);
+    var oldOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function onKey(e) { if (e.key === "Escape") close(); }
+    function close() {
+      if (!ov.parentNode) return;
+      ov.remove();
+      document.body.style.overflow = oldOverflow;
+      document.removeEventListener("keydown", onKey);
+    }
+    document.addEventListener("keydown", onKey);
+    ov.close = close;
+    ov.addEventListener("mousedown", function (e) { if (e.target === ov) close(); });
+    ov.querySelector("[data-x]").onclick = close;
+    if (opt.onOpen) opt.onOpen(ov);
+    return ov;
+  }
+
+  var HOLAT_C = { yangi: "blue", tasdiqlandi: "acc", yolda: "warn", yetkazildi: "ok", bekor: "bad", qaytarildi: "bad" };
+  var HOLAT_KEYIN = { yangi: "tasdiqlandi", tasdiqlandi: "yolda", yolda: "yetkazildi" };
+  // Ro'yxatdagi holat belgisi: bosilsa holatni tezda o'zgartirish oynasi ochiladi
+  function holatQuick(b) {
+    return '<button type="button" class="badge qs ' + (HOLAT_C[b.holat] || "") + '" data-q="' + b.id + '" title="Holatni o‘zgartirish">' +
+      ic(HOLAT_IC[b.holat]) + esc(nomi(HOLAT, b.holat)) + ic("chevron-down") + "</button>";
+  }
+  function holatTanla(b, done) {
+    var body = '<div class="pick">' + HOLAT.map(function (o) {
+      var hozir = o[0] === b.holat, keyin = HOLAT_KEYIN[b.holat] === o[0];
+      return '<button type="button" class="pk ' + (HOLAT_C[o[0]] || "") + (hozir ? " on" : "") + (keyin ? " nx" : "") + '" data-v="' + o[0] + '">' + ic(HOLAT_IC[o[0]]) +
+        "<span>" + esc(o[1]) + "</span>" + (hozir ? ic("check") : keyin ? "<em>keyingi</em>" : "") + "</button>";
+    }).join("") + "</div>";
+    sheet({
+      title: "#" + b.id + " · " + b.mijoz_nom, body: body,
+      onOpen: function (ov) {
+        Array.prototype.forEach.call(ov.querySelectorAll(".pk"), function (btn) {
+          btn.onclick = function () {
+            var v = btn.dataset.v;
+            if (v === b.holat) { ov.close(); return; }
+            btn.disabled = true;
+            api("/buyurtmalar/" + b.id + "/holat/", { method: "PATCH", body: { holat: v } }).then(function () {
+              ov.close(); toast("Holat: " + nomi(HOLAT, v)); S.cache = {}; done();
+            }).catch(function (e) { btn.disabled = false; toast(e.message, true); });
+          };
+        });
+      },
+    });
+  }
+
+  /* ── pochta va BTS filiallari ─────────────────────────────────── */
+  var POCHTA = [["bts", "BTS"], ["emu", "EMU"], ["uzpost", "UZ POST"]];
+  var VILOYAT = ["Toshkent shahri", "Toshkent viloyati", "Andijon viloyati", "Buxoro viloyati", "Farg'ona viloyati", "Jizzax viloyati", "Namangan viloyati",
+    "Navoiy viloyati", "Qashqadaryo viloyati", "Qoraqalpog'iston Respublikasi", "Samarqand viloyati", "Sirdaryo viloyati", "Surxondaryo viloyati", "Xorazm viloyati"];
+  function loadBts() {
+    if (S.bts) return Promise.resolve(S.bts);
+    return fetch("/crm/bts.json").then(function (r) { return r.json(); }).then(function (d) { S.bts = d; return d; }).catch(function () { return {}; });
+  }
+  function yetNom(b) {
+    if (b.yetkazish_turi !== "pochta" || !b.pochta) return b.yetkazish_turi_nom;
+    var f = b.bts_filial ? b.bts_filial.split(" · ")[1] : "";
+    return b.pochta_nom + (f ? " · " + f : b.viloyat ? " · " + b.viloyat : "");
+  }
+  // Buyurtma formasidagi viloyat → tuman → BTS filiali tanlovlari
+  function btsOrnat(ov, b) {
+    var data = S.bts || {};
+    var v = ov.querySelector('[name="viloyat"]'), t = ov.querySelector("#btstuman"), f = ov.querySelector('[name="bts_filial"]'), info = ov.querySelector("#btsinfo");
+    function royxat() { return data[v.value] || []; }
+    function kodi(s) { return String(s || "").split(" · ")[0]; }
+    function tumanlar(tanlangan) {
+      var l = royxat(), set = [];
+      l.forEach(function (x) { if (set.indexOf(x.tuman) < 0) set.push(x.tuman); });
+      set.sort(function (a, c) { return a.localeCompare(c); });
+      t.innerHTML = '<option value="">Hammasi' + (l.length ? " (" + l.length + " ta filial)" : "") + "</option>" +
+        set.map(function (x) { return '<option value="' + esc(x) + '">' + esc(x) + "</option>"; }).join("");
+      t.value = tanlangan || "";
+    }
+    function filiallar(tanlangan) {
+      var l = royxat().filter(function (x) { return !t.value || x.tuman === t.value; });
+      f.innerHTML = !v.value ? '<option value="">Avval viloyatni tanlang</option>' :
+        '<option value="">Filialni tanlang…</option>' + l.map(function (x) {
+          return '<option value="' + esc(x.kod + " · " + x.nom) + '">' + esc(x.nom + " — " + x.tuman) + "</option>";
+        }).join("");
+      if (tanlangan) {
+        f.value = tanlangan;
+        if (f.value !== tanlangan) { var o = document.createElement("option"); o.value = tanlangan; o.textContent = tanlangan; f.appendChild(o); f.value = tanlangan; }
+      }
+      korsat();
+    }
+    function korsat() {
+      var x = royxat().filter(function (y) { return y.kod === kodi(f.value); })[0];
+      info.innerHTML = x ? "<div>" + ic("map-pin") + esc(x.manzil) + "</div>" + (x.moljal ? '<div class="muted">Mo‘ljal: ' + esc(x.moljal) + "</div>" : "") +
+        '<div class="muted">' + esc(x.vaqt) + "</div>" : "";
+    }
+    v.onchange = function () { tumanlar(""); filiallar(""); };
+    t.onchange = function () { filiallar(""); };
+    f.onchange = korsat;
+    v.value = b.viloyat || "";
+    var saqlangan = royxat().filter(function (x) { return x.kod === kodi(b.bts_filial); })[0];
+    tumanlar(saqlangan ? saqlangan.tuman : "");
+    filiallar(b.bts_filial || "");
+  }
+
+  /* ── bildirishnomalar va push ─────────────────────────────────── */
+  function xabarSoni(majbur) {
+    if (!S.me) return;
+    if (!majbur && S.xt && Date.now() - S.xt < 60000) { bellBoyash(); return; }
+    S.xt = Date.now();
+    api("/bildirishnomalar/").then(function (d) { S.unread = d.oqilmagan; bellBoyash(); }).catch(function () {});
+  }
+  function bellBoyash() {
+    var el = document.querySelector("#bell .dot");
+    if (!el) return;
+    el.classList.toggle("hide", !S.unread);
+    el.textContent = S.unread > 9 ? "9+" : S.unread || "";
+  }
+  function fvaqt(iso) {
+    var d = new Date(iso), n = new Date(), p = function (x) { return (x < 10 ? "0" : "") + x; };
+    var kun = Math.round((new Date(n.getFullYear(), n.getMonth(), n.getDate()) - new Date(d.getFullYear(), d.getMonth(), d.getDate())) / 86400000);
+    var s = p(d.getHours()) + ":" + p(d.getMinutes());
+    return kun === 0 ? "Bugun " + s : kun === 1 ? "Kecha " + s : p(d.getDate()) + "." + p(d.getMonth() + 1) + "." + d.getFullYear();
+  }
+  function urlB64(b) {
+    var pad = "=".repeat((4 - b.length % 4) % 4), raw = atob((b + pad).replace(/-/g, "+").replace(/_/g, "/"));
+    return Uint8Array.from(raw, function (c) { return c.charCodeAt(0); });
+  }
+  // Service worker ro'yxatdan o'tmagan bo'lsa, ro'yxatdan o'tkazib, tayyor bo'lishini kutadi
+  function swTayyor() {
+    return navigator.serviceWorker.getRegistration("/crm/").then(function (r) {
+      return r || navigator.serviceWorker.register("/crm/sw.js", { scope: "/crm/" });
+    }).then(function () { return navigator.serviceWorker.ready; });
+  }
+  function pushYoq() {
+    return Notification.requestPermission().then(function (p) {
+      if (p !== "granted") throw new Error("Ruxsat berilmadi. Telefon sozlamalaridan Nurul Hadis uchun xabarlarga ruxsat bering.");
+      return api("/push/kalit/");
+    }).then(function (k) {
+      return swTayyor().then(function (reg) {
+        return reg.pushManager.getSubscription().then(function (s) {
+          return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64(k.kalit) });
+        });
+      });
+    }).then(function (sub) { return api("/push/obuna/", { method: "POST", body: sub.toJSON() }); });
+  }
+  function pushOchir() {
+    return swTayyor().then(function (reg) { return reg.pushManager.getSubscription(); }).then(function (sub) {
+      if (!sub) return null;
+      return api("/push/bekor/", { method: "POST", body: { endpoint: sub.endpoint } }).then(function () { return sub.unsubscribe(); });
+    });
+  }
+  function pushBox(el) {
+    var qoll = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+    if (!qoll) {
+      var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      el.innerHTML = '<div class="pushc"><span class="hic">' + ic("bell-off") + "</span><div><b>Telefonga xabar kelmaydi</b><small>" +
+        (ios && !standalone() ? "iPhone’da avval ilovani Bosh ekranga qo‘shing (Safari → Ulashish → Bosh ekranga qo‘shish), so‘ng uni Bosh ekrandan oching." : "Bu brauzer push xabarlarni qo‘llamaydi.") +
+        "</small></div></div>";
+      return;
+    }
+    function chiz(on) {
+      el.innerHTML = on
+        ? '<div class="pushc on"><span class="hic kirim">' + ic("bell-ring") + "</span><div><b>Telefonga xabar yoqilgan</b><small>Ilova yopiq bo‘lsa ham eslatma keladi.</small></div>" +
+          '<div class="pa"><button class="btn sm" id="ptest">' + ic("send") + 'Sinash</button><button class="btn sm" id="poff">O‘chirish</button></div></div>'
+        : '<div class="pushc"><span class="hic">' + ic("bell") + "</span><div><b>Telefonga xabarni yoqing</b><small>Yetkazilmagan buyurtmalar haqida ilova yopiq bo‘lsa ham xabar keladi.</small></div>" +
+          '<div class="pa"><button class="btn pri sm" id="pon">Yoqish</button></div></div>';
+      var on_ = el.querySelector("#pon"), off = el.querySelector("#poff"), test = el.querySelector("#ptest");
+      if (on_) on_.onclick = function () {
+        on_.disabled = true;
+        pushYoq().then(function () { toast("Xabarlar yoqildi"); chiz(true); }).catch(function (e) { on_.disabled = false; toast(e.message, true); });
+      };
+      if (off) off.onclick = function () { pushOchir().then(function () { toast("Xabarlar o‘chirildi"); chiz(false); }).catch(function (e) { toast(e.message, true); }); };
+      if (test) test.onclick = function () {
+        api("/push/sinov/", { method: "POST" }).then(function (d) { toast(d.yuborildi ? "Sinov xabari yuborildi" : "Yuborilmadi: obuna topilmadi, qayta yoqing", !d.yuborildi); })
+          .catch(function (e) { toast(e.message, true); });
+      };
+    }
+    swTayyor().then(function (reg) { return reg.pushManager.getSubscription(); })
+      .then(function (sub) { chiz(!!sub && Notification.permission === "granted"); }).catch(function () { chiz(false); });
+  }
+  function xabarlarOyna() {
+    sheet({
+      title: "Xabarlar", body: '<div id="pushbox"></div><div class="sec">Eslatmalar</div><div id="xlist"><div class="muted">Yuklanmoqda…</div></div>',
+      onOpen: function (ov) {
+        pushBox(ov.querySelector("#pushbox"));
+        api("/bildirishnomalar/").then(function (d) {
+          ov.querySelector("#xlist").innerHTML = d.royxat.length ? '<div class="hist">' + d.royxat.map(function (x) {
+            return '<div class="hrow click xit' + (x.yangi ? " new" : "") + '" data-b="' + (x.buyurtma || "") + '"><span class="hic tuzatish">' + ic("truck") + '</span><div class="hm"><b>' +
+              esc(x.sarlavha) + "</b><small>" + esc(x.matn) + '</small><small class="t">' + fvaqt(x.vaqt) + "</small></div></div>";
+          }).join("") + "</div>" : '<div class="muted" style="padding:6px 0">Hozircha xabar yo‘q. Buyurtma 3 kundan ortiq «Yetkazilmoqda»da tursa, shu yerda eslatma chiqadi.</div>';
+          Array.prototype.forEach.call(ov.querySelectorAll(".xit"), function (r) {
+            r.onclick = function () {
+              if (!r.dataset.b) return;
+              ov.close();
+              api("/buyurtmalar/" + r.dataset.b + "/").then(buyurtmaForm).catch(function (e) { toast(e.message, true); });
+            };
+          });
+          if (d.oqilmagan) api("/bildirishnomalar/oqildi/", { method: "POST" }).then(function () { S.unread = 0; bellBoyash(); });
+        }).catch(function (e) { ov.querySelector("#xlist").innerHTML = '<div class="muted">' + esc(e.message) + "</div>"; });
+      },
     });
   }
 
@@ -370,13 +575,19 @@
         box.innerHTML = '<table class="tbl stack"><thead><tr><th class="hide-l">№</th><th>Sana</th><th>Mijoz</th><th>Turi</th><th>Holati</th><th class="hide-l">Yetkazish</th><th class="n">Dona</th><th class="n">Tushum</th>' +
           (foyda ? '<th class="n">Qolgan summa</th>' : "") + "<th>To‘lov</th></tr></thead><tbody>" + rows.map(function (b) {
             return '<tr class="click" data-id="' + b.id + '"><td class="hide-m hide-l">#' + b.id + '</td><td class="c-sub">' + fdate(b.sana) + '</td><td class="c-main">' + esc(b.mijoz_nom) +
-              '</td><td class="c-sub">' + turBadge(b.tur) + '</td><td class="c-sub">' + holatBadge(b.holat) + '</td><td class="c-sub hide-l">' + yetLabel(b.yetkazish_turi, b.yetkazish_turi_nom) +
+              '</td><td class="c-sub">' + turBadge(b.tur) + '</td><td class="c-sub">' + holatQuick(b) + '</td><td class="c-sub hide-l">' + yetLabel(b.yetkazish_turi, yetNom(b)) +
               '</td><td class="n c-sub">' + b.dona + ' dona</td><td class="n c-amt">' + (b.tur === "sotuv" ? som(b.tushum) : '<span class="muted">tekin</span>') + '</td><td class="br"></td>' +
               (foyda ? '<td class="n c-sub' + (b.qolgan_summa ? "" : " hide-m") + '" data-l="Qolgan">' + som(b.qolgan_summa) + "</td>" : "") +
               '<td class="c-sub' + (b.tolov_holati === "—" ? " hide-m" : "") + '">' + tolovBadge(b.tolov_holati) + "</td></tr>";
           }).join("") + "</tbody></table>";
         Array.prototype.forEach.call(box.querySelectorAll("tr[data-id]"), function (tr) {
           tr.onclick = function () { buyurtmaForm(rows.filter(function (b) { return b.id === +tr.dataset.id; })[0]); };
+        });
+        Array.prototype.forEach.call(box.querySelectorAll("[data-q]"), function (btn) {
+          btn.onclick = function (e) {
+            e.stopPropagation();
+            holatTanla(rows.filter(function (b) { return b.id === +btn.dataset.q; })[0], load);
+          };
         });
       }).catch(function (e) { el.querySelector("#tbl").innerHTML = '<div class="empty">' + esc(e.message) + "</div>"; });
     }
@@ -389,7 +600,7 @@
   }
 
   function buyurtmaForm(b) {
-    loadRef().then(function () {
+    Promise.all([loadRef(), loadBts()]).then(function () {
       var mijozlar = S.cache.mijozlar, mahsulotlar = S.cache.mahsulotlar.filter(function (m) { return m.faol || (b && b.qatorlar.some(function (q) { return q.mahsulot === m.id; })); });
       var edit = !!b;
       b = b || { sana: today(), tur: "sotuv", holat: "yangi", manba: "telegram", tolov_usuli: "naqd", chegirma: 0, yetkazish_turi: "yandex", yetkazish_xarajati: 0, tolangan: 0, chegirma_izoh: "", izoh: "", qatorlar: [], bonuslar: [] };
@@ -415,6 +626,11 @@
         '<div class="field"><label>Chegirma sababi</label><input name="chegirma_izoh" value="' + esc(b.chegirma_izoh) + '"></div></div></div>' +
         '<div class="sec">Yetkazish</div>' +
         chipField("yetkazish_turi", "Yetkazish turi", YET, b.yetkazish_turi || "yandex", YET_IC, { pochta: "Pochta", ozim: "O‘zim olib beraman", ozi: "O‘zi olib ketadi" }) +
+        '<div data-poch>' + chipField("pochta", "Qaysi pochta?", POCHTA, b.pochta || "bts", {}) +
+        '<div class="row2 keep"><div class="field"><label>Viloyat</label><select name="viloyat"><option value="">Tanlang…</option>' +
+        VILOYAT.map(function (x) { return '<option value="' + esc(x) + '">' + esc(x) + "</option>"; }).join("") + "</select></div>" +
+        '<div class="field" data-bts><label>Tuman / shahar</label><select id="btstuman"><option value="">Hammasi</option></select></div></div>' +
+        '<div class="field" data-bts><label>BTS filiali</label><select name="bts_filial"><option value="">Avval viloyatni tanlang</option></select><div class="btsinfo" id="btsinfo"></div></div></div>' +
         (foyda ? '<div class="field" data-yx><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "") +
         '<div class="row2" data-pay><div class="field"><label>To‘lov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
         '<div class="field"><label>To‘langan summa <a href="#" id="full" style="font-weight:600">to‘liq</a></label><input type="number" min="0" name="tolangan" value="' + b.tolangan + '"></div></div>' +
@@ -427,6 +643,7 @@
         onOpen: function (ov) {
           var items = ov.querySelector("#items"), bonus = ov.querySelector("#bonus");
           bindChips(ov);
+          btsOrnat(ov, b);
           function row(q) {
             var d = document.createElement("div");
             d.className = "it";
@@ -476,6 +693,9 @@
             items.classList.toggle("tekin", tekin);
             var oziOladi = val(ov, "yetkazish_turi") === "ozi";
             Array.prototype.forEach.call(ov.querySelectorAll("[data-yx]"), function (e) { e.classList.toggle("hide", oziOladi); });
+            var pochtaOrqali = val(ov, "yetkazish_turi") === "pochta";
+            ov.querySelector("[data-poch]").classList.toggle("hide", !pochtaOrqali);
+            Array.prototype.forEach.call(ov.querySelectorAll("[data-bts]"), function (e) { e.classList.toggle("hide", !pochtaOrqali || val(ov, "pochta") !== "bts"); });
             var ch = tekin ? 0 : Math.min(intv(ov, "chegirma"), jami);
             var tushum = tekin || val(ov, "holat") === "bekor" ? 0 : Math.max(0, jami - ch);
             ov._tushum = tushum;
@@ -527,6 +747,10 @@
               izoh: val(ov, "izoh"), qatorlar: qatorlar, bonuslar: bonuslar,
               yetkazish_turi: val(ov, "yetkazish_turi"),
             };
+            var pochtaOrqali = data.yetkazish_turi === "pochta";
+            data.pochta = pochtaOrqali ? val(ov, "pochta") : "";
+            data.viloyat = pochtaOrqali ? val(ov, "viloyat") : "";
+            data.bts_filial = pochtaOrqali && data.pochta === "bts" ? val(ov, "bts_filial") : "";
             if (S.me.foyda) data.yetkazish_xarajati = data.yetkazish_turi === "ozi" ? 0 : intv(ov, "yetkazish_xarajati");
             return api(edit ? "/buyurtmalar/" + b.id + "/" : "/buyurtmalar/", { method: edit ? "PUT" : "POST", body: data });
           }).then(function () { toast("Saqlandi"); S.cache = {}; render(); });
@@ -904,6 +1128,7 @@
       "</b><small>" + (S.me.foyda ? "Egasi" : "Yordamchi") + '</small></div><button class="linkbtn" id="out" title="Chiqish">' + ic("out") + "</button></div></aside>" +
       '<div class="scrim" id="scrim"></div>' +
       '<div class="main"><header class="top"><span class="mlogo"><img src="/crm/icons/icon-192.png" alt=""></span><h1>' + esc(title) + "</h1>" +
+      '<button class="bell" id="bell" aria-label="Xabarlar">' + ic("bell") + '<i class="dot hide"></i></button>' +
       '<button class="btn pri" id="topnew">' + ic("plus") + "<span>Yangi buyurtma</span></button></header>" +
       '<div class="page" id="page"></div></div>' +
       '<nav class="tabbar">' + tab(tabs[0]) + (tabs[1] ? tab(tabs[1]) : "<span></span>") +
@@ -927,6 +1152,8 @@
       installEvt.userChoice.then(function () { installEvt = null; inst.classList.add("hide"); });
     };
     document.getElementById("topnew").onclick = function () { buyurtmaForm(null); };
+    document.getElementById("bell").onclick = xabarlarOyna;
+    xabarSoni();
     document.getElementById("fab").onclick = function () { buyurtmaForm(null); };
     var page = document.getElementById("page");
     ({ dashboard: pageDashboard, buyurtmalar: pageBuyurtmalar, mijozlar: pageMijozlar, xarajatlar: pageXarajatlar, ombor: pageOmbor, mahsulotlar: pageMahsulotlar }[p])(page);
@@ -934,6 +1161,7 @@
   }
 
   window.addEventListener("hashchange", function () { if (S.me) render(); });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) xabarSoni(true); });
   api("/me/").then(function (d) { S.me = d.kirgan ? d : null; render(); }).catch(function () { S.me = null; render(); });
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {

@@ -16,5 +16,11 @@ urlpatterns = [
     path("kirish/", api.kirish),
     path("chiqish/", api.chiqish),
     path("dashboard/", api.DashboardView.as_view()),
+    path("bildirishnomalar/", api.bildirishnomalar),
+    path("bildirishnomalar/oqildi/", api.bildirishnomalar_oqildi),
+    path("push/kalit/", api.push_kalit),
+    path("push/obuna/", api.push_obuna),
+    path("push/bekor/", api.push_bekor),
+    path("push/sinov/", api.push_sinov),
     path("", include(router.urls)),
 ]
