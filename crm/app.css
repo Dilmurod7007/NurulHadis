@@ -65,7 +65,9 @@ svg{display:block}
 .btn:disabled{opacity:.6}
 .seg{display:inline-flex;background:#F0F0F6;border-radius:12px;padding:3px;gap:2px;max-width:100%;overflow-x:auto;scrollbar-width:none}
 .seg::-webkit-scrollbar{display:none}
-.seg button{border:0;background:transparent;padding:8px 14px;border-radius:9px;color:var(--muted);font-weight:550;white-space:nowrap}
+.seg button{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;padding:8px 14px;border-radius:9px;color:var(--muted);font-weight:550;white-space:nowrap}
+.seg button svg{width:15px;height:15px;flex:none}
+.seg.eq{display:flex}.seg.eq button{flex:1;justify-content:center}
 .seg button.on{background:var(--surface);color:var(--text);box-shadow:0 1px 3px rgba(20,20,43,.1)}
 
 input,select,textarea{width:100%;height:var(--h);padding:0 12px;border:1px solid var(--line);border-radius:11px;background-color:var(--surface);outline:none;font-size:14.5px}
@@ -114,7 +116,9 @@ label.chk{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--te
 .delta.up{background:var(--ok-s);color:var(--ok)}
 .delta.down{background:var(--bad-s);color:var(--bad)}
 .delta.flat{background:#F0F0F6;color:var(--muted)}
-.badge{display:inline-block;padding:3px 9px;border-radius:8px;font-size:12px;font-weight:600;background:#F0F0F6;color:var(--muted);white-space:nowrap}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:8px;font-size:12px;font-weight:600;background:#F0F0F6;color:var(--muted);white-space:nowrap}
+.badge svg{width:13px;height:13px;flex:none;stroke-width:2.1}
+.yl{display:inline-flex;align-items:center;gap:6px}.yl svg{width:15px;height:15px;color:var(--faint)}
 .badge.ok{background:var(--ok-s);color:var(--ok)}
 .badge.bad{background:var(--bad-s);color:var(--bad)}
 .badge.warn{background:var(--warn-s);color:var(--warn)}
@@ -195,6 +199,44 @@ label.chk{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--te
 .toast.bad{background:var(--bad)}
 
 /* ── responsive ─────────────────────────── */
+/* tanlov tugmalari */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 13px;border:1px solid var(--line);background:var(--surface);border-radius:11px;font-weight:550;color:var(--muted)}
+.chip svg{width:16px;height:16px;flex:none}
+.chip.on{border-color:var(--accent);background:var(--accent-s);color:var(--accent-d)}
+.hintp{margin:-2px 0 10px;color:var(--muted);font-size:13px;line-height:1.5}
+
+/* ombor */
+.howto{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0 14px;margin-bottom:16px;box-shadow:var(--shadow)}
+.howto summary{display:flex;align-items:center;gap:8px;padding:13px 0;font-weight:650;cursor:pointer;list-style:none}
+.howto summary::-webkit-details-marker{display:none}
+.howto summary svg{width:18px;height:18px;color:var(--accent)}
+.howto ol{margin:0 0 14px;padding-left:20px;color:var(--muted);line-height:1.55}
+.howto li{margin-bottom:6px;padding-left:2px}.howto li b{color:var(--text)}
+.stock{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.scard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);cursor:pointer;display:flex;flex-direction:column;gap:12px}
+.scard .sh{display:flex;align-items:center;gap:11px}
+.scard .sic{width:38px;height:38px;border-radius:11px;background:var(--accent-s);color:var(--accent);display:grid;place-items:center;flex:none}
+.scard .sic svg{width:19px;height:19px}
+.scard .sn{flex:1;min-width:0}.scard .sn b{display:block;font-size:15.5px}.scard .sn small{color:var(--faint);font-size:12px}
+.scard .sq{display:flex;align-items:baseline;gap:8px}
+.scard .sq b{font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
+.scard .sq span{color:var(--muted)}
+.scard .sq.neg b{color:var(--bad)}
+.scard .sw{font-size:12.5px;color:var(--bad);background:var(--bad-s);border-radius:9px;padding:8px 10px;line-height:1.45}
+.scard .sa{display:flex;gap:8px}.scard .sa .btn{flex:1}
+.hist{padding:4px 14px}
+.hist .hrow{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.hist .hrow:last-child{border-bottom:0}
+.hist .hrow.click{cursor:pointer}
+.hic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none;background:#F0F0F6;color:var(--muted)}
+.hic svg{width:18px;height:18px}
+.hic.kirim{background:var(--ok-s);color:var(--ok)}.hic.tuzatish{background:var(--warn-s);color:var(--warn)}
+.hrow .hm{flex:1;min-width:0}.hrow .hm b{display:block;font-weight:600}.hrow .hm small{color:var(--muted);font-size:12.5px;display:block}
+.hrow .hq{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hrow .hq.pos{color:var(--ok)}.hrow .hq.neg{color:var(--bad)}
+div.hist#thist{padding:0;margin-bottom:6px}
+
 @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.g2,.g3,.g2e{grid-template-columns:1fr}}
 
 @media (max-width:860px){
@@ -240,6 +282,10 @@ label.chk{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--te
   .toolbar .sp,.desk-only{display:none}
   .toolbar>.btn{width:100%}
   .toolbar .seg{grid-column:1/-1}
+  #holat{grid-column:1/-1}
+  .seg.eq button{padding:8px 4px;gap:5px;font-size:13.5px}
+  .stock{grid-template-columns:1fr}
+  .chip{flex:1 1 auto;justify-content:center}
 
   /* forma oynasi — butun ekran */
   .ov{align-items:stretch}

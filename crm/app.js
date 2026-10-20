@@ -80,27 +80,11 @@
   }
 
   /* ── ikonkalar ────────────────────────────────────────────────── */
-  var ICON = {
-    dashboard: '<path d="M4 4h7v9H4zM13 4h7v5h-7zM13 11h7v9h-7zM4 15h7v5H4z"/>',
-    orders: '<path d="M6 4h12l2 4v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8zM4 8h16M9 12h6"/>',
-    users: '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 5.2a3.2 3.2 0 0 1 0 5.6M18 14.4c1.7.8 3 2.6 3 5.6"/>',
-    cost: '<rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9v.01M18 15v.01"/>',
-    stock: '<path d="M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/>',
-    box: '<path d="M7 3h10v4H7zM6 7h12l1 4v9a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-9z"/>',
-    plus: '<path d="M12 5v14M5 12h14"/>',
-    x: '<path d="M6 6l12 12M18 6L6 18"/>',
-    menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
-    out: '<path d="M14 4h5v16h-5M10 8l-4 4 4 4M6 12h10"/>',
-    money: '<circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.7c0-1 1-1.7 2.5-1.7s2.5.7 2.5 1.7-1 1.5-2.5 1.8-2.5.8-2.5 1.8 1 1.7 2.5 1.7 2.5-.7 2.5-1.7"/>',
-    trend: '<path d="M4 17l5-5 4 4 7-8M15 8h5v5"/>',
-    cart: '<path d="M4 5h2l2 11h10l2-8H7M10 20h.01M17 20h.01"/>',
-    install: '<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5M5 19h14"/>',
-    more: '<circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/>',
-    debt: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-  };
+  var ALIAS = { dashboard: "layout-dashboard", orders: "shopping-bag", cost: "wallet", stock: "warehouse", box: "package", out: "log-out",
+    money: "banknote", trend: "trending-up", cart: "shopping-cart", debt: "hand-coins", install: "download", more: "ellipsis" };
   function ic(n, cls) {
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"' +
-      (cls ? ' class="' + cls + '"' : "") + ">" + ICON[n] + "</svg>";
+      (cls ? ' class="' + cls + '"' : "") + ">" + ((window.LUCIDE || {})[ALIAS[n] || n] || "") + "</svg>";
   }
 
   /* ── drawer ───────────────────────────────────────────────────── */
@@ -166,17 +150,42 @@
   var XKAT = [["reklama", "Reklama (Instagram, Meta)"], ["qadoqlash", "Qadoqlash, bosma"], ["ish_haqi", "Ish haqi"], ["sayt", "Sayt, server, domen"], ["ijara", "Ijara, kommunal"], ["soliq", "Soliq, to‘lov komissiyasi"], ["boshqa", "Boshqa"], ["material", "Material xaridi"]];
   function nomi(arr, k) { for (var i = 0; i < arr.length; i++) if (arr[i][0] === k) return arr[i][1]; return k; }
 
+  var HOLAT_IC = { yangi: "sparkles", tasdiqlandi: "circle-check", yolda: "truck", yetkazildi: "package-check", bekor: "circle-x", qaytarildi: "undo-2" };
+  var TUR_IC = { sotuv: "shopping-bag", reklama: "megaphone", sovga: "gift" };
+  var YET_IC = { yandex: "car-taxi-front", pochta: "mail", ozim: "user-round", ozi: "store" };
+  var TOLOV_IC = { "To'langan": "badge-check", "Qisman": "circle-dashed", "To'lanmagan": "circle-alert" };
+  function badge(c, icon, text) { return '<span class="badge ' + c + '">' + (icon ? ic(icon) : "") + esc(text) + "</span>"; }
   function holatBadge(h) {
     var c = { yangi: "blue", tasdiqlandi: "acc", yolda: "warn", yetkazildi: "ok", bekor: "bad", qaytarildi: "bad" }[h] || "";
-    return '<span class="badge ' + c + '">' + esc(nomi(HOLAT, h)) + "</span>";
+    return badge(c, HOLAT_IC[h], nomi(HOLAT, h));
   }
   function turBadge(t) {
-    if (t === "sotuv") return '<span class="badge">Sotuv</span>';
-    return '<span class="badge warn">' + (t === "reklama" ? "Reklama" : "Sovg‘a") + "</span>";
+    return badge(t === "sotuv" ? "" : "warn", TUR_IC[t], t === "sotuv" ? "Sotuv" : t === "reklama" ? "Reklama" : "Sovg‘a");
   }
   function tolovBadge(h) {
     var c = h === "To'langan" ? "ok" : h === "Qisman" ? "warn" : h === "To'lanmagan" ? "bad" : "";
-    return '<span class="badge ' + c + '">' + esc(h) + "</span>";
+    return badge(c, TOLOV_IC[h], h);
+  }
+  function yetLabel(k, nom) { return '<span class="yl">' + (YET_IC[k] ? ic(YET_IC[k]) : "") + esc(nom) + "</span>"; }
+
+  /* tanlov tugmalari (select o'rniga): yashirin input + ikonkali tugmalar */
+  function chipField(name, label, arr, sel, icons, short) {
+    return '<div class="field"><label>' + label + '</label><input type="hidden" name="' + name + '" value="' + esc(sel) + '"><div class="chips" data-chips="' + name + '">' +
+      arr.map(function (o) {
+        return '<button type="button" class="chip' + (o[0] === sel ? " on" : "") + '" data-v="' + esc(o[0]) + '">' + (icons[o[0]] ? ic(icons[o[0]]) : "") + esc(short && short[o[0]] || o[1]) + "</button>";
+      }).join("") + "</div></div>";
+  }
+  function bindChips(ov) {
+    Array.prototype.forEach.call(ov.querySelectorAll("[data-chips]"), function (box) {
+      var inp = ov.querySelector('input[name="' + box.dataset.chips + '"]');
+      Array.prototype.forEach.call(box.querySelectorAll(".chip"), function (b) {
+        b.onclick = function () {
+          inp.value = b.dataset.v;
+          Array.prototype.forEach.call(box.querySelectorAll(".chip"), function (x) { x.classList.toggle("on", x === b); });
+          inp.dispatchEvent(new Event("change", { bubbles: true }));
+        };
+      });
+    });
   }
 
   /* ── chart (SVG) ──────────────────────────────────────────────── */
@@ -328,16 +337,25 @@
   /* ── buyurtmalar ──────────────────────────────────────────────── */
   function pageBuyurtmalar(el) {
     var f = S.fb || (S.fb = { q: "", holat: "", tur: "" });
-    el.innerHTML = '<div class="toolbar"><input type="search" id="q" placeholder="Mijoz, telefon, izoh…" value="' + esc(f.q) + '">' +
+    var TABS = [["", "Hammasi", "list"], ["sotuv", "Sotuvlar", "shopping-bag"], ["reklama", "Reklama", "megaphone"], ["sovga", "Sovg‘a", "gift"]];
+    el.innerHTML = '<div class="toolbar"><div class="seg eq" id="turtab">' + TABS.map(function (x) {
+        return '<button data-t="' + x[0] + '" class="' + (x[0] === f.tur ? "on" : "") + '">' + ic(x[2]) + x[1] + "</button>";
+      }).join("") + "</div>" +
+      '<input type="search" id="q" placeholder="Mijoz, telefon, izoh…" value="' + esc(f.q) + '">' +
       '<select id="holat"><option value="">Barcha holatlar</option>' + opts(HOLAT, f.holat) + "</select>" +
-      '<select id="tur"><option value="">Barcha turlar</option>' + opts(TUR, f.tur) + "</select>" +
       '<span class="sp"></span><button class="btn pri desk-only" id="new">' + ic("plus") + "Yangi buyurtma</button></div>" +
       (S.mijozFilter ? '<div class="alert" style="display:flex;justify-content:space-between;align-items:center;gap:10px">Bitta mijozning buyurtmalari ko‘rsatilmoqda <button class="btn sm" id="clrf">Hammasini ko‘rsat</button></div>' : "") +
       '<div class="card tcard" id="tbl"><div class="empty">Yuklanmoqda…</div></div>';
     var timer;
     el.querySelector("#q").oninput = function (e) { f.q = e.target.value; clearTimeout(timer); timer = setTimeout(load, 250); };
     el.querySelector("#holat").onchange = function (e) { f.holat = e.target.value; load(); };
-    el.querySelector("#tur").onchange = function (e) { f.tur = e.target.value; load(); };
+    Array.prototype.forEach.call(el.querySelectorAll("#turtab button"), function (b) {
+      b.onclick = function () {
+        f.tur = b.dataset.t;
+        Array.prototype.forEach.call(el.querySelectorAll("#turtab button"), function (x) { x.classList.toggle("on", x === b); });
+        load();
+      };
+    });
     el.querySelector("#new").onclick = function () { buyurtmaForm(null); };
     var clr = el.querySelector("#clrf");
     if (clr) clr.onclick = function () { S.mijozFilter = null; render(); };
@@ -352,7 +370,7 @@
         box.innerHTML = '<table class="tbl stack"><thead><tr><th class="hide-l">№</th><th>Sana</th><th>Mijoz</th><th>Turi</th><th>Holati</th><th class="hide-l">Yetkazish</th><th class="n">Dona</th><th class="n">Tushum</th>' +
           (foyda ? '<th class="n">Qolgan summa</th>' : "") + "<th>To‘lov</th></tr></thead><tbody>" + rows.map(function (b) {
             return '<tr class="click" data-id="' + b.id + '"><td class="hide-m hide-l">#' + b.id + '</td><td class="c-sub">' + fdate(b.sana) + '</td><td class="c-main">' + esc(b.mijoz_nom) +
-              '</td><td class="c-sub">' + turBadge(b.tur) + '</td><td class="c-sub">' + holatBadge(b.holat) + '</td><td class="c-sub hide-l">' + esc(b.yetkazish_turi_nom) +
+              '</td><td class="c-sub">' + turBadge(b.tur) + '</td><td class="c-sub">' + holatBadge(b.holat) + '</td><td class="c-sub hide-l">' + yetLabel(b.yetkazish_turi, b.yetkazish_turi_nom) +
               '</td><td class="n c-sub">' + b.dona + ' dona</td><td class="n c-amt">' + (b.tur === "sotuv" ? som(b.tushum) : '<span class="muted">tekin</span>') + '</td><td class="br"></td>' +
               (foyda ? '<td class="n c-sub' + (b.qolgan_summa ? "" : " hide-m") + '" data-l="Qolgan">' + som(b.qolgan_summa) + "</td>" : "") +
               '<td class="c-sub' + (b.tolov_holati === "—" ? " hide-m" : "") + '">' + tolovBadge(b.tolov_holati) + "</td></tr>";
@@ -384,10 +402,10 @@
         '<datalist id="mlist">' + mijozlar.map(function (m) { return '<option value="' + esc(m.ism) + '">' + esc(m.telefon) + "</option>"; }).join("") + "</datalist></div>" +
         '<div class="row2"><div class="field"><label>Telefon</label><input name="mijoz_tel" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" value="' + esc(cur ? cur.telefon : "") + '"></div>' +
         '<div class="field"><label>Telegram / Instagram</label><input name="mijoz_user" placeholder="@username" value="' + esc(cur ? cur.username : "") + '"></div></div>' +
+        chipField("tur", "Turi <span style=\"font-weight:400;color:var(--faint)\">(reklama va sovg‘a — tekin)</span>", TUR, b.tur, TUR_IC, { sotuv: "Sotuv", reklama: "Reklama", sovga: "Sovg‘a" }) +
         '<div class="row2 keep"><div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(b.sana) + '"></div>' +
-        '<div class="field"><label>Holati</label><select name="holat">' + opts(HOLAT, b.holat) + "</select></div></div>" +
-        '<div class="row2 keep"><div class="field"><label>Turi</label><select name="tur">' + opts(TUR, b.tur) + "</select></div>" +
         '<div class="field"><label>Qayerdan keldi</label><select name="manba">' + opts(MANBA, b.manba) + "</select></div></div>" +
+        chipField("holat", "Holati", HOLAT, b.holat, HOLAT_IC) +
         '<div class="sec">Mahsulotlar</div><div class="items" id="items"></div>' +
         '<button class="btn sm" type="button" id="addrow">' + ic("plus") + "Mahsulot qo‘shish</button>" +
         '<div class="sec">Bonus (sovg‘a)</div><div class="items bonus" id="bonus"></div>' +
@@ -396,8 +414,8 @@
         '<div class="row2"><div class="field"><label>Chegirma (so‘m)</label><input type="number" min="0" name="chegirma" value="' + b.chegirma + '"></div>' +
         '<div class="field"><label>Chegirma sababi</label><input name="chegirma_izoh" value="' + esc(b.chegirma_izoh) + '"></div></div></div>' +
         '<div class="sec">Yetkazish</div>' +
-        '<div class="row2"><div class="field"><label>Yetkazish turi</label><select name="yetkazish_turi">' + opts(YET, b.yetkazish_turi || "yandex") + "</select></div>" +
-        (foyda ? '<div class="field" data-yx><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "<div></div>") + "</div>" +
+        chipField("yetkazish_turi", "Yetkazish turi", YET, b.yetkazish_turi || "yandex", YET_IC, { pochta: "Pochta", ozim: "O‘zim olib beraman", ozi: "O‘zi olib ketadi" }) +
+        (foyda ? '<div class="field" data-yx><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "") +
         '<div class="row2" data-pay><div class="field"><label>To‘lov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
         '<div class="field"><label>To‘langan summa <a href="#" id="full" style="font-weight:600">to‘liq</a></label><input type="number" min="0" name="tolangan" value="' + b.tolangan + '"></div></div>' +
         '<div class="field"><label>Izoh</label><textarea name="izoh">' + esc(b.izoh) + "</textarea></div>" +
@@ -408,6 +426,7 @@
         body: body,
         onOpen: function (ov) {
           var items = ov.querySelector("#items"), bonus = ov.querySelector("#bonus");
+          bindChips(ov);
           function row(q) {
             var d = document.createElement("div");
             d.className = "it";
@@ -610,45 +629,91 @@
   }
 
   /* ── ombor ────────────────────────────────────────────────────── */
+  var HAR_IC = { kirim: "arrow-down-to-line", chiqim: "arrow-up-from-line", tuzatish: "sliders-horizontal" };
+  function stokHolat(t) {
+    if (t.qoldiq < 0) return ["bad", "circle-x", "Yetishmaydi"];
+    if (t.qoldiq === 0) return ["bad", "circle-x", "Tugagan"];
+    if (t.kam) return ["warn", "triangle-alert", "Kam qoldi"];
+    return ["ok", "circle-check", "Yetarli"];
+  }
+  // Ombor harakati — bitta qator (tovar sahifasida tovar nomi kerak emas)
+  function harRow(h, tovarNomi) {
+    var t = h.turi, info = [fdate(h.sana)];
+    var nom = t === "kirim" ? "Kirim" : t === "chiqim" ? "Buyurtmaga ketdi" : "Tuzatish";
+    if (t === "chiqim" && h.buyurtma && String(h.izoh || "").indexOf("#" + h.buyurtma) < 0) info.push("Buyurtma #" + h.buyurtma);
+    if (t === "kirim" && h.birlik_narx) info.push(Math.abs(h.miqdor) + " × " + som(h.birlik_narx) + (h.jami ? " = " + som(h.jami) + " so‘m" : ""));
+    if (h.izoh) info.push(esc(h.izoh));
+    return '<div class="hrow ' + (t === "chiqim" || h.buyurtma ? "" : "click") + '" data-id="' + h.id + '"><span class="hic ' + t + '">' + ic(HAR_IC[t] || "sliders-horizontal") + "</span>" +
+      '<div class="hm"><b>' + (tovarNomi ? esc(h.tovar_nom) + ' <span class="muted">· ' + nom + "</span>" : nom) + "</b><small>" + info.join(" · ") + "</small></div>" +
+      '<div class="hq ' + (h.miqdor < 0 ? "neg" : "pos") + '">' + (h.miqdor > 0 ? "+" : "") + h.miqdor + "</div></div>";
+  }
+
   function pageOmbor(el) {
-    el.innerHTML = '<div class="toolbar"><span class="sp"></span><button class="btn" id="nt">' + ic("plus") + "Yangi tovar</button>" +
-      '<button class="btn pri" id="kirim">' + ic("plus") + "Kirim / tuzatish</button></div>" +
-      '<div class="grid g2e"><div class="card tcard" id="tov"><div class="empty">Yuklanmoqda…</div></div>' +
-      '<div class="card tcard" id="har"><div class="empty">Yuklanmoqda…</div></div></div>';
+    var TABS = [["qoldiq", "Qoldiq", "boxes"], ["tarix", "Tarix", "history"]];
+    el.innerHTML = '<div class="toolbar"><div class="seg eq" id="otab">' + TABS.map(function (x) {
+        return '<button data-t="' + x[0] + '" class="' + (x[0] === (S.omborTab || "qoldiq") ? "on" : "") + '">' + ic(x[2]) + x[1] + "</button>";
+      }).join("") + '</div><span class="sp"></span><button class="btn" id="nt">' + ic("plus") + "Yangi tovar</button>" +
+      '<button class="btn pri" id="kirim">' + ic("arrow-down-to-line") + "Kirim</button></div>" +
+      '<div id="ob"><div class="empty">Yuklanmoqda…</div></div>';
     Promise.all([list("/ombor/"), list("/harakatlar/")]).then(function (res) {
-      var tov = res[0], har = res[1];
-      function yangiTovar() { tovarForm(null); }
-      function kirim() { harakatForm(tov); }
-      el.querySelector("#nt").onclick = yangiTovar; el.querySelector("#kirim").onclick = kirim;
-      el.querySelector("#tov").innerHTML = tov.length ? '<table class="tbl stack"><thead><tr><th>Tovar</th><th class="n">Qoldiq</th><th>Holat</th></tr></thead><tbody>' +
-        tov.map(function (t) {
-          return '<tr class="click" data-id="' + t.id + '"><td class="c-main">' + esc(t.nom) + '</td><td class="n c-amt">' + t.qoldiq + " " + esc(t.birlik) + '</td><td class="br"></td><td class="c-sub">' +
-            (t.kam ? '<span class="badge bad">Kam qoldi</span>' : '<span class="badge ok">Yetarli</span>') + "</td></tr>";
-        }).join("") + "</tbody></table>" : '<div class="empty">Ombor bo‘sh. «Yangi tovar» bilan boshlang (banka, quti, sumka…).</div>';
-      Array.prototype.forEach.call(el.querySelectorAll("#tov tr[data-id]"), function (tr) {
-        tr.onclick = function () { tovarForm(tov.filter(function (t) { return t.id === +tr.dataset.id; })[0]); };
+      var tov = res[0], har = res[1], ob = el.querySelector("#ob");
+      el.querySelector("#nt").onclick = function () { tovarForm(null); };
+      el.querySelector("#kirim").onclick = function () { harakatForm(tov, null, { turi: "kirim" }); };
+      Array.prototype.forEach.call(el.querySelectorAll("#otab button"), function (b) {
+        b.onclick = function () {
+          S.omborTab = b.dataset.t;
+          Array.prototype.forEach.call(el.querySelectorAll("#otab button"), function (x) { x.classList.toggle("on", x === b); });
+          draw();
+        };
       });
-      el.querySelector("#har").innerHTML = har.length ? '<table class="tbl stack"><thead><tr><th>Sana</th><th>Tovar</th><th class="n">Miqdor</th><th class="n">Dona narxi</th><th class="n">Jami</th><th>Izoh</th></tr></thead><tbody>' +
-        har.map(function (h) {
-          var kirim = h.turi === "kirim";
-          return '<tr data-id="' + h.id + '" class="' + (h.buyurtma ? "" : "click") + '"><td class="c-sub">' + fdate(h.sana) + '</td><td class="c-main">' + esc(h.tovar_nom) +
-            '</td><td class="n c-amt ' + (h.miqdor < 0 ? "neg" : "pos") + '">' + (h.miqdor > 0 ? "+" : "") + h.miqdor + '</td><td class="br"></td>' +
-            '<td class="n c-sub' + (kirim && h.birlik_narx ? "" : " hide-m") + '" data-l="Dona narxi">' + (kirim && h.birlik_narx ? som(h.birlik_narx) : "") +
-            '</td><td class="n c-sub' + (kirim && h.jami ? "" : " hide-m") + '" data-l="Jami">' + (kirim && h.jami ? som(h.jami) : "") +
-            '</td><td class="c-sub">' + esc(h.izoh) + "</td></tr>";
-        }).join("") + "</tbody></table>" : '<div class="empty">Harakat yo‘q.</div>';
-      Array.prototype.forEach.call(el.querySelectorAll("#har tr.click"), function (tr) {
-        tr.onclick = function () { harakatForm(tov, har.filter(function (h) { return h.id === +tr.dataset.id; })[0]); };
-      });
+      function tovarById(id) { return tov.filter(function (t) { return t.id === +id; })[0]; }
+      function draw() {
+        if ((S.omborTab || "qoldiq") === "tarix") {
+          ob.innerHTML = har.length ? '<div class="card hist">' + har.map(function (h) { return harRow(h, true); }).join("") + "</div>"
+            : '<div class="empty">Hali harakat yo‘q. Birinchi «Kirim»ni yozing.</div>';
+          Array.prototype.forEach.call(ob.querySelectorAll(".hrow.click"), function (r) {
+            r.onclick = function () { harakatForm(tov, har.filter(function (h) { return h.id === +r.dataset.id; })[0]); };
+          });
+          return;
+        }
+        var how = '<details class="howto"' + (tov.length && har.length ? "" : " open") + "><summary>" + ic("info") + "Ombor qanday ishlaydi?</summary><ol>" +
+          "<li><b>Tovar qo‘shing</b> — ombordagi narsa: banka, quti, qopqoq… («Yangi tovar»)</li>" +
+          "<li><b>Sotib olganingizda «Kirim»</b> bosing: nechta kelgani va dona narxini yozing. Xohlasangiz xarajatga ham yoziladi.</li>" +
+          "<li><b>Mahsulotlar</b> bo‘limida har bir mahsulot sotilganda qaysi tovardan nechta ketishini belgilang.</li>" +
+          "<li>Shundan so‘ng <b>buyurtma qilganingizda qoldiq o‘zi kamayadi</b>. Buzilsa yoki sanoqda farq chiqsa — «Tuzatish».</li></ol></details>";
+        if (!tov.length) { ob.innerHTML = how + '<div class="empty">Ombor bo‘sh. «Yangi tovar» bilan boshlang.</div>'; return; }
+        ob.innerHTML = how + '<div class="stock">' + tov.map(function (t) {
+          var sh = stokHolat(t);
+          return '<div class="scard click" data-id="' + t.id + '"><div class="sh"><span class="sic">' + ic("package") + '</span><div class="sn"><b>' + esc(t.nom) + "</b><small>" +
+            (t.min_qoldiq > 0 ? "Kam qoldiq chegarasi: " + t.min_qoldiq : "Chegara belgilanmagan") + "</small></div>" + badge(sh[0], sh[1], sh[2]) + "</div>" +
+            '<div class="sq ' + (t.qoldiq <= 0 ? "neg" : "") + '"><b>' + t.qoldiq + "</b><span>" + esc(t.birlik) + " qoldi</span></div>" +
+            (t.qoldiq < 0 ? '<div class="sw">Sotilgan, lekin omborga kirim yozilmagan. «Kirim» bosib, sotib olganingizni yozing.</div>' : "") +
+            '<div class="sa"><button class="btn sm" data-k>' + ic("arrow-down-to-line") + 'Kirim</button><button class="btn sm" data-z>' + ic("sliders-horizontal") + "Tuzatish</button></div></div>";
+        }).join("") + "</div>";
+        Array.prototype.forEach.call(ob.querySelectorAll(".scard"), function (c) {
+          var t = tovarById(c.dataset.id);
+          c.onclick = function () { tovarForm(t); };
+          c.querySelector("[data-k]").onclick = function (e) { e.stopPropagation(); harakatForm(tov, null, { turi: "kirim", tovar: t.id }); };
+          c.querySelector("[data-z]").onclick = function (e) { e.stopPropagation(); harakatForm(tov, null, { turi: "tuzatish", tovar: t.id }); };
+        });
+      }
+      draw();
     }).catch(function (e) { el.innerHTML = '<div class="empty">' + esc(e.message) + "</div>"; });
   }
   function tovarForm(t) {
     var edit = !!t; t = t || { nom: "", birlik: "dona", min_qoldiq: 0 };
     drawer({
       title: edit ? t.nom : "Yangi tovar",
-      body: '<div class="field"><label>Nomi</label><input name="nom" value="' + esc(t.nom) + '" placeholder="Shisha banka"></div>' +
-        '<div class="row2"><div class="field"><label>Birlik</label><input name="birlik" value="' + esc(t.birlik) + '"></div>' +
-        '<div class="field"><label>Kam qoldiq chegarasi</label><input type="number" min="0" name="min_qoldiq" value="' + t.min_qoldiq + '"></div></div>',
+      body: (edit ? '<div class="summary" style="margin:0 0 14px"><div class="r tot" style="border:0;margin:0;padding:0"><span>Hozirgi qoldiq</span><span>' + t.qoldiq + " " + esc(t.birlik) + "</span></div></div>" : "") +
+        '<div class="field"><label>Nomi</label><input name="nom" value="' + esc(t.nom) + '" placeholder="Shisha banka"></div>' +
+        '<div class="row2"><div class="field"><label>Birlik</label><input name="birlik" value="' + esc(t.birlik) + '"><small>dona, kg, metr…</small></div>' +
+        '<div class="field"><label>Kam qoldiq chegarasi</label><input type="number" min="0" name="min_qoldiq" value="' + t.min_qoldiq + '"><small>Qoldiq shundan oshmasa «Kam qoldi» deb ogohlantiradi</small></div></div>' +
+        (edit ? '<div class="sec">So‘nggi harakatlar</div><div class="hist" id="thist"><div class="muted">Yuklanmoqda…</div></div>' : ""),
+      onOpen: edit ? function (ov) {
+        list("/harakatlar/?tovar=" + t.id).then(function (rows) {
+          ov.querySelector("#thist").innerHTML = rows.slice(0, 10).map(function (h) { return harRow(h, false); }).join("") || '<div class="muted">Hali harakat yo‘q.</div>';
+        }).catch(function () { ov.querySelector("#thist").innerHTML = '<div class="muted">Yuklab bo‘lmadi.</div>'; });
+      } : null,
       onSave: function (ov) {
         var data = { nom: val(ov, "nom").trim(), birlik: val(ov, "birlik") || "dona", min_qoldiq: intv(ov, "min_qoldiq") };
         if (!data.nom) { toast("Nomini yozing.", true); return false; }
@@ -659,27 +724,32 @@
       } : null,
     });
   }
-  function harakatForm(tov, h) {
+  function harakatForm(tov, h, pre) {
     var edit = !!h;
-    h = h || { tovar: tov[0] && tov[0].id, turi: "kirim", miqdor: "", birlik_narx: "", sana: today(), izoh: "", xarajatga: true, qoshimcha_xarajat: "" };
-    if (!tov.length) { toast("Avval ombor tovarini qo‘shing.", true); return; }
+    pre = pre || {};
+    if (!tov.length) { toast("Avval «Yangi tovar» qo‘shing.", true); return; }
+    h = h || { tovar: pre.tovar || (tov[0] && tov[0].id), turi: pre.turi || "kirim", miqdor: "", birlik_narx: "", sana: today(), izoh: "", xarajatga: true, qoshimcha_xarajat: "" };
+    var turi = h.turi === "kirim" ? "kirim" : "tuzatish";
     drawer({
-      title: edit ? "Ombor harakati" : "Kirim / tuzatish",
+      title: edit ? "Ombor harakati" : turi === "kirim" ? "Omborga kirim" : "Ombor tuzatishi",
       body: '<div class="field"><label>Tovar</label><select name="tovar">' + opts(tov, h.tovar) + "</select></div>" +
-        '<div class="row2"><div class="field"><label>Turi</label><select name="turi">' + opts([["kirim", "Kirim (sotib olindi)"], ["tuzatish", "Tuzatish (buzildi, yo‘qoldi)"]], h.turi) + "</select></div>" +
-        '<div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(h.sana) + '"></div></div>' +
+        chipField("turi", "Nima bo‘ldi?", [["kirim", "Kirim (sotib olindi)"], ["tuzatish", "Tuzatish (buzildi, yo‘qoldi, sanoq)"]], turi, HAR_IC, { kirim: "Kirim", tuzatish: "Tuzatish" }) +
         '<div class="row2 keep"><div class="field"><label id="mlabel">Omborga kirgan soni</label><input type="number" inputmode="numeric" name="miqdor" value="' + esc(h.miqdor) + '" placeholder="0"></div>' +
         '<div class="field" data-k><label>Dona narxi (so‘m)</label><input type="number" inputmode="numeric" min="0" name="birlik_narx" value="' + esc(h.birlik_narx || "") + '" placeholder="0"></div></div>' +
+        '<div class="field" data-tz><small style="margin:-6px 0 0">Kamaytirish uchun minus bilan yozing: <b>−3</b> (3 ta buzildi). Ko‘paytirish: <b>3</b>.</small></div>' +
         '<div data-k><div class="summary" id="ksum"></div>' +
         '<div class="field" style="margin-top:14px"><label class="chk"><input type="checkbox" name="xarajatga"' + (h.xarajatga !== false ? " checked" : "") + '> Xarajat sifatida yozilsin</label></div>' +
         '<div class="field" data-x><label>Qo‘shimcha xarajat (yo‘l kira, olib kelish…) (so‘m)</label><input type="number" inputmode="numeric" min="0" name="qoshimcha_xarajat" value="' + esc(h.qoshimcha_xarajat || "") + '" placeholder="0">' +
         "<small>Xarid summasiga qo‘shilib, bitta xarajat bo‘lib yoziladi.</small></div></div>" +
+        '<div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(h.sana) + '"></div>' +
         '<div class="field"><label>Izoh</label><input name="izoh" value="' + esc(h.izoh) + '" placeholder="Masalan: Chorsudan olindi"></div>',
       onOpen: function (ov) {
+        bindChips(ov);
         function calc() {
           var kirim = val(ov, "turi") === "kirim";
           Array.prototype.forEach.call(ov.querySelectorAll("[data-k]"), function (e) { e.classList.toggle("hide", !kirim); });
-          ov.querySelector("#mlabel").textContent = kirim ? "Omborga kirgan soni" : "Miqdor (kamayish uchun −3)";
+          ov.querySelector("[data-tz]").classList.toggle("hide", kirim);
+          ov.querySelector("#mlabel").textContent = kirim ? "Omborga kirgan soni" : "Qancha o‘zgardi? (−3 yoki +3)";
           var xg = ov.querySelector('[name="xarajatga"]').checked;
           ov.querySelector("[data-x]").classList.toggle("hide", !xg);
           var soni = Math.abs(intv(ov, "miqdor")), narx = intv(ov, "birlik_narx"), qosh = xg ? intv(ov, "qoshimcha_xarajat") : 0;
@@ -741,7 +811,8 @@
           '<div class="row2"><div class="field"><label>Sotuv narxi (so‘m)</label><input type="number" min="0" name="narx" value="' + m.narx + '"></div>' +
           '<div class="field"><label>Tannarx (so‘m)</label><input type="number" min="0" name="tannarx" value="' + m.tannarx + '"></div></div>' +
           '<div class="field"><label><input type="checkbox" name="faol" style="width:auto;margin-right:6px"' + (m.faol ? " checked" : "") + ">Sotuvda</label></div>" +
-          '<div class="sec">Sotilganda ombordan chiqadigan narsalar</div><div class="items" id="tk"></div>' +
+          '<div class="sec">Sotilganda ombordan chiqadigan narsalar</div>' +
+          '<p class="hintp">Bu mahsulotdan 1 dona sotilganda ombordan qaysi tovardan nechta kamayishini belgilang. Masalan: 1 ta banka, 1 ta quti.</p><div class="items" id="tk"></div>' +
           '<button class="btn sm" type="button" id="addt">' + ic("plus") + "Qator qo‘shish</button>",
         onOpen: function (ov) {
           var box = ov.querySelector("#tk");
