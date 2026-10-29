@@ -446,3 +446,7 @@ div.hist#thist{padding:0;margin-bottom:0.375rem}
 .dd-o.dis{opacity:.45;pointer-events:none}
 .dd-o svg{width:1rem;height:1rem;color:var(--accent);flex:none}
 .dd-e{padding:0.75rem;color:var(--muted);text-align:center}
+
+.dd-x{display:flex;flex-direction:column;min-width:0;gap:0.0625rem}
+.dd-x small{color:var(--muted);font-size:0.78rem;line-height:1.35;font-weight:400}
+.dd-o.on .dd-x small{color:inherit;opacity:.75}
