@@ -67,11 +67,11 @@ svg{display:block}
 .scrim{position:fixed;inset:0;background:rgba(20,20,43,.38);z-index:55;display:none}
 
 .main{min-width:0}
-.top{display:flex;align-items:center;gap:0.875rem;padding:1rem max(1.75rem,calc((100% - 90rem) / 2 + 2rem));background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.top{display:flex;align-items:center;gap:0.875rem;padding:1rem max(1.75rem,calc((100% - 105rem) / 2 + 2rem));background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
 .top h1{font-size:1.1875rem;flex:1;display:flex;align-items:center;gap:0.625rem}
 .top .mlogo{display:none;width:2rem;height:2rem;border-radius:0.5625rem;overflow:hidden;flex:none}
 .top .mlogo img{width:100%;height:100%;display:block}
-.page{padding:1.5rem 2rem 3.75rem;max-width:90rem;margin:0 auto}
+.page{padding:1.5rem 2rem 3.75rem;max-width:105rem;margin:0 auto}
 .tabbar{display:none}
 
 /* ── controls ───────────────────────────── */
@@ -159,10 +159,11 @@ label.chk{display:flex;align-items:center;gap:0.625rem;font-size:0.875rem;color:
 .tbl td.br{display:none}
 .tbl td.n,.tbl th.n{white-space:nowrap}
 .tbl td{padding:0.75rem 0.625rem}
-@media (min-width:861px) and (max-width:1180px){.tbl .hide-l{display:none}}
+@container (min-width:600px) and (max-width:1060px){.tbl .hide-l{display:none}}
 .tbl .xl{display:none;white-space:nowrap}
-@media (min-width:1500px){.tbl td.xl,.tbl th.xl{display:table-cell}}
-.tcard{padding:0.375rem 0.5rem}
+@container (min-width:1280px){.tbl td.xl,.tbl th.xl{display:table-cell}}
+.tcard{padding:0.375rem 0.5rem;container-type:inline-size}
+.yt{display:inline-block;max-width:14rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
 .muted{color:var(--muted)}
 .pos{color:var(--ok)}.neg{color:var(--bad)}
 .empty{padding:2.25rem;text-align:center;color:var(--muted)}

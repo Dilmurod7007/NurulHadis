@@ -182,7 +182,7 @@
     var c = h === "To'langan" ? "ok" : h === "Qisman" ? "warn" : h === "To'lanmagan" ? "bad" : "";
     return badge(c, TOLOV_IC[h], h);
   }
-  function yetLabel(k, nom) { return '<span class="yl">' + (YET_IC[k] ? ic(YET_IC[k]) : "") + esc(nom) + "</span>"; }
+  function yetLabel(k, nom) { return '<span class="yl">' + (YET_IC[k] ? ic(YET_IC[k]) : "") + '<span class="yt">' + esc(nom) + "</span></span>"; }
 
   /* tanlov tugmalari (select o'rniga): yashirin input + ikonkali tugmalar */
   function chipField(name, label, arr, sel, icons, short) {
