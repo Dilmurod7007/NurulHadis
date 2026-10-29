@@ -799,7 +799,7 @@
     Promise.all([loadRef(), loadBts()]).then(function () {
       var mijozlar = S.cache.mijozlar, mahsulotlar = S.cache.mahsulotlar.filter(function (m) { return m.faol || (b && b.qatorlar.some(function (q) { return q.mahsulot === m.id; })); });
       var edit = !!b;
-      b = b || { sana: today(), tur: "sotuv", holat: "yangi", manba: "telegram", tolov_usuli: "naqd", chegirma: 0, yetkazish_turi: "yandex", yetkazish_xarajati: 0, tolangan: 0, chegirma_izoh: "", izoh: "", qatorlar: [], bonuslar: [] };
+      b = b || { sana: today(), tur: "sotuv", holat: "yangi", manba: "ig_reklama", tolov_usuli: "naqd", chegirma: 0, yetkazish_turi: "yandex", yetkazish_xarajati: 0, tolangan: 0, chegirma_izoh: "", izoh: "", qatorlar: [], bonuslar: [] };
       var cur = edit ? mijozlar.filter(function (m) { return m.id === b.mijoz; })[0] : null;
       var foyda = S.me.foyda;
       var qator = b.qatorlar.length ? b.qatorlar : [{ mahsulot: mahsulotlar[0] && mahsulotlar[0].id, miqdor: 1, narx: null }];
@@ -1374,6 +1374,109 @@
     ({ dashboard: pageDashboard, buyurtmalar: pageBuyurtmalar, mijozlar: pageMijozlar, xarajatlar: pageXarajatlar, ombor: pageOmbor, mahsulotlar: pageMahsulotlar }[p])(page);
     if (yangi) { history.replaceState(null, "", "#/buyurtmalar"); buyurtmaForm(null); }
   }
+
+  /* ── dizaynga mos dropdown (select o'rniga) ───────────────────── */
+  var ddOchiq = null;
+  function ddYop() {
+    if (!ddOchiq) return;
+    var o = ddOchiq; ddOchiq = null;
+    o.bg.remove(); o.menu.remove();
+    o.btn.classList.remove("on"); o.btn.setAttribute("aria-expanded", "false");
+    document.removeEventListener("keydown", o.key, true);
+    window.removeEventListener("resize", o.resize);
+    window.removeEventListener("scroll", o.scroll, true);
+  }
+  function ddOch(sel, btn) {
+    ddYop();
+    var optlar = Array.prototype.slice.call(sel.options), mobil = window.matchMedia("(max-width:860px)").matches;
+    var bg = document.createElement("div"); bg.className = "dd-bg" + (mobil ? " m" : "");
+    var menu = document.createElement("div"); menu.className = "dd-menu" + (mobil ? " m" : ""); menu.setAttribute("role", "listbox");
+    menu.innerHTML = (optlar.length > 10 ? '<input class="dd-q" type="search" placeholder="Qidirish…" autocomplete="off">' : "") + '<div class="dd-l"></div>';
+    var list = menu.querySelector(".dd-l"), q = menu.querySelector(".dd-q"), hot = -1;
+    function chiz(f) {
+      f = (f || "").toLowerCase();
+      var h = optlar.map(function (o, i) {
+        if (f && o.text.toLowerCase().indexOf(f) < 0) return "";
+        return '<button type="button" class="dd-o' + (o.selected ? " on" : "") + (o.disabled ? " dis" : "") + (!o.value ? " ph" : "") + '" data-i="' + i + '"><span>' + esc(o.text) + "</span>" + (o.selected ? ic("check") : "") + "</button>";
+      }).join("");
+      list.innerHTML = h || '<div class="dd-e">Topilmadi</div>';
+      hot = -1;
+    }
+    function tanla(i) {
+      if (optlar[i].disabled) return;
+      sel.value = optlar[i].value;
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+      ddYop(); btn.focus();
+    }
+    function harakat(d) {
+      var bs = Array.prototype.slice.call(list.querySelectorAll(".dd-o:not(.dis)"));
+      if (!bs.length) return;
+      hot = Math.max(0, Math.min(bs.length - 1, hot + d));
+      bs.forEach(function (b, k) { b.classList.toggle("hot", k === hot); });
+      bs[hot].scrollIntoView({ block: "nearest" });
+    }
+    chiz("");
+    document.body.appendChild(bg); document.body.appendChild(menu);
+    // joylashuv
+    var r = btn.getBoundingClientRect();
+    if (!mobil) {
+      var eni = Math.max(r.width, 200), left = Math.min(r.left, window.innerWidth - eni - 8);
+      var past = window.innerHeight - r.bottom - 12, tepa = r.top - 12, pastga = past >= 220 || past >= tepa;
+      menu.style.width = eni + "px"; menu.style.left = Math.max(8, left) + "px";
+      menu.style.maxHeight = Math.min(340, pastga ? past : tepa) + "px";
+      if (pastga) menu.style.top = r.bottom + 4 + "px"; else menu.style.bottom = window.innerHeight - r.top + 4 + "px";
+    }
+    btn.classList.add("on"); btn.setAttribute("aria-expanded", "true");
+    var on = list.querySelector(".dd-o.on"); if (on) on.scrollIntoView({ block: "center" });
+    bg.addEventListener("mousedown", function (e) { e.preventDefault(); ddYop(); });
+    list.addEventListener("click", function (e) { var b = e.target.closest(".dd-o"); if (b) tanla(+b.dataset.i); });
+    if (q) { q.addEventListener("input", function () { chiz(q.value); }); if (!mobil) q.focus(); }
+    function key(e) {
+      if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); ddYop(); btn.focus(); }
+      else if (e.key === "ArrowDown") { e.preventDefault(); harakat(1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); harakat(-1); }
+      else if (e.key === "Enter") {
+        var h = list.querySelector(".dd-o.hot") || (q && list.querySelector(".dd-o:not(.dis)"));
+        if (h) { e.preventDefault(); e.stopPropagation(); tanla(+h.dataset.i); }
+      }
+    }
+    function scroll(e) { if (!menu.contains(e.target) && !menu.contains(document.activeElement)) ddYop(); }
+    function resize() { if (!menu.contains(document.activeElement)) ddYop(); }     // telefonda klaviatura chiqqanda yopilmasin
+    document.addEventListener("keydown", key, true);
+    window.addEventListener("resize", resize);
+    window.addEventListener("scroll", scroll, true);
+    ddOchiq = { bg: bg, menu: menu, btn: btn, key: key, scroll: scroll, resize: resize };
+  }
+  function ddOrnat(root) {
+    Array.prototype.forEach.call(root.querySelectorAll("select:not([data-dd])"), function (sel) {
+      sel.dataset.dd = "1";
+      var w = document.createElement("div"); w.className = "dd";
+      if (sel.id) w.dataset.for = sel.id;
+      var btn = document.createElement("button"); btn.type = "button"; btn.className = "dd-btn"; btn.setAttribute("aria-haspopup", "listbox"); btn.setAttribute("aria-expanded", "false");
+      btn.innerHTML = '<span class="dd-t"></span>' + ic("chevron-down");
+      var t = btn.firstChild;
+      function sync() {
+        var o = sel.options[sel.selectedIndex];
+        t.textContent = o ? o.text : "";
+        t.classList.toggle("ph", !o || !o.value);
+        btn.disabled = sel.disabled;
+      }
+      sel.parentNode.insertBefore(w, sel); w.appendChild(btn); w.appendChild(sel);
+      sync();
+      sel.addEventListener("change", sync);
+      new MutationObserver(sync).observe(sel, { childList: true, subtree: true });
+      btn.onclick = function () { if (ddOchiq && ddOchiq.btn === btn) ddYop(); else ddOch(sel, btn); };
+    });
+  }
+  new MutationObserver(function (list) {
+    list.forEach(function (m) {
+      Array.prototype.forEach.call(m.addedNodes, function (n) {
+        if (n.nodeType !== 1) return;
+        if (n.tagName === "SELECT" && !n.dataset.dd) ddOrnat(n.parentNode);
+        else if (n.querySelector) ddOrnat(n);
+      });
+    });
+  }).observe(document.body, { childList: true, subtree: true });
 
   window.addEventListener("hashchange", function () { if (S.me) render(); });
   // iPhone'da ikki barmoq bilan kattalashtirishni o'chirish
