@@ -727,7 +727,7 @@
       }).join("") + "</div>" +
       '<input type="search" id="q" placeholder="Mijoz, telefon, izoh…" value="' + esc(f.q) + '">' +
       '<select id="holat"><option value="">Barcha holatlar</option>' + opts(HOLAT, f.holat) + "</select>" +
-      '<span class="sp"></span><button class="btn pri desk-only" id="new">' + ic("plus") + "Yangi buyurtma</button></div>" +
+      "</div>" +
       (S.mijozFilter ? '<div class="alert" style="display:flex;justify-content:space-between;align-items:center;gap:10px">Bitta mijozning buyurtmalari ko‘rsatilmoqda <button class="btn sm" id="clrf">Hammasini ko‘rsat</button></div>' : "") +
       '<div class="card tcard" id="tbl"><div class="empty">Yuklanmoqda…</div></div>';
     var timer;
@@ -740,7 +740,6 @@
         load();
       };
     });
-    el.querySelector("#new").onclick = function () { buyurtmaForm(null); };
     var clr = el.querySelector("#clrf");
     if (clr) clr.onclick = function () { S.mijozFilter = null; render(); };
     load();
@@ -802,7 +801,7 @@
         '<div class="row2 keep"><div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(b.sana) + '"></div>' +
         '<div class="field"><label>Qayerdan keldi</label><select name="manba">' + opts(MANBA, b.manba) + "</select></div></div>" +
         chipField("holat", "Holati", HOLAT, b.holat, HOLAT_IC) +
-        '<div class="sec">Mahsulotlar</div><div class="items" id="items"></div>' +
+        '<div class="sec">Mahsulotlar</div><div class="ith" id="ith"><span>Mahsulot</span><span>Soni</span><span>Narxi (so‘m)</span></div><div class="items" id="items"></div>' +
         '<button class="btn sm" type="button" id="addrow">' + ic("plus") + "Mahsulot qo‘shish</button>" +
         '<div class="sec">Bonus (sovg‘a)</div><div class="items bonus" id="bonus"></div>' +
         '<button class="btn sm" type="button" id="addbonus">' + ic("plus") + "Bonus qo‘shish</button>" +
@@ -841,10 +840,13 @@
             d.className = "it";
             d.innerHTML = '<select data-f="mahsulot">' + opts(mahsulotlar, q.mahsulot) + "</select>" +
               '<input type="number" min="1" data-f="miqdor" value="' + (q.miqdor || 1) + '" title="Soni">' +
-              '<input type="number" min="0" data-f="narx" placeholder="narx" value="' + (q.narx === null || q.narx === undefined ? "" : q.narx) + '" title="Narxi (bo‘sh = odatdagi narx)">' +
+              '<input type="number" min="0" data-f="narx" placeholder="narx" value="' + (q.narx === null || q.narx === undefined ? (mah(q.mahsulot) || {}).narx || "" : q.narx) + '" title="Narxi (so‘m). Mahsulot narxi avtomatik qo‘yiladi, kerak bo‘lsa o‘zgartiring.">' +
               '<button type="button" class="icon-x" data-rm title="Olib tashlash">' + ic("x") + "</button>";
             if (q.id) d.dataset.id = q.id;
             d.querySelector("[data-rm]").onclick = function () { d.remove(); calc(); };
+            d.querySelector('[data-f="mahsulot"]').addEventListener("change", function () {
+              d.querySelector('[data-f="narx"]').value = (mah(this.value) || {}).narx || "";
+            });
             items.appendChild(d);
           }
           function bonusRow(x) {
@@ -883,6 +885,7 @@
             var tekin = tur !== "sotuv";
             Array.prototype.forEach.call(ov.querySelectorAll("[data-pay]"), function (e) { e.classList.toggle("hide", tekin); });
             items.classList.toggle("tekin", tekin);
+            ov.querySelector("#ith").classList.toggle("tekin", tekin);
             var oziOladi = val(ov, "yetkazish_turi") === "ozi";
             Array.prototype.forEach.call(ov.querySelectorAll("[data-yx]"), function (e) { e.classList.toggle("hide", oziOladi); });
             var pochtaOrqali = val(ov, "yetkazish_turi") === "pochta";

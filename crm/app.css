@@ -51,7 +51,7 @@ svg{display:block}
 .top h1{font-size:19px;flex:1;display:flex;align-items:center;gap:10px}
 .top .mlogo{display:none;width:32px;height:32px;border-radius:9px;overflow:hidden;flex:none}
 .top .mlogo img{width:100%;height:100%;display:block}
-.page{padding:22px 28px 60px;max-width:1280px}
+.page{padding:24px 32px 60px;max-width:1800px}
 .tabbar{display:none}
 
 /* ── controls ───────────────────────────── */
@@ -280,6 +280,17 @@ div.hist#thist{padding:0;margin-bottom:6px}
 .stbtn{display:flex;gap:10px;flex-wrap:wrap}.stbtn .btn{flex:1;min-width:150px}
 .tbl td.pr{width:44px;padding-left:0}
 
+/* kompyuterda: o'rtadagi oyna (modal) */
+@media (min-width:861px){
+  .ov{align-items:center;justify-content:center;padding:28px}
+  .drawer{width:min(760px,100%);height:auto;max-height:calc(100vh - 56px);border-radius:20px;overflow:hidden;box-shadow:0 24px 70px rgba(20,20,43,.28);animation:pop .18s ease-out}
+  .drawer .bd{min-height:0}
+  @keyframes pop{from{transform:translateY(10px) scale(.98);opacity:0}to{transform:none;opacity:1}}
+}
+.ith{display:grid;grid-template-columns:minmax(0,1fr) 72px 118px 40px;gap:8px;font-size:12px;color:var(--faint);font-weight:600;margin-bottom:6px}
+.ith.tekin{grid-template-columns:minmax(0,1fr) 72px 40px}
+.ith.tekin span:nth-child(3){display:none}
+
 @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.g2,.g3,.g2e{grid-template-columns:1fr}}
 
 @media (max-width:860px){
@@ -342,6 +353,7 @@ div.hist#thist{padding:0;margin-bottom:6px}
   .drawer{width:100%;animation:up .22s ease-out}
   @keyframes up{from{transform:translateY(40px);opacity:.3}to{transform:none;opacity:1}}
   .drawer .hd,.drawer .bd,.drawer .ft{padding-left:16px;padding-right:16px}
+  .ith{display:none}
   .items .it:not(.bn){grid-template-columns:minmax(0,1fr) minmax(0,1fr) 40px}
   .items .it:not(.bn) select{grid-column:1/-1}
   .items.tekin .it:not(.bn){grid-template-columns:minmax(0,1fr) 40px}
