@@ -114,7 +114,7 @@ class BuyurtmaAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ("sana", "mijoz", "tur", "holat", "manba", "kampaniya")}),
         ("Narx va chegirma", {"fields": (
-            "chegirma", "chegirma_izoh", "yetkazish_turi", "pochta", "viloyat", "bts_filial", "yetkazish_xarajati")}),
+            "chegirma", "chegirma_izoh", "yetkazish_turi", "pochta", "viloyat", "bts_filial", "manzil", "yetkazish_xarajati")}),
         ("To'lov", {"fields": ("tolov_usuli", "tolangan")}),
         ("Izoh", {"fields": ("izoh",)}),
         ("Hisob-kitob", {"fields": ("hisob",)}),

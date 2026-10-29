@@ -10,7 +10,7 @@
   font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+html,body{margin:0;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;touch-action:manipulation}
 body{font-size:14.5px;line-height:1.45;overscroll-behavior-y:none}
 button,input,select,textarea{font:inherit;color:inherit;touch-action:manipulation}
 button{cursor:pointer}
@@ -82,8 +82,10 @@ select{
   background-repeat:no-repeat;background-position:right 12px center;background-size:16px;
 }
 select:disabled{background-color:#F6F6FA;color:var(--faint)}
-input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:block;text-align:left}
-input[type=date]::-webkit-date-and-time-value{text-align:left;margin:0}
+input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:flex;align-items:center;text-align:left;line-height:normal;padding-top:0;padding-bottom:0}
+input[type=date]::-webkit-date-and-time-value{text-align:left;margin:0;min-height:1.3em;display:flex;align-items:center}
+input[type=date]::-webkit-datetime-edit{padding:0;display:flex;align-items:center;line-height:normal}
+input[type=date]::-webkit-datetime-edit-fields-wrapper{padding:0}
 input[type=date]::-webkit-calendar-picker-indicator{opacity:.55;cursor:pointer}
 input[type=number]{-moz-appearance:textfield}
 label{display:block;font-size:12.5px;color:var(--muted);font-weight:550;margin:0 0 6px}
@@ -272,6 +274,12 @@ div.hist#thist{padding:0;margin-bottom:6px}
 .btsinfo svg{width:15px;height:15px;flex:none;margin-top:2px;color:var(--accent)}
 .btsinfo .muted{padding-left:21px}
 
+/* stiker */
+.stprev{display:flex;justify-content:center;margin-bottom:6px}
+.stprev canvas{width:100%;max-width:320px;height:auto;border:1px dashed #C9C9D8;border-radius:6px;background:#fff}
+.stbtn{display:flex;gap:10px;flex-wrap:wrap}.stbtn .btn{flex:1;min-width:150px}
+.tbl td.pr{width:44px;padding-left:0}
+
 @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.g2,.g3,.g2e{grid-template-columns:1fr}}
 
 @media (max-width:860px){
@@ -289,6 +297,9 @@ div.hist#thist{padding:0;margin-bottom:6px}
   .top .mlogo{display:block}
   .top h1{font-size:18px}
   .top .btn{display:none}
+  input,select,textarea{font-size:16px}
+  .tbl.stack td.pr{margin-left:auto;order:5}
+  .tbl.stack td.pr .icon-x{width:36px;height:36px;border:1px solid var(--line)}
   .bell{width:40px;height:40px}
   .ov.sheetov{align-items:flex-end}
   .sheet{width:100%;border-radius:20px 20px 0 0;max-height:88vh;animation:up .22s ease-out}

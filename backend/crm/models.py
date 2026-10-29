@@ -165,6 +165,8 @@ class Buyurtma(models.Model):
     pochta = models.CharField("Pochta", max_length=8, choices=POCHTA, blank=True)
     viloyat = models.CharField("Viloyat", max_length=40, blank=True)
     bts_filial = models.CharField("BTS filiali", max_length=160, blank=True)
+    manzil = models.CharField("Pochta manzili", max_length=240, blank=True,
+                              help_text="Tuman, ko'cha, uy, indeks... (stikerga chiqadi).")
     yetkazish_xarajati = models.PositiveIntegerField(
         "Yetkazish xarajati (so'm)", default=0,
         help_text="Kuryer/taksi/pochta uchun o'zingiz to'lagan pul.",
@@ -196,7 +198,7 @@ class Buyurtma(models.Model):
             self.yetkazish_xarajati = 0
         # Pochta ma'lumotlari faqat «Pochta orqali» yetkazishda saqlanadi
         if self.yetkazish_turi != "pochta":
-            self.pochta = self.viloyat = self.bts_filial = ""
+            self.pochta = self.viloyat = self.bts_filial = self.manzil = ""
         elif self.pochta != "bts":
             self.bts_filial = ""
         # Holat qachon o'zgargani (yetkazilmay qolganlarni eslatish uchun)

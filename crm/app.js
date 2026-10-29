@@ -393,6 +393,174 @@
     });
   }
 
+  /* ── stiker chop etish (Xprinter, 40×30 mm) ───────────────────── */
+  var STIKER_ENI = 40, STIKER_BOYI = 30;     // mm
+  var BT_XIZMAT = ["000018f0-0000-1000-8000-00805f9b34fb", "0000ffe0-0000-1000-8000-00805f9b34fb", "0000ff00-0000-1000-8000-00805f9b34fb",
+    "49535343-fe7d-4ae5-8fa9-9fafd205e455", "e7810a71-73ae-499d-8c15-faa9aef0c3f2", "0000fee7-0000-1000-8000-00805f9b34fb", "0000ae30-0000-1000-8000-00805f9b34fb"];
+
+  // Stikerga chiqadigan matn: ism, telefon, pochta manzili
+  function stikerMatni(b) {
+    var adr = [];
+    if (b.yetkazish_turi === "pochta") {
+      var f = b.bts_filial ? b.bts_filial.split(" · ") : [], x = null;
+      if (f[0] && S.bts && S.bts[b.viloyat]) x = S.bts[b.viloyat].filter(function (y) { return y.kod === f[0]; })[0] || null;
+      adr.push((b.pochta_nom || "Pochta") + (f[1] ? " · " + f[1] : ""));
+      var joy = [b.viloyat, x && x.tuman].filter(Boolean).join(", ");
+      if (joy) adr.push(joy);
+      if (b.manzil) adr.push(b.manzil);
+    } else {
+      adr.push(b.yetkazish_turi_nom);
+    }
+    return { ism: b.mijoz_nom || "", tel: b.mijoz_telefon || "", adr: adr };
+  }
+
+  // Stikerni rasmga chizadi (k = 1 mm necha piksel). Matn sig'masa shrift kichrayadi.
+  function stikerRasm(t, k) {
+    var W = STIKER_ENI * k, H = STIKER_BOYI * k, pad = 1.6 * k, eni = W - 2 * pad;
+    var c = document.createElement("canvas"); c.width = W; c.height = H;
+    var g = c.getContext("2d");
+    g.fillStyle = "#fff"; g.fillRect(0, 0, W, H); g.fillStyle = "#000"; g.textBaseline = "top";
+    var FONT = "Arial, Helvetica, sans-serif";
+    function qatorlar(matn, px, vazn) {
+      g.font = vazn + " " + px + "px " + FONT;
+      var natija = [];
+      String(matn).split("\n").forEach(function (par) {
+        var so = par.split(/\s+/), joriy = "";
+        so.forEach(function (w) {
+          var sinov = joriy ? joriy + " " + w : w;
+          if (g.measureText(sinov).width <= eni || !joriy) joriy = sinov; else { natija.push(joriy); joriy = w; }
+        });
+        natija.push(joriy);
+      });
+      return natija;
+    }
+    function qisqart(q, px, vazn, n) {
+      var l = q.slice(0, n);
+      if (q.length > n) {
+        g.font = vazn + " " + px + "px " + FONT;
+        var s = l[n - 1];
+        while (s.length > 1 && g.measureText(s + "…").width > eni) s = s.slice(0, -1);
+        l[n - 1] = s + "…";
+      }
+      return l;
+    }
+    var y = pad;
+    function chiz(matn, maxMm, minMm, vazn, maxQator, oraliq) {
+      if (!matn) return;
+      var px = maxMm * k, q;
+      for (; px > minMm * k; px -= 0.25 * k) { q = qatorlar(matn, px, vazn); if (q.length <= maxQator && q.every(function (s) { return g.measureText(s).width <= eni; })) break; }
+      q = qisqart(qatorlar(matn, px, vazn), px, vazn, maxQator);
+      g.font = vazn + " " + px + "px " + FONT;
+      q.forEach(function (s) { g.fillText(s, pad, y); y += px * 1.12; });
+      y += (oraliq || 0) * k;
+    }
+    chiz(t.ism, 4.6, 3.2, "bold", 2, 0.5);
+    chiz(t.tel, 4.4, 3.4, "bold", 1, 0.8);
+    g.fillRect(pad, y - 0.3 * k, eni, 0.25 * k);
+    y += 0.6 * k;
+    // manzil: qolgan joyga sig'adigan eng katta shrift
+    var qolgan = H - pad - y, matn = t.adr.join("\n"), px = 3.6 * k, q;
+    for (; px > 2.2 * k; px -= 0.2 * k) { q = qatorlar(matn, px, "normal"); if (q.length * px * 1.12 <= qolgan) break; }
+    q = qatorlar(matn, px, "normal");
+    var sigadi = Math.max(1, Math.floor(qolgan / (px * 1.12)));
+    q = qisqart(q, px, "normal", sigadi);
+    g.font = "normal " + px + "px " + FONT;
+    q.forEach(function (s) { g.fillText(s, pad, y); y += px * 1.12; });
+    return c;
+  }
+
+  // Oddiy printer / kompyuter: brauzerning chop etish oynasi (sahifa o'lchami 40×30 mm)
+  function stikerChop(canvas) {
+    var f = document.createElement("iframe");
+    f.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0";
+    document.body.appendChild(f);
+    f.onload = function () {
+      setTimeout(function () { f.contentWindow.focus(); f.contentWindow.print(); }, 250);
+      setTimeout(function () { f.remove(); }, 120000);
+    };
+    f.srcdoc = "<!doctype html><html><head><meta charset=utf-8><style>@page{size:" + STIKER_ENI + "mm " + STIKER_BOYI + "mm;margin:0}" +
+      "html,body{margin:0;padding:0;background:#fff}img{display:block;width:" + STIKER_ENI + "mm;height:" + STIKER_BOYI + "mm}</style></head><body><img src=\"" +
+      canvas.toDataURL("image/png") + "\"></body></html>";
+  }
+
+  // Bluetooth (TSPL): rasm qora-oq nuqtalarga aylantirilib printerga yuboriladi
+  function tsplBuyruq(canvas, teskari) {
+    var w = canvas.width, h = canvas.height, d = canvas.getContext("2d").getImageData(0, 0, w, h).data, wb = Math.ceil(w / 8);
+    var bit = new Uint8Array(wb * h), x, y, i;
+    for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
+      i = (y * w + x) * 4;
+      var qora = d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114 < 150;
+      if ((qora ? 0 : 1) ^ (teskari ? 1 : 0)) bit[y * wb + (x >> 3)] |= 1 << (7 - (x & 7));
+    }
+    function matn(s) { return Uint8Array.from(s.split(""), function (c) { return c.charCodeAt(0); }); }
+    var bosh = matn("SIZE " + STIKER_ENI + " mm," + STIKER_BOYI + " mm\r\nGAP 2 mm,0 mm\r\nDIRECTION 1\r\nCLS\r\nBITMAP 0,0," + wb + "," + h + ",0,"), oxir = matn("\r\nPRINT 1,1\r\n");
+    var out = new Uint8Array(bosh.length + bit.length + oxir.length);
+    out.set(bosh, 0); out.set(bit, bosh.length); out.set(oxir, bosh.length + bit.length);
+    return out;
+  }
+  function btYoz(bytes) {
+    if (!navigator.bluetooth) return Promise.reject(new Error("Bu brauzer Bluetooth’ni qo‘llamaydi. Android’da Chrome ishlating."));
+    var p = S.btDev ? Promise.resolve(S.btDev) : navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: BT_XIZMAT }).then(function (d) { S.btDev = d; return d; });
+    return p.then(function (d) { return d.gatt.connected ? d.gatt : d.gatt.connect(); }).then(function (server) {
+      return server.getPrimaryServices();
+    }).then(function (xizmatlar) {
+      var qidir = xizmatlar.reduce(function (zanjir, x) {
+        return zanjir.then(function (topildi) {
+          if (topildi) return topildi;
+          return x.getCharacteristics().then(function (cs) {
+            return cs.filter(function (c) { return c.properties.writeWithoutResponse || c.properties.write; })[0] || null;
+          });
+        });
+      }, Promise.resolve(null));
+      return qidir;
+    }).then(function (char) {
+      if (!char) throw new Error("Printerda yozish kanali topilmadi. Bu printer oddiy Bluetooth (SPP) bo‘lishi mumkin — u brauzerdan ishlamaydi.");
+      function yubor(hajm) {
+        var navbat = Promise.resolve();
+        for (let i = 0; i < bytes.length; i += hajm) {
+          navbat = navbat.then(function () {
+            var qism = bytes.slice(i, i + hajm);
+            return (char.properties.writeWithoutResponse ? char.writeValueWithoutResponse(qism) : char.writeValue(qism))
+              .then(function () { return new Promise(function (r) { setTimeout(r, 12); }); });
+          });
+        }
+        return navbat;
+      }
+      return yubor(160).catch(function () { return yubor(20); });
+    });
+  }
+
+  function stikerOyna(b) {
+    loadBts().then(function () {
+      var t = stikerMatni(b);
+      var teskari = false;
+      try { teskari = localStorage.getItem("nh_stiker_teskari") === "1"; } catch (e) {}
+      var btBor = !!navigator.bluetooth;
+      sheet({
+        title: "Stiker · #" + b.id,
+        body: '<div class="stprev" id="stprev"></div>' +
+          '<p class="hintp">Stiker o‘lchami ' + STIKER_ENI + "×" + STIKER_BOYI + " mm: mijoz ismi, telefon va pochta manzili.</p>" +
+          '<div class="stbtn"><button class="btn pri" id="stp">' + ic("printer") + "Chop etish</button>" +
+          (btBor ? '<button class="btn" id="stb">' + ic("bluetooth") + "Bluetooth orqali</button>" : "") + "</div>" +
+          (btBor ? '<label class="chk" style="margin-top:14px"><input type="checkbox" id="stinv"' + (teskari ? " checked" : "") + "> Bluetooth: stiker teskari (qora fon) chiqsa, buni yoqing</label>" : '<p class="hintp" style="margin-top:12px">Telefondan Bluetooth orqali chop etish faqat Android’dagi Chrome’da ishlaydi.</p>'),
+        onOpen: function (ov) {
+          var rasm = stikerRasm(t, 16);
+          ov.querySelector("#stprev").appendChild(rasm);
+          ov.querySelector("#stp").onclick = function () { stikerChop(rasm); };
+          var bt = ov.querySelector("#stb");
+          if (bt) bt.onclick = function () {
+            var inv = ov.querySelector("#stinv").checked;
+            try { localStorage.setItem("nh_stiker_teskari", inv ? "1" : "0"); } catch (e) {}
+            bt.disabled = true;
+            btYoz(tsplBuyruq(stikerRasm(t, 8), inv)).then(function () { toast("Printerga yuborildi"); })
+              .catch(function (e) { toast(/cancel|chosen/i.test(e.message) ? "Printer tanlanmadi" : e.message, true); })
+              .then(function () { bt.disabled = false; });
+          };
+        },
+      });
+    });
+  }
+
   /* ── chart (SVG) ──────────────────────────────────────────────── */
   function chart(host, seriya, key, color) {
     var W = Math.max(host.clientWidth, 300), H = 280, pl = 46, pb = 30, pt = 14, pr = 8;
@@ -573,15 +741,21 @@
         if (!rows.length) { box.innerHTML = '<div class="empty">Buyurtma topilmadi.</div>'; return; }
         var foyda = S.me.foyda;
         box.innerHTML = '<table class="tbl stack"><thead><tr><th class="hide-l">№</th><th>Sana</th><th>Mijoz</th><th>Turi</th><th>Holati</th><th class="hide-l">Yetkazish</th><th class="n">Dona</th><th class="n">Tushum</th>' +
-          (foyda ? '<th class="n">Qolgan summa</th>' : "") + "<th>To‘lov</th></tr></thead><tbody>" + rows.map(function (b) {
+          (foyda ? '<th class="n">Qolgan summa</th>' : "") + "<th>To‘lov</th><th></th></tr></thead><tbody>" + rows.map(function (b) {
             return '<tr class="click" data-id="' + b.id + '"><td class="hide-m hide-l">#' + b.id + '</td><td class="c-sub">' + fdate(b.sana) + '</td><td class="c-main">' + esc(b.mijoz_nom) +
               '</td><td class="c-sub">' + turBadge(b.tur) + '</td><td class="c-sub">' + holatQuick(b) + '</td><td class="c-sub hide-l">' + yetLabel(b.yetkazish_turi, yetNom(b)) +
               '</td><td class="n c-sub">' + b.dona + ' dona</td><td class="n c-amt">' + (b.tur === "sotuv" ? som(b.tushum) : '<span class="muted">tekin</span>') + '</td><td class="br"></td>' +
               (foyda ? '<td class="n c-sub' + (b.qolgan_summa ? "" : " hide-m") + '" data-l="Qolgan">' + som(b.qolgan_summa) + "</td>" : "") +
-              '<td class="c-sub' + (b.tolov_holati === "—" ? " hide-m" : "") + '">' + tolovBadge(b.tolov_holati) + "</td></tr>";
+              '<td class="c-sub' + (b.tolov_holati === "—" ? " hide-m" : "") + '">' + tolovBadge(b.tolov_holati) + '</td><td class="c-sub pr"><button type="button" class="icon-x" data-p="' + b.id + '" title="Stiker chop etish" aria-label="Stiker chop etish">' + ic("printer") + "</button></td></tr>";
           }).join("") + "</tbody></table>";
         Array.prototype.forEach.call(box.querySelectorAll("tr[data-id]"), function (tr) {
           tr.onclick = function () { buyurtmaForm(rows.filter(function (b) { return b.id === +tr.dataset.id; })[0]); };
+        });
+        Array.prototype.forEach.call(box.querySelectorAll("[data-p]"), function (btn) {
+          btn.onclick = function (e) {
+            e.stopPropagation();
+            stikerOyna(rows.filter(function (b) { return b.id === +btn.dataset.p; })[0]);
+          };
         });
         Array.prototype.forEach.call(box.querySelectorAll("[data-q]"), function (btn) {
           btn.onclick = function (e) {
@@ -630,7 +804,8 @@
         '<div class="row2 keep"><div class="field"><label>Viloyat</label><select name="viloyat"><option value="">Tanlang…</option>' +
         VILOYAT.map(function (x) { return '<option value="' + esc(x) + '">' + esc(x) + "</option>"; }).join("") + "</select></div>" +
         '<div class="field" data-bts><label>Tuman / shahar</label><select id="btstuman"><option value="">Hammasi</option></select></div></div>' +
-        '<div class="field" data-bts><label>BTS filiali</label><select name="bts_filial"><option value="">Avval viloyatni tanlang</option></select><div class="btsinfo" id="btsinfo"></div></div></div>' +
+        '<div class="field" data-bts><label>BTS filiali</label><select name="bts_filial"><option value="">Avval viloyatni tanlang</option></select><div class="btsinfo" id="btsinfo"></div></div>' +
+        '<div class="field"><label>Manzil <span style="font-weight:400;color:var(--faint)">(stikerga chiqadi)</span></label><input name="manzil" placeholder="Tuman, ko‘cha, uy, indeks…" value="' + esc(b.manzil || "") + '"></div></div>' +
         (foyda ? '<div class="field" data-yx><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "") +
         '<div class="row2" data-pay><div class="field"><label>To‘lov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
         '<div class="field"><label>To‘langan summa <a href="#" id="full" style="font-weight:600">to‘liq</a></label><input type="number" min="0" name="tolangan" value="' + b.tolangan + '"></div></div>' +
@@ -751,6 +926,7 @@
             data.pochta = pochtaOrqali ? val(ov, "pochta") : "";
             data.viloyat = pochtaOrqali ? val(ov, "viloyat") : "";
             data.bts_filial = pochtaOrqali && data.pochta === "bts" ? val(ov, "bts_filial") : "";
+            data.manzil = pochtaOrqali ? val(ov, "manzil").trim() : "";
             if (S.me.foyda) data.yetkazish_xarajati = data.yetkazish_turi === "ozi" ? 0 : intv(ov, "yetkazish_xarajati");
             return api(edit ? "/buyurtmalar/" + b.id + "/" : "/buyurtmalar/", { method: edit ? "PUT" : "POST", body: data });
           }).then(function () { toast("Saqlandi"); S.cache = {}; render(); });
@@ -1161,6 +1337,8 @@
   }
 
   window.addEventListener("hashchange", function () { if (S.me) render(); });
+  // iPhone'da ikki barmoq bilan kattalashtirishni o'chirish
+  ["gesturestart", "gesturechange", "gestureend"].forEach(function (n) { document.addEventListener(n, function (e) { e.preventDefault(); }); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden) xabarSoni(true); });
   api("/me/").then(function (d) { S.me = d.kirgan ? d : null; render(); }).catch(function () { S.me = null; render(); });
   if ("serviceWorker" in navigator) {

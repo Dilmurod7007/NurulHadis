@@ -266,13 +266,13 @@ class ApiTests(TestCase):
                                  content_type="application/json").status_code, 400)
 
     def test_pochta_maydonlari(self):
-        b = self._buyurtma(yetkazish_turi="pochta", pochta="bts", viloyat="Toshkent shahri", bts_filial="0101 YAKKASAROY")
+        b = self._buyurtma(yetkazish_turi="pochta", pochta="bts", viloyat="Toshkent shahri", bts_filial="0101 YAKKASAROY", manzil="Bobur ko'chasi 5")
         b.refresh_from_db()
         self.assertEqual((b.pochta, b.bts_filial), ("bts", "0101 YAKKASAROY"))
         b.pochta = "emu"; b.save(); b.refresh_from_db()
         self.assertEqual(b.bts_filial, "")      # BTS emas — filial saqlanmaydi
         b.yetkazish_turi = "yandex"; b.save(); b.refresh_from_db()
-        self.assertEqual((b.pochta, b.viloyat), ("", ""))
+        self.assertEqual((b.pochta, b.viloyat, b.manzil), ("", "", ""))
 
     def test_yolda_eslatma_va_bildirishnomalar(self):
         from datetime import timedelta
