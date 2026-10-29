@@ -10,6 +10,7 @@
   --tint:#F8F7FF; --tint2:#FAF8FF; --tint-line:#E5DEFF; --accent-line:#CFC4FA;
   --bad-line:#F3C4BF; --warn-line:#F5D9A0; --ok-line:#BFE8D0;
   --tabbar-bg:rgba(255,255,255,.96); --toast-bg:#14142B; --toast-fg:#fff; --bar-off:#C4C4D4; --ph:#B3B3C4;
+  --mark:#FFE58A;
   --h:2.625rem; --tabbar:4rem;
   --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px);
   font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -27,7 +28,7 @@
   --hover:#1F2130; --fill:#22243A; --row-hover:#1A1C29; --raise:#2C2E45;
   --tint:#1B1A33; --tint2:#1E1C38; --tint-line:#2F2B57; --accent-line:#463C8C;
   --bad-line:#5C2B28; --warn-line:#5A4318; --ok-line:#1E5A3A;
-  --tabbar-bg:rgba(22,23,34,.96); --toast-bg:#ECEDF5; --toast-fg:#12131C; --bar-off:#3A3C55; --ph:#5E607A;
+  --mark:rgba(245,165,36,.38); --tabbar-bg:rgba(22,23,34,.96); --toast-bg:#ECEDF5; --toast-fg:#12131C; --bar-off:#3A3C55; --ph:#5E607A;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;touch-action:manipulation}
@@ -453,3 +454,5 @@ div.hist#thist{padding:0;margin-bottom:0.375rem}
 
 .row2>*,.row3>*{min-width:0}
 .dd-btn,.dd{min-width:0}
+
+.dd-o mark{background:var(--mark);color:inherit;border-radius:0.1875rem;padding:0 0.0625rem;font-weight:inherit}

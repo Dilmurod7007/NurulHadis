@@ -1404,6 +1404,30 @@
     window.removeEventListener("scroll", o.scroll, true);
     if (o.vv && window.visualViewport) { window.visualViewport.removeEventListener("resize", o.vv); window.visualViewport.removeEventListener("scroll", o.vv); }
   }
+  // Qidirilgan so'zlarni natijada belgilab ko'rsatish (katta-kichik harf va apostrofga e'tibor bermaydi)
+  function ddBelgila(matn, terms) {
+    matn = String(matn || "");
+    if (!terms.length) return esc(matn);
+    var n = "", xar = [];
+    for (var i = 0; i < matn.length; i++) {
+      var c = matn.charAt(i).toLowerCase().replace(/[ʻʼ‘’`´'"]/g, "");
+      for (var k = 0; k < c.length; k++) { n += c.charAt(k); xar.push(i); }
+    }
+    var oral = [];
+    terms.forEach(function (t) {
+      var p = n.indexOf(t);
+      while (p >= 0) { oral.push([xar[p], xar[p + t.length - 1]]); p = n.indexOf(t, p + t.length); }
+    });
+    oral.sort(function (a, b) { return a[0] - b[0]; });
+    var out = "", pos = 0;
+    oral.forEach(function (r) {
+      if (r[1] < pos) return;
+      var a = Math.max(r[0], pos);
+      out += esc(matn.slice(pos, a)) + "<mark>" + esc(matn.slice(a, r[1] + 1)) + "</mark>";
+      pos = r[1] + 1;
+    });
+    return out + esc(matn.slice(pos));
+  }
   function ddNorm(s) { return String(s || "").toLowerCase().replace(/[ʻʼ‘’`´'"]/g, ""); }
   function ddOch(sel, btn) {
     ddYop();
@@ -1420,11 +1444,12 @@
           var hay = ddNorm(o.dataset.s || o.text);
           if (terms.some(function (w) { return hay.indexOf(w) < 0; })) return "";
         }
-        return '<button type="button" class="dd-o' + (o.selected ? " on" : "") + (o.disabled ? " dis" : "") + (!o.value ? " ph" : "") + '" data-i="' + i + '"><span class="dd-x"><span>' + esc(o.text) + "</span>" +
-          (o.dataset.sub ? "<small>" + esc(o.dataset.sub) + "</small>" : "") + "</span>" + (o.selected ? ic("check") : "") + "</button>";
+        return '<button type="button" class="dd-o' + (o.selected ? " on" : "") + (o.disabled ? " dis" : "") + (!o.value ? " ph" : "") + '" data-i="' + i + '"><span class="dd-x"><span>' + ddBelgila(o.text, terms) + "</span>" +
+          (o.dataset.sub ? "<small>" + ddBelgila(o.dataset.sub, terms) + "</small>" : "") + "</span>" + (o.selected ? ic("check") : "") + "</button>";
       }).join("");
       list.innerHTML = h || '<div class="dd-e">Topilmadi</div>';
       hot = -1;
+      if (terms.length) { var b0 = list.querySelector(".dd-o:not(.dis)"); if (b0) { b0.classList.add("hot"); hot = 0; } }      // Enter bosilsa shu tanlanadi
     }
     function tanla(i) {
       if (optlar[i].disabled) return;
