@@ -442,7 +442,7 @@
       adr.push((b.pochta_nom || "Pochta") + (f[1] ? " · " + f[1] : ""));
       var joy = [b.viloyat, x && x.tuman].filter(Boolean).join(", ");
       if (joy) adr.push(joy);
-      if (b.manzil) adr.push(b.manzil);
+      if (x && x.manzil) adr.push(x.manzil);
     } else {
       adr.push(b.yetkazish_turi_nom);
     }
@@ -579,7 +579,7 @@
       sheet({
         title: "Stiker · #" + b.id,
         body: '<div class="stprev" id="stprev"></div>' +
-          '<p class="hintp">Stiker o‘lchami ' + STIKER_ENI + "×" + STIKER_BOYI + " mm: mijoz ismi, telefon va pochta manzili.</p>" +
+          '<p class="hintp">Stiker o‘lchami ' + STIKER_ENI + "×" + STIKER_BOYI + " mm: mijoz ismi, telefon va pochta filiali.</p>" +
           '<div class="stbtn"><button class="btn pri" id="stp">' + ic("printer") + "Chop etish</button>" +
           (btBor ? '<button class="btn" id="stb">' + ic("bluetooth") + "Bluetooth orqali</button>" : "") + "</div>" +
           (btBor ? '<label class="chk" style="margin-top:0.875rem"><input type="checkbox" id="stinv"' + (teskari ? " checked" : "") + "> Bluetooth: stiker teskari (qora fon) chiqsa, buni yoqing</label>" : '<p class="hintp" style="margin-top:0.75rem">Telefondan Bluetooth orqali chop etish faqat Android’dagi Chrome’da ishlaydi.</p>'),
@@ -845,7 +845,7 @@
         VILOYAT.map(function (x) { return '<option value="' + esc(x) + '">' + esc(x) + "</option>"; }).join("") + "</select></div>" +
         '<div class="field" data-bts><label>Tuman / shahar</label><select id="btstuman"><option value="">Hammasi</option></select></div></div>' +
         '<div class="field" data-bts><label>BTS filiali</label><select name="bts_filial"><option value="">Avval viloyatni tanlang</option></select><div class="btsinfo" id="btsinfo"></div></div>' +
-        '<div class="field"><label>Manzil <span style="font-weight:400;color:var(--faint)">(stikerga chiqadi)</span></label><input name="manzil" placeholder="Tuman, ko‘cha, uy, indeks…" value="' + esc(b.manzil || "") + '"></div></div>' +
+        '</div>' +
         (foyda ? '<div class="field" data-yx><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "") +
         '<div class="row2" data-pay><div class="field"><label>To‘lov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
         '<div class="field"><label>To‘langan summa <a href="#" id="full" style="font-weight:600">to‘liq</a></label><input type="number" min="0" name="tolangan" value="' + b.tolangan + '"></div></div>' +
@@ -980,7 +980,6 @@
             data.pochta = pochtaOrqali ? val(ov, "pochta") : "";
             data.viloyat = pochtaOrqali ? val(ov, "viloyat") : "";
             data.bts_filial = pochtaOrqali && data.pochta === "bts" ? val(ov, "bts_filial") : "";
-            data.manzil = pochtaOrqali ? val(ov, "manzil").trim() : "";
             if (S.me.foyda) data.yetkazish_xarajati = data.yetkazish_turi === "ozi" ? 0 : intv(ov, "yetkazish_xarajati");
             return api(edit ? "/buyurtmalar/" + b.id + "/" : "/buyurtmalar/", { method: edit ? "PUT" : "POST", body: data });
           }).then(function () { toast("Saqlandi"); S.cache = {}; render(); });
@@ -1508,8 +1507,18 @@
   document.addEventListener("visibilitychange", function () { if (!document.hidden) xabarSoni(true); });
   api("/me/").then(function (d) { S.me = d.kirgan ? d : null; render(); }).catch(function () { S.me = null; render(); });
   if ("serviceWorker" in navigator) {
+    // Yangi versiya chiqsa, ochiq turgan ilova o'zi yangilanadi (eski kod bilan ishlab qolmasin)
+    var swBor = !!navigator.serviceWorker.controller;
+    function yangila() { if (document.querySelector(".ov")) setTimeout(yangila, 5000); else location.reload(); }
+    navigator.serviceWorker.addEventListener("controllerchange", function () {
+      if (!swBor) { swBor = true; return; }          // birinchi o'rnatish: qayta yuklash shart emas
+      yangila();
+    });
     window.addEventListener("load", function () {
-      navigator.serviceWorker.register("/crm/sw.js", { scope: "/crm/" }).catch(function () {});
+      navigator.serviceWorker.register("/crm/sw.js", { scope: "/crm/" }).then(function (reg) {
+        document.addEventListener("visibilitychange", function () { if (!document.hidden) reg.update().catch(function () {}); });
+        setInterval(function () { reg.update().catch(function () {}); }, 30 * 60 * 1000);
+      }).catch(function () {});
     });
   }
 })();

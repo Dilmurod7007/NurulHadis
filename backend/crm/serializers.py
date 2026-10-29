@@ -156,7 +156,7 @@ class BuyurtmaSerializer(serializers.ModelSerializer):
         fields = [
             "id", "sana", "mijoz", "mijoz_nom", "mijoz_telefon", "tur", "tur_nom", "holat", "holat_nom",
             "manba", "manba_nom", "kampaniya", "chegirma", "chegirma_izoh",
-            "yetkazish_turi", "yetkazish_turi_nom", "pochta", "pochta_nom", "viloyat", "bts_filial", "manzil", "yetkazish_xarajati", "tolov_usuli", "tolangan", "izoh",
+            "yetkazish_turi", "yetkazish_turi_nom", "pochta", "pochta_nom", "viloyat", "bts_filial", "yetkazish_xarajati", "tolov_usuli", "tolangan", "izoh",
             "qatorlar", "bonuslar",
             "dona", "mahsulot_summasi", "chegirma_hisob", "tushum", "tannarx_jami",
             "bonus_tannarxi", "foyda", "qolgan_summa", "qarz", "tolov_holati",
