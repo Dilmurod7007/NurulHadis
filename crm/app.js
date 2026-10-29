@@ -275,7 +275,7 @@
   function btsOrnat(ov, b) {
     var data = S.bts || {};
     var v = ov.querySelector('[name="viloyat"]'), t = ov.querySelector("#btstuman"), f = ov.querySelector('[name="bts_filial"]'), info = ov.querySelector("#btsinfo");
-    var hammasi = [], ichki = false;
+    var hammasi = [], ichki = false, ichkiT = false;
     Object.keys(data).forEach(function (k) { hammasi = hammasi.concat(data[k]); });
     function royxat() { return v.value ? (data[v.value] || []) : hammasi; }     // viloyat tanlanmagan bo'lsa, hamma filiallar ichidan qidiriladi
     function kodi(s) { return String(s || "").split(" · ")[0]; }
@@ -310,8 +310,12 @@
       info.innerHTML = x ? "<div>" + ic("map-pin") + esc(x.manzil) + "</div>" + (x.moljal ? '<div class="muted">Mo‘ljal: ' + esc(x.moljal) + "</div>" : "") +
         '<div class="muted">' + esc(x.vaqt) + "</div>" : "";
     }
+    function tumanQoy(nom) {          // tumanni filialga mos qilib qo'yish (ro'yxatni o'zgartirmasdan)
+      if (!nom || t.value === nom) return;
+      ichkiT = true; t.value = nom; t.dispatchEvent(new Event("change", { bubbles: true })); ichkiT = false;
+    }
     v.onchange = function () { if (ichki) return; tumanlar(""); filiallar(""); };
-    t.onchange = function () { filiallar(""); };
+    t.onchange = function () { if (ichkiT) return; filiallar(""); };
     f.onchange = function () {
       // viloyat tanlanmagan holda filial tanlansa, viloyat o'zi qo'yiladi
       var o = f.selectedOptions[0];
@@ -320,6 +324,8 @@
         ichki = true; v.value = o.dataset.v; v.dispatchEvent(new Event("change", { bubbles: true })); ichki = false;
         tumanlar(""); filiallar(saqla);
       }
+      var x = o && o.value ? hammasi.filter(function (y) { return y.kod === kodi(f.value); })[0] : null;
+      if (x) tumanQoy(x.tuman);
       korsat();
     };
     f.dataset.sph = "Filial nomi, manzil yoki mo‘ljal bo‘yicha qidiring…";
@@ -1438,14 +1444,15 @@
     var list = menu.querySelector(".dd-l"), q = menu.querySelector(".dd-q"), hot = -1;
     function chiz(f) {
       var terms = ddNorm(f).split(/\s+/).filter(Boolean);
+      var bterms = terms.filter(function (w) { return w.length >= 2; });     // 1 ta harf belgilanmaydi (xunuk ko'rinadi)
       var h = optlar.map(function (o, i) {
         if (terms.length) {          // qidirilganda bo'sh «Tanlang…» qatori ko'rinmaydi
           if (!o.value) return "";
           var hay = ddNorm(o.dataset.s || o.text);
           if (terms.some(function (w) { return hay.indexOf(w) < 0; })) return "";
         }
-        return '<button type="button" class="dd-o' + (o.selected ? " on" : "") + (o.disabled ? " dis" : "") + (!o.value ? " ph" : "") + '" data-i="' + i + '"><span class="dd-x"><span>' + ddBelgila(o.text, terms) + "</span>" +
-          (o.dataset.sub ? "<small>" + ddBelgila(o.dataset.sub, terms) + "</small>" : "") + "</span>" + (o.selected ? ic("check") : "") + "</button>";
+        return '<button type="button" class="dd-o' + (o.selected ? " on" : "") + (o.disabled ? " dis" : "") + (!o.value ? " ph" : "") + '" data-i="' + i + '"><span class="dd-x"><span>' + ddBelgila(o.text, bterms) + "</span>" +
+          (o.dataset.sub ? "<small>" + ddBelgila(o.dataset.sub, bterms) + "</small>" : "") + "</span>" + (o.selected ? ic("check") : "") + "</button>";
       }).join("");
       list.innerHTML = h || '<div class="dd-e">Topilmadi</div>';
       hot = -1;

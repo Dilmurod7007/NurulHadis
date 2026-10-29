@@ -2,12 +2,12 @@
    Ilova qobig'i (HTML, CSS, JS, ikonkalar) keshlanadi, shuning uchun telefon tez ochiladi.
    /api/ so'rovlari HECH QACHON keshlanmaydi: pul va buyurtma ma'lumotlari doim yangi bo'lishi kerak. */
 
-var VERSIYA = "nh-crm-v18";
+var VERSIYA = "nh-crm-v19";
 var QOBIQ = [
   "/crm/",
-  "/crm/app.css?v=18",
-  "/crm/lucide.js?v=18",
-  "/crm/app.js?v=18",
+  "/crm/app.css?v=19",
+  "/crm/lucide.js?v=19",
+  "/crm/app.js?v=19",
   "/crm/bts.json",
   "/crm/manifest.webmanifest",
   "/crm/icons/icon-192.png",
