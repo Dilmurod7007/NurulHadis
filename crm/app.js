@@ -154,6 +154,17 @@
     var d = String(t || "").replace(/\D/g, "");
     return d.length === 12 && d.indexOf("998") === 0 ? "+998 " + d.slice(3, 5) + " " + d.slice(5, 8) + " " + d.slice(8, 10) + " " + d.slice(10) : String(t || "");
   }
+  /* ── mavzu: yorug' / tungi / avto ── */
+  var MAVZU = [["light", "Yorug‘", "sun"], ["dark", "Tungi", "moon"], ["auto", "Avto", "monitor"]];
+  function mavzuTanlangan() { try { return localStorage.getItem("nh_theme") || "auto"; } catch (e) { return "auto"; } }
+  function mavzuQoll(r) {
+    var qora = r === "dark" || (r === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.dataset.theme = qora ? "dark" : "light";
+    var m = document.querySelector('meta[name="theme-color"]');
+    if (m) m.content = qora ? "#161722" : "#6D4AE0";
+  }
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { if (mavzuTanlangan() === "auto") mavzuQoll("auto"); });
+  mavzuQoll(mavzuTanlangan());
   function nomi(arr, k) { for (var i = 0; i < arr.length; i++) if (arr[i][0] === k) return arr[i][1]; return k; }
 
   var HOLAT_IC = { yangi: "sparkles", tasdiqlandi: "circle-check", yolda: "truck", yetkazildi: "package-check", bekor: "circle-x", qaytarildi: "undo-2" };
@@ -574,7 +585,7 @@
 
   /* ── chart (SVG) ──────────────────────────────────────────────── */
   function chart(host, seriya, key, color) {
-    var sc = parseFloat(getComputedStyle(document.documentElement).fontSize) / 16;      // katta ekranda grafik ham kattalashadi
+    var sc = 1;
     var W = Math.max(host.clientWidth, 300), H = 280 * sc, pl = 46 * sc, pb = 30 * sc, pt = 14 * sc, pr = 8 * sc;
     var vals = seriya.map(function (s) { return s[key]; });
     var max = Math.max.apply(null, vals.concat([1])), min = Math.min.apply(null, vals.concat([0]));
@@ -587,16 +598,16 @@
     var g = "", i;
     for (i = 0; i <= 4; i++) {
       var v = bot + (span * i) / 4, yy = y(v);
-      g += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + yy + '" y2="' + yy + '" stroke="#ECECF3" stroke-dasharray="4 4"/>' +
-        '<text x="' + (pl - 8 * sc) + '" y="' + (yy + 4 * sc) + '" text-anchor="end" font-size="' + 11.5 * sc + '" fill="#9A9AB0">' + compact(v) + "</text>";
+      g += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + yy + '" y2="' + yy + '" class="gl"/>' +
+        '<text x="' + (pl - 8 * sc) + '" y="' + (yy + 4 * sc) + '" text-anchor="end" font-size="' + 11.5 * sc + '" class="gt">' + compact(v) + "</text>";
     }
     var bars = "", labels = "", every = Math.ceil(n / 8), zero = y(0);
     seriya.forEach(function (s, k) {
       var v = s[key], x = pl + k * bw + bw * 0.18, w = bw * 0.64;
       var h = Math.abs(y(v) - zero), by = v >= 0 ? y(v) : zero;
       bars += '<rect class="bg" data-i="' + k + '" x="' + (pl + k * bw) + '" y="' + pt + '" width="' + bw + '" height="' + ih + '" fill="transparent"/>' +
-        '<rect x="' + x + '" y="' + by + '" width="' + w + '" height="' + Math.max(h, v ? 2 : 0) + '" rx="5" fill="' + (v < 0 ? "#D92D20" : color) + '" opacity=".92" pointer-events="none"/>';
-      if (k % every === 0) labels += '<text x="' + (pl + k * bw + bw / 2) + '" y="' + (H - 8 * sc) + '" text-anchor="middle" font-size="' + 11.5 * sc + '" fill="#9A9AB0">' + esc(s.nom) + "</text>";
+        '<rect x="' + x + '" y="' + by + '" width="' + w + '" height="' + Math.max(h, v ? 2 : 0) + '" rx="5" style="fill:' + (v < 0 ? "var(--bad)" : color) + '" opacity=".92" pointer-events="none"/>';
+      if (k % every === 0) labels += '<text x="' + (pl + k * bw + bw / 2) + '" y="' + (H - 8 * sc) + '" text-anchor="middle" font-size="' + 11.5 * sc + '" class="gt">' + esc(s.nom) + "</text>";
     });
     host.innerHTML = '<div class="chart"><svg viewBox="0 0 ' + W + " " + H + '">' + g + bars + labels + "</svg>" +
       '<div class="tip hide"></div></div>';
@@ -672,7 +683,7 @@
           return '<div class="bar"><div class="t"><span>' + esc(m.nom) + "</span><span>" + m.soni + ' ta · ' + compact(m.tushum) + '</span></div><div class="tr"><i style="width:' + Math.round(m.soni / maxManba * 100) + '%"></i></div></div>';
         }).join("") || '<div class="muted">Ma’lumot yo‘q</div>') + "</div></div>" +
         '<div class="card"><h3>Xarajatlar</h3><div class="bars">' + (r.xarajatlar.map(function (x) {
-          return '<div class="bar"><div class="t"><span>' + esc(x.nom) + "</span><span>" + som(x.summa) + '</span></div><div class="tr"><i style="width:' + Math.round(x.summa / maxX * 100) + '%;background:' + (x.foydaga ? "var(--accent)" : "#C4C4D4") + '"></i></div></div>';
+          return '<div class="bar"><div class="t"><span>' + esc(x.nom) + "</span><span>" + som(x.summa) + '</span></div><div class="tr"><i style="width:' + Math.round(x.summa / maxX * 100) + '%;background:' + (x.foydaga ? "var(--accent)" : "var(--bar-off)") + '"></i></div></div>';
         }).join("") || '<div class="muted">Xarajat kiritilmagan</div>') + "</div></div>" +
         '<div class="card"><h3>Ombor</h3>' + (r.ombor.length ? '<div class="pl">' + r.ombor.map(function (t) {
           return '<div class="r"><span>' + esc(t.nom) + "</span><span>" + (t.kam ? '<span class="badge bad">Kam: ' : "<b>") + t.qoldiq + " " + esc(t.birlik) + (t.kam ? "</span>" : "</b>") + "</span></div>";
@@ -706,7 +717,7 @@
         tr.onclick = function () { buyurtmaForm(res[1].filter(function (b) { return b.id === +tr.dataset.o; })[0]); };
       });
       function drawChart() {
-        chart(el.querySelector("#chart"), d.seriya, S.chartKey, S.chartKey === "foyda" ? "#12A150" : "#6D4AE0");
+        chart(el.querySelector("#chart"), d.seriya, S.chartKey, S.chartKey === "foyda" ? "var(--ok)" : "var(--accent)");
       }
       drawChart();
       window.onresize = drawChart;
@@ -751,10 +762,10 @@
         var box = el.querySelector("#tbl");
         if (!rows.length) { box.innerHTML = '<div class="empty">Buyurtma topilmadi.</div>'; return; }
         var foyda = S.me.foyda;
-        box.innerHTML = '<table class="tbl stack"><thead><tr><th class="hide-l">№</th><th>Sana</th><th>Mijoz</th><th>Turi</th><th>Holati</th><th class="hide-l">Yetkazish</th><th class="n">Dona</th><th class="n">Tushum</th>' +
+        box.innerHTML = '<table class="tbl stack"><thead><tr><th class="hide-l">№</th><th>Sana</th><th>Mijoz</th><th class="xl">Telefon</th><th>Turi</th><th>Holati</th><th class="hide-l">Yetkazish</th><th class="xl">Qayerdan</th><th class="n">Dona</th><th class="n">Tushum</th>' +
           (foyda ? '<th class="n">Qolgan summa</th>' : "") + "<th>To‘lov</th><th></th></tr></thead><tbody>" + rows.map(function (b) {
             return '<tr class="click" data-id="' + b.id + '"><td class="hide-m hide-l">#' + b.id + '</td><td class="c-sub">' + fdate(b.sana) + '</td><td class="c-main">' + esc(b.mijoz_nom) +
-              '</td><td class="c-sub">' + turBadge(b.tur) + '</td><td class="c-sub">' + holatQuick(b) + '</td><td class="c-sub hide-l">' + yetLabel(b.yetkazish_turi, yetNom(b)) +
+              '</td><td class="xl muted">' + esc(b.mijoz_telefon || "") + '</td><td class="c-sub">' + turBadge(b.tur) + '</td><td class="c-sub">' + holatQuick(b) + '</td><td class="c-sub hide-l">' + yetLabel(b.yetkazish_turi, yetNom(b)) + '</td><td class="xl muted">' + esc(b.manba_nom || "") +
               '</td><td class="n c-sub">' + b.dona + ' dona</td><td class="n c-amt">' + (b.tur === "sotuv" ? som(b.tushum) : '<span class="muted">tekin</span>') + '</td><td class="br"></td>' +
               (foyda ? '<td class="n c-sub' + (b.qolgan_summa ? "" : " hide-m") + '" data-l="Qolgan">' + som(b.qolgan_summa) + "</td>" : "") +
               '<td class="c-sub' + (b.tolov_holati === "—" ? " hide-m" : "") + '">' + tolovBadge(b.tolov_holati) + '</td><td class="c-sub pr"><button type="button" class="icon-x" data-p="' + b.id + '" title="Stiker chop etish" aria-label="Stiker chop etish">' + ic("printer") + "</button></td></tr>";
@@ -1323,6 +1334,9 @@
       '<nav class="nav">' + visible.map(function (x) {
         return '<a href="#/' + x[0] + '" class="' + (x[0] === p ? "on" : "") + '">' + ic(x[2]) + x[1] + "</a>";
       }).join("") + '</nav><div class="grow"></div>' +
+      '<div class="seg eq themeseg" id="themeseg">' + MAVZU.map(function (x) {
+        return '<button data-m="' + x[0] + '" class="' + (x[0] === mavzuTanlangan() ? "on" : "") + '" title="' + x[1] + '">' + ic(x[2]) + x[1] + "</button>";
+      }).join("") + "</div>" +
       (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone() ? '<div class="hint"><b>iPhone:</b> Safari’da pastdagi «Ulashish» tugmasini bosing, so‘ng «Bosh ekranga qo‘shish»ni tanlang.</div>' : "") +
       '<div class="user"><span class="avatar">' + esc((S.me.ism || "?").charAt(0).toUpperCase()) + '</span><div class="t"><b>' + esc(S.me.ism) +
       "</b><small>" + (S.me.foyda ? "Egasi" : "Yordamchi") + '</small></div><button class="linkbtn" id="out" title="Chiqish">' + ic("out") + "</button></div></aside>" +
@@ -1345,6 +1359,13 @@
     document.getElementById("more").onclick = function () { menu(true); };
     document.getElementById("scrim").onclick = function () { menu(false); };
     Array.prototype.forEach.call(document.querySelectorAll("#side .nav a"), function (a) { a.onclick = function () { menu(false); }; });
+    Array.prototype.forEach.call(document.querySelectorAll("#themeseg button"), function (b) {
+      b.onclick = function () {
+        try { localStorage.setItem("nh_theme", b.dataset.m); } catch (e) {}
+        mavzuQoll(b.dataset.m);
+        Array.prototype.forEach.call(document.querySelectorAll("#themeseg button"), function (x) { x.classList.toggle("on", x === b); });
+      };
+    });
     document.getElementById("topnew").onclick = function () { buyurtmaForm(null); };
     document.getElementById("bell").onclick = xabarlarOyna;
     xabarSoni();
