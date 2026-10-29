@@ -1402,6 +1402,7 @@
     document.removeEventListener("keydown", o.key, true);
     window.removeEventListener("resize", o.resize);
     window.removeEventListener("scroll", o.scroll, true);
+    if (o.vv && window.visualViewport) { window.visualViewport.removeEventListener("resize", o.vv); window.visualViewport.removeEventListener("scroll", o.vv); }
   }
   function ddNorm(s) { return String(s || "").toLowerCase().replace(/[ʻʼ‘’`´'"]/g, ""); }
   function ddOch(sel, btn) {
@@ -1465,10 +1466,19 @@
     }
     function scroll(e) { if (!menu.contains(e.target) && !menu.contains(document.activeElement)) ddYop(); }
     function resize() { if (!menu.contains(document.activeElement)) ddYop(); }     // telefonda klaviatura chiqqanda yopilmasin
+    // iPhone: klaviatura chiqqanda oyna uning ustida turishi uchun (ko'rinadigan maydonga moslanadi)
+    function vv() {
+      var v = window.visualViewport;
+      if (!v || !mobil) return;
+      var klav = v.height < window.innerHeight * 0.85;
+      menu.style.bottom = Math.max(0, window.innerHeight - v.height - v.offsetTop) + "px";
+      menu.style.maxHeight = Math.max(160, klav ? v.height - 16 : Math.min(v.height - 24, window.innerHeight * 0.72)) + "px";
+    }
+    if (mobil && window.visualViewport) { window.visualViewport.addEventListener("resize", vv); window.visualViewport.addEventListener("scroll", vv); vv(); }
     document.addEventListener("keydown", key, true);
     window.addEventListener("resize", resize);
     window.addEventListener("scroll", scroll, true);
-    ddOchiq = { bg: bg, menu: menu, btn: btn, key: key, scroll: scroll, resize: resize };
+    ddOchiq = { bg: bg, menu: menu, btn: btn, key: key, scroll: scroll, resize: resize, vv: vv };
   }
   function ddOrnat(root) {
     Array.prototype.forEach.call(root.querySelectorAll("select:not([data-dd])"), function (sel) {

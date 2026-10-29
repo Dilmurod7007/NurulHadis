@@ -450,3 +450,6 @@ div.hist#thist{padding:0;margin-bottom:0.375rem}
 .dd-x{display:flex;flex-direction:column;min-width:0;gap:0.0625rem}
 .dd-x small{color:var(--muted);font-size:0.78rem;line-height:1.35;font-weight:400}
 .dd-o.on .dd-x small{color:inherit;opacity:.75}
+
+.row2>*,.row3>*{min-width:0}
+.dd-btn,.dd{min-width:0}
