@@ -385,7 +385,7 @@
           ov.querySelector("#xlist").innerHTML = d.royxat.length ? '<div class="hist">' + d.royxat.map(function (x) {
             return '<div class="hrow click xit' + (x.yangi ? " new" : "") + '" data-b="' + (x.buyurtma || "") + '"><span class="hic tuzatish">' + ic("truck") + '</span><div class="hm"><b>' +
               esc(x.sarlavha) + "</b><small>" + esc(x.matn) + '</small><small class="t">' + fvaqt(x.vaqt) + "</small></div></div>";
-          }).join("") + "</div>" : '<div class="muted" style="padding:6px 0">Hozircha xabar yo‘q. Buyurtma 3 kundan ortiq «Yetkazilmoqda»da tursa, shu yerda eslatma chiqadi.</div>';
+          }).join("") + "</div>" : '<div class="muted" style="padding:0.375rem 0">Hozircha xabar yo‘q. Buyurtma 3 kundan ortiq «Yetkazilmoqda»da tursa, shu yerda eslatma chiqadi.</div>';
           Array.prototype.forEach.call(ov.querySelectorAll(".xit"), function (r) {
             r.onclick = function () {
               if (!r.dataset.b) return;
@@ -553,7 +553,7 @@
           '<p class="hintp">Stiker o‘lchami ' + STIKER_ENI + "×" + STIKER_BOYI + " mm: mijoz ismi, telefon va pochta manzili.</p>" +
           '<div class="stbtn"><button class="btn pri" id="stp">' + ic("printer") + "Chop etish</button>" +
           (btBor ? '<button class="btn" id="stb">' + ic("bluetooth") + "Bluetooth orqali</button>" : "") + "</div>" +
-          (btBor ? '<label class="chk" style="margin-top:14px"><input type="checkbox" id="stinv"' + (teskari ? " checked" : "") + "> Bluetooth: stiker teskari (qora fon) chiqsa, buni yoqing</label>" : '<p class="hintp" style="margin-top:12px">Telefondan Bluetooth orqali chop etish faqat Android’dagi Chrome’da ishlaydi.</p>'),
+          (btBor ? '<label class="chk" style="margin-top:0.875rem"><input type="checkbox" id="stinv"' + (teskari ? " checked" : "") + "> Bluetooth: stiker teskari (qora fon) chiqsa, buni yoqing</label>" : '<p class="hintp" style="margin-top:0.75rem">Telefondan Bluetooth orqali chop etish faqat Android’dagi Chrome’da ishlaydi.</p>'),
         onOpen: function (ov) {
           var rasm = stikerRasm(t, 16);
           ov.querySelector("#stprev").appendChild(rasm);
@@ -574,7 +574,8 @@
 
   /* ── chart (SVG) ──────────────────────────────────────────────── */
   function chart(host, seriya, key, color) {
-    var W = Math.max(host.clientWidth, 300), H = 280, pl = 46, pb = 30, pt = 14, pr = 8;
+    var sc = parseFloat(getComputedStyle(document.documentElement).fontSize) / 16;      // katta ekranda grafik ham kattalashadi
+    var W = Math.max(host.clientWidth, 300), H = 280 * sc, pl = 46 * sc, pb = 30 * sc, pt = 14 * sc, pr = 8 * sc;
     var vals = seriya.map(function (s) { return s[key]; });
     var max = Math.max.apply(null, vals.concat([1])), min = Math.min.apply(null, vals.concat([0]));
     var span = max - min || 1;
@@ -587,7 +588,7 @@
     for (i = 0; i <= 4; i++) {
       var v = bot + (span * i) / 4, yy = y(v);
       g += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + yy + '" y2="' + yy + '" stroke="#ECECF3" stroke-dasharray="4 4"/>' +
-        '<text x="' + (pl - 8) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="11.5" fill="#9A9AB0">' + compact(v) + "</text>";
+        '<text x="' + (pl - 8 * sc) + '" y="' + (yy + 4 * sc) + '" text-anchor="end" font-size="' + 11.5 * sc + '" fill="#9A9AB0">' + compact(v) + "</text>";
     }
     var bars = "", labels = "", every = Math.ceil(n / 8), zero = y(0);
     seriya.forEach(function (s, k) {
@@ -595,7 +596,7 @@
       var h = Math.abs(y(v) - zero), by = v >= 0 ? y(v) : zero;
       bars += '<rect class="bg" data-i="' + k + '" x="' + (pl + k * bw) + '" y="' + pt + '" width="' + bw + '" height="' + ih + '" fill="transparent"/>' +
         '<rect x="' + x + '" y="' + by + '" width="' + w + '" height="' + Math.max(h, v ? 2 : 0) + '" rx="5" fill="' + (v < 0 ? "#D92D20" : color) + '" opacity=".92" pointer-events="none"/>';
-      if (k % every === 0) labels += '<text x="' + (pl + k * bw + bw / 2) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11.5" fill="#9A9AB0">' + esc(s.nom) + "</text>";
+      if (k % every === 0) labels += '<text x="' + (pl + k * bw + bw / 2) + '" y="' + (H - 8 * sc) + '" text-anchor="middle" font-size="' + 11.5 * sc + '" fill="#9A9AB0">' + esc(s.nom) + "</text>";
     });
     host.innerHTML = '<div class="chart"><svg viewBox="0 0 ' + W + " " + H + '">' + g + bars + labels + "</svg>" +
       '<div class="tip hide"></div></div>';
@@ -660,8 +661,8 @@
         pl("Mahsulotlar summasi", r.mahsulot_summasi) + pl("− Chegirmalar", -r.chegirma) +
         '<div class="r tot"><span>Tushum</span><span>' + som(r.tushum) + "</span></div>" +
         pl("− Tannarx", -r.tannarx) +
-        '<div class="r muted" style="font-size:13px"><span>&nbsp;&nbsp;shundan bonuslar</span><span>' + som(r.bonus_tannarx) + "</span></div>" +
-        '<div class="r muted" style="font-size:13px"><span>&nbsp;&nbsp;shundan tekin buyurtmalar</span><span>' + som(r.tekin_tannarx) + "</span></div>" +
+        '<div class="r muted" style="font-size:0.8125rem"><span>&nbsp;&nbsp;shundan bonuslar</span><span>' + som(r.bonus_tannarx) + "</span></div>" +
+        '<div class="r muted" style="font-size:0.8125rem"><span>&nbsp;&nbsp;shundan tekin buyurtmalar</span><span>' + som(r.tekin_tannarx) + "</span></div>" +
         pl("− Yetkazish xarajati", -r.yetkazish_xarajati) + pl("− Xarajatlar", -r.operatsion) +
         '<div class="r tot"><span>Sof foyda</span><span class="' + (r.sof_foyda < 0 ? "neg" : "pos") + '">' + som(r.sof_foyda) + "</span></div>" +
         "</div></div></div>";
@@ -690,7 +691,7 @@
           '<div class="r tot"><span>ROI (tushum ÷ xarajat)</span><span>' + (a.roi === null ? "—" : "×" + a.roi) + "</span></div></div>";
       })() + "</div>" +
         '<div class="card"><h3>Oxirgi buyurtmalar</h3>' + (last.length ? '<table class="tbl"><tbody>' + last.map(function (b) {
-          return '<tr class="click" data-o="' + b.id + '"><td><b>' + esc(b.mijoz_nom) + '</b><div class="muted" style="font-size:12.5px">' + fdate(b.sana) + " · " + b.dona + ' dona</div></td><td>' + holatBadge(b.holat) +
+          return '<tr class="click" data-o="' + b.id + '"><td><b>' + esc(b.mijoz_nom) + '</b><div class="muted" style="font-size:0.7812rem">' + fdate(b.sana) + " · " + b.dona + ' dona</div></td><td>' + holatBadge(b.holat) +
             '</td><td class="n">' + som(b.tushum) + "</td></tr>";
         }).join("") + "</tbody></table>" : '<div class="muted">Buyurtma yo‘q.</div>') + "</div></div>";
       el.innerHTML = h;
@@ -728,7 +729,7 @@
       '<input type="search" id="q" placeholder="Mijoz, telefon, izoh…" value="' + esc(f.q) + '">' +
       '<select id="holat"><option value="">Barcha holatlar</option>' + opts(HOLAT, f.holat) + "</select>" +
       "</div>" +
-      (S.mijozFilter ? '<div class="alert" style="display:flex;justify-content:space-between;align-items:center;gap:10px">Bitta mijozning buyurtmalari ko‘rsatilmoqda <button class="btn sm" id="clrf">Hammasini ko‘rsat</button></div>' : "") +
+      (S.mijozFilter ? '<div class="alert" style="display:flex;justify-content:space-between;align-items:center;gap:0.625rem">Bitta mijozning buyurtmalari ko‘rsatilmoqda <button class="btn sm" id="clrf">Hammasini ko‘rsat</button></div>' : "") +
       '<div class="card tcard" id="tbl"><div class="empty">Yuklanmoqda…</div></div>';
     var timer;
     el.querySelector("#q").oninput = function (e) { f.q = e.target.value; clearTimeout(timer); timer = setTimeout(load, 250); };
@@ -1160,9 +1161,9 @@
         chipField("turi", "Nima bo‘ldi?", [["kirim", "Kirim (sotib olindi)"], ["tuzatish", "Tuzatish (buzildi, yo‘qoldi, sanoq)"]], turi, HAR_IC, { kirim: "Kirim", tuzatish: "Tuzatish" }) +
         '<div class="row2 keep"><div class="field"><label id="mlabel">Omborga kirgan soni</label><input type="number" inputmode="numeric" name="miqdor" value="' + esc(h.miqdor) + '" placeholder="0"></div>' +
         '<div class="field" data-k><label>Dona narxi (so‘m)</label><input type="number" inputmode="numeric" min="0" name="birlik_narx" value="' + esc(h.birlik_narx || "") + '" placeholder="0"></div></div>' +
-        '<div class="field" data-tz><small style="margin:-6px 0 0">Kamaytirish uchun minus bilan yozing: <b>−3</b> (3 ta buzildi). Ko‘paytirish: <b>3</b>.</small></div>' +
+        '<div class="field" data-tz><small style="margin:-0.375rem 0 0">Kamaytirish uchun minus bilan yozing: <b>−3</b> (3 ta buzildi). Ko‘paytirish: <b>3</b>.</small></div>' +
         '<div data-k><div class="summary" id="ksum"></div>' +
-        '<div class="field" style="margin-top:14px"><label class="chk"><input type="checkbox" name="xarajatga"' + (h.xarajatga !== false ? " checked" : "") + '> Xarajat sifatida yozilsin</label></div>' +
+        '<div class="field" style="margin-top:0.875rem"><label class="chk"><input type="checkbox" name="xarajatga"' + (h.xarajatga !== false ? " checked" : "") + '> Xarajat sifatida yozilsin</label></div>' +
         '<div class="field" data-x><label>Qo‘shimcha xarajat (yo‘l kira, olib kelish…) (so‘m)</label><input type="number" inputmode="numeric" min="0" name="qoshimcha_xarajat" value="' + esc(h.qoshimcha_xarajat || "") + '" placeholder="0">' +
         "<small>Xarid summasiga qo‘shilib, bitta xarajat bo‘lib yoziladi.</small></div></div>" +
         '<div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(h.sana) + '"></div>' +
@@ -1234,7 +1235,7 @@
         body: '<div class="field"><label>Nomi</label><input name="nom" value="' + esc(m.nom) + '"></div>' +
           '<div class="row2"><div class="field"><label>Sotuv narxi (so‘m)</label><input type="number" min="0" name="narx" value="' + m.narx + '"></div>' +
           '<div class="field"><label>Tannarx (so‘m)</label><input type="number" min="0" name="tannarx" value="' + m.tannarx + '"></div></div>' +
-          '<div class="field"><label><input type="checkbox" name="faol" style="width:auto;margin-right:6px"' + (m.faol ? " checked" : "") + ">Sotuvda</label></div>" +
+          '<div class="field"><label><input type="checkbox" name="faol" style="width:auto;margin-right:0.375rem"' + (m.faol ? " checked" : "") + ">Sotuvda</label></div>" +
           '<div class="sec">Sotilganda ombordan chiqadigan narsalar</div>' +
           '<p class="hintp">Bu mahsulotdan 1 dona sotilganda ombordan qaysi tovardan nechta kamayishini belgilang. Masalan: 1 ta banka, 1 ta quti.</p><div class="items" id="tk"></div>' +
           '<button class="btn sm" type="button" id="addt">' + ic("plus") + "Qator qo‘shish</button>",
@@ -1322,7 +1323,6 @@
       '<nav class="nav">' + visible.map(function (x) {
         return '<a href="#/' + x[0] + '" class="' + (x[0] === p ? "on" : "") + '">' + ic(x[2]) + x[1] + "</a>";
       }).join("") + '</nav><div class="grow"></div>' +
-      '<button class="install' + (installEvt && !standalone() ? "" : " hide") + '" id="install">' + ic("install") + "Telefonga o‘rnatish</button>" +
       (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone() ? '<div class="hint"><b>iPhone:</b> Safari’da pastdagi «Ulashish» tugmasini bosing, so‘ng «Bosh ekranga qo‘shish»ni tanlang.</div>' : "") +
       '<div class="user"><span class="avatar">' + esc((S.me.ism || "?").charAt(0).toUpperCase()) + '</span><div class="t"><b>' + esc(S.me.ism) +
       "</b><small>" + (S.me.foyda ? "Egasi" : "Yordamchi") + '</small></div><button class="linkbtn" id="out" title="Chiqish">' + ic("out") + "</button></div></aside>" +
@@ -1345,12 +1345,6 @@
     document.getElementById("more").onclick = function () { menu(true); };
     document.getElementById("scrim").onclick = function () { menu(false); };
     Array.prototype.forEach.call(document.querySelectorAll("#side .nav a"), function (a) { a.onclick = function () { menu(false); }; });
-    var inst = document.getElementById("install");
-    if (inst) inst.onclick = function () {
-      if (!installEvt) return;
-      installEvt.prompt();
-      installEvt.userChoice.then(function () { installEvt = null; inst.classList.add("hide"); });
-    };
     document.getElementById("topnew").onclick = function () { buyurtmaForm(null); };
     document.getElementById("bell").onclick = xabarlarOyna;
     xabarSoni();
