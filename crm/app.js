@@ -148,6 +148,12 @@
   var YET = [["yandex", "Yandex"], ["pochta", "Pochta orqali"], ["ozim", "O‘zim olib beraman"], ["ozi", "O‘zi olib ketadi"]];
   var TOLOV = [["naqd", "Naqd"], ["karta", "Karta (Click, Payme)"], ["otkazma", "Hisobga o‘tkazma"], ["yetkazganda", "Yetkazganda to‘laydi"]];
   var XKAT = [["reklama", "Reklama (Instagram, Meta)"], ["qadoqlash", "Qadoqlash, bosma"], ["ish_haqi", "Ish haqi"], ["sayt", "Sayt, server, domen"], ["ijara", "Ijara, kommunal"], ["soliq", "Soliq, to‘lov komissiyasi"], ["boshqa", "Boshqa"], ["material", "Material xaridi"]];
+  var TEL0 = "+998 ";
+  function telTozala(t) { t = String(t || "").trim(); return /^\+?998?$/.test(t.replace(/\s/g, "")) ? "" : t; }
+  function fmtTel(t) {
+    var d = String(t || "").replace(/\D/g, "");
+    return d.length === 12 && d.indexOf("998") === 0 ? "+998 " + d.slice(3, 5) + " " + d.slice(5, 8) + " " + d.slice(8, 10) + " " + d.slice(10) : String(t || "");
+  }
   function nomi(arr, k) { for (var i = 0; i < arr.length; i++) if (arr[i][0] === k) return arr[i][1]; return k; }
 
   var HOLAT_IC = { yangi: "sparkles", tasdiqlandi: "circle-check", yolda: "truck", yetkazildi: "package-check", bekor: "circle-x", qaytarildi: "undo-2" };
@@ -420,7 +426,7 @@
     var c = document.createElement("canvas"); c.width = W; c.height = H;
     var g = c.getContext("2d");
     g.fillStyle = "#fff"; g.fillRect(0, 0, W, H); g.fillStyle = "#000"; g.textBaseline = "top";
-    var FONT = "Arial, Helvetica, sans-serif";
+    var FONT = "'Courier New', Courier, 'Liberation Mono', monospace";
     function qatorlar(matn, px, vazn) {
       g.font = vazn + " " + px + "px " + FONT;
       var natija = [];
@@ -454,17 +460,17 @@
       q.forEach(function (s) { g.fillText(s, pad, y); y += px * 1.12; });
       y += (oraliq || 0) * k;
     }
-    chiz(t.ism, 4.6, 3.2, "bold", 2, 0.5);
-    chiz(t.tel, 4.4, 3.4, "bold", 1, 0.8);
+    chiz(t.ism, 3.8, 2.4, "bold", 2, 0.4);
+    chiz(fmtTel(t.tel), 3.6, 2.8, "bold", 1, 0.7);
     g.fillRect(pad, y - 0.3 * k, eni, 0.25 * k);
     y += 0.6 * k;
     // manzil: qolgan joyga sig'adigan eng katta shrift
-    var qolgan = H - pad - y, matn = t.adr.join("\n"), px = 3.6 * k, q;
-    for (; px > 2.2 * k; px -= 0.2 * k) { q = qatorlar(matn, px, "normal"); if (q.length * px * 1.12 <= qolgan) break; }
-    q = qatorlar(matn, px, "normal");
+    var qolgan = H - pad - y, matn = t.adr.join("\n"), px = 3.0 * k, q;
+    for (; px > 1.95 * k; px -= 0.15 * k) { q = qatorlar(matn, px, "bold"); if (q.length * px * 1.12 <= qolgan) break; }
+    q = qatorlar(matn, px, "bold");
     var sigadi = Math.max(1, Math.floor(qolgan / (px * 1.12)));
-    q = qisqart(q, px, "normal", sigadi);
-    g.font = "normal " + px + "px " + FONT;
+    q = qisqart(q, px, "bold", sigadi);
+    g.font = "bold " + px + "px " + FONT;
     q.forEach(function (s) { g.fillText(s, pad, y); y += px * 1.12; });
     return c;
   }
@@ -489,7 +495,7 @@
     var bit = new Uint8Array(wb * h), x, y, i;
     for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
       i = (y * w + x) * 4;
-      var qora = d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114 < 150;
+      var qora = d[i] * 0.299 + d[i + 1] * 0.587 + d[i + 2] * 0.114 < 185;
       if ((qora ? 0 : 1) ^ (teskari ? 1 : 0)) bit[y * wb + (x >> 3)] |= 1 << (7 - (x & 7));
     }
     function matn(s) { return Uint8Array.from(s.split(""), function (c) { return c.charCodeAt(0); }); }
@@ -497,6 +503,11 @@
     var out = new Uint8Array(bosh.length + bit.length + oxir.length);
     out.set(bosh, 0); out.set(bit, bosh.length); out.set(oxir, bosh.length + bit.length);
     return out;
+  }
+  function kichik(c, eni) {
+    var r = document.createElement("canvas"); r.width = eni; r.height = Math.round(c.height * eni / c.width);
+    var g = r.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, r.width, r.height); g.drawImage(c, 0, 0, r.width, r.height);
+    return r;
   }
   function btYoz(bytes) {
     if (!navigator.bluetooth) return Promise.reject(new Error("Bu brauzer Bluetooth’ni qo‘llamaydi. Android’da Chrome ishlating."));
@@ -552,7 +563,7 @@
             var inv = ov.querySelector("#stinv").checked;
             try { localStorage.setItem("nh_stiker_teskari", inv ? "1" : "0"); } catch (e) {}
             bt.disabled = true;
-            btYoz(tsplBuyruq(stikerRasm(t, 8), inv)).then(function () { toast("Printerga yuborildi"); })
+            btYoz(tsplBuyruq(kichik(stikerRasm(t, 16), STIKER_ENI * 8), inv)).then(function () { toast("Printerga yuborildi"); })
               .catch(function (e) { toast(/cancel|chosen/i.test(e.message) ? "Printer tanlanmadi" : e.message, true); })
               .then(function () { bt.disabled = false; });
           };
@@ -785,7 +796,7 @@
       var body =
         '<div class="field"><label>Mijoz</label><input name="mijoz_ism" list="mlist" placeholder="Ism yozing yoki tanlang" value="' + esc(cur ? cur.ism : "") + '" autocomplete="off">' +
         '<datalist id="mlist">' + mijozlar.map(function (m) { return '<option value="' + esc(m.ism) + '">' + esc(m.telefon) + "</option>"; }).join("") + "</datalist></div>" +
-        '<div class="row2"><div class="field"><label>Telefon</label><input name="mijoz_tel" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" value="' + esc(cur ? cur.telefon : "") + '"></div>' +
+        '<div class="row2"><div class="field"><label>Telefon</label><input name="mijoz_tel" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" value="' + esc((cur && cur.telefon) || TEL0) + '"></div>' +
         '<div class="field"><label>Telegram / Instagram</label><input name="mijoz_user" placeholder="@username" value="' + esc(cur ? cur.username : "") + '"></div></div>' +
         chipField("tur", "Turi <span style=\"font-weight:400;color:var(--faint)\">(reklama va sovg‘a — tekin)</span>", TUR, b.tur, TUR_IC, { sotuv: "Sotuv", reklama: "Reklama", sovga: "Sovg‘a" }) +
         '<div class="row2 keep"><div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(b.sana) + '"></div>' +
@@ -819,6 +830,12 @@
           var items = ov.querySelector("#items"), bonus = ov.querySelector("#bonus");
           bindChips(ov);
           btsOrnat(ov, b);
+          ov.querySelector('[name="mijoz_ism"]').addEventListener("input", function (e) {
+            var m = mijozlar.filter(function (x) { return x.ism.toLowerCase() === e.target.value.trim().toLowerCase(); })[0];
+            var tel = ov.querySelector('[name="mijoz_tel"]'), us = ov.querySelector('[name="mijoz_user"]');
+            if (m && telTozala(tel.value) === "" && m.telefon) tel.value = m.telefon;
+            if (m && !us.value && m.username) us.value = m.username;
+          });
           function row(q) {
             var d = document.createElement("div");
             d.className = "it";
@@ -908,7 +925,11 @@
             if (nom) bonuslar.push({ nom: nom, tannarx: t ? parseInt(t.value, 10) || 0 : 0 });
           });
           var mavjud = S.cache.mijozlar.filter(function (m) { return m.ism.toLowerCase() === ism.toLowerCase(); })[0];
-          var mijozData = { ism: ism, telefon: val(ov, "mijoz_tel"), username: val(ov, "mijoz_user") };
+          var mijozData = { ism: ism, telefon: telTozala(val(ov, "mijoz_tel")), username: val(ov, "mijoz_user").trim() };
+          if (mavjud) {      // bo'sh qoldirilsa, mijozning eski telefon/username'i o'chib ketmasin
+            mijozData.telefon = mijozData.telefon || mavjud.telefon;
+            mijozData.username = mijozData.username || mavjud.username;
+          }
           var p = mavjud
             ? (mavjud.telefon !== mijozData.telefon || mavjud.username !== mijozData.username
               ? api("/mijozlar/" + mavjud.id + "/", { method: "PATCH", body: mijozData }) : Promise.resolve(mavjud))
@@ -969,7 +990,7 @@
     drawer({
       title: edit ? m.ism : "Yangi mijoz",
       body: '<div class="field"><label>Ism</label><input name="ism" value="' + esc(m.ism) + '"></div>' +
-        '<div class="row2"><div class="field"><label>Telefon</label><input name="telefon" type="tel" inputmode="tel" value="' + esc(m.telefon) + '"></div>' +
+        '<div class="row2"><div class="field"><label>Telefon</label><input name="telefon" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" value="' + esc(m.telefon || TEL0) + '"></div>' +
         '<div class="field"><label>Telegram / Instagram</label><input name="username" value="' + esc(m.username) + '"></div></div>' +
         '<div class="field"><label>Manzil / shahar</label><input name="manzil" value="' + esc(m.manzil) + '"></div>' +
         '<div class="field"><label>Izoh</label><textarea name="izoh">' + esc(m.izoh) + "</textarea></div>" +
@@ -979,7 +1000,7 @@
         if (a) a.onclick = function () { S.mijozFilter = m.id; ov.close(); };
       },
       onSave: function (ov) {
-        var data = { ism: val(ov, "ism").trim(), telefon: val(ov, "telefon"), username: val(ov, "username"), manzil: val(ov, "manzil"), izoh: val(ov, "izoh") };
+        var data = { ism: val(ov, "ism").trim(), telefon: telTozala(val(ov, "telefon")), username: val(ov, "username"), manzil: val(ov, "manzil"), izoh: val(ov, "izoh") };
         if (!data.ism) { toast("Ismni yozing.", true); return false; }
         return api(edit ? "/mijozlar/" + m.id + "/" : "/mijozlar/", { method: edit ? "PUT" : "POST", body: data })
           .then(function () { toast("Saqlandi"); S.cache = {}; render(); });
