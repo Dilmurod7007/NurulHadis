@@ -28,6 +28,10 @@ ALLOWED_HOSTS = [
     if h.strip()
 ]
 
+# Insta Seller ochiq manzili (tekin sslip.io nomi). Muhit o'zgaruvchisidan qat'i nazar qabul qilinadi.
+INSTASELLER_HOSTLAR = ["instaseller.108-61-117-195.sslip.io"]
+ALLOWED_HOSTS += [h for h in INSTASELLER_HOSTLAR if h not in ALLOWED_HOSTS]
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -110,6 +114,7 @@ if not DEBUG:
             "https://nurulhadis.uz,https://www.nurulhadis.uz",
         ).split(",") if o.strip()
     ]
+    CSRF_TRUSTED_ORIGINS += ["https://" + h for h in INSTASELLER_HOSTLAR]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
