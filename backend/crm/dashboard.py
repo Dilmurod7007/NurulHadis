@@ -22,16 +22,16 @@ def _kalitlar(boshi, bugun, oylik):
     return [boshi + timedelta(days=i) for i in range(n)]
 
 
-def dashboard(kod):
+def dashboard(kod, dokon):
     bugun = timezone.localdate()
     boshi = davr_boshi(kod)
-    r = hisobla(boshi)
+    r = hisobla(boshi, dokon=dokon)
 
     oldingi = None
     if boshi is not None:
         kun = (bugun - boshi).days + 1
         tugash = boshi - timedelta(days=1)
-        oldingi = hisobla(tugash - timedelta(days=kun - 1), tugash)
+        oldingi = hisobla(tugash - timedelta(days=kun - 1), tugash, dokon=dokon)
 
     # grafik: kunlik yoki (hammasi uchun) oylik
     oylik = boshi is None
@@ -45,14 +45,14 @@ def dashboard(kod):
     def kalit(d):
         return d.replace(day=1) if oylik else d
 
-    b_qs = Buyurtma.objects.filter(sana__gte=grafik_boshi).prefetch_related("qatorlar__mahsulot", "bonuslar")
+    b_qs = Buyurtma.objects.filter(dokon=dokon, sana__gte=grafik_boshi).prefetch_related("qatorlar__mahsulot", "bonuslar")
     for b in b_qs:
         if b.hisobga_kiradi and kalit(b.sana) in bucket:
             x = bucket[kalit(b.sana)]
             x["tushum"] += b.tushum
             x["yalpi"] += b.foyda
             x["soni"] += 1
-    for x in Xarajat.objects.filter(sana__gte=grafik_boshi).exclude(kategoriya="material"):
+    for x in Xarajat.objects.filter(dokon=dokon, sana__gte=grafik_boshi).exclude(kategoriya="material"):
         if kalit(x.sana) in bucket:
             bucket[kalit(x.sana)]["xarajat"] += x.summa
 

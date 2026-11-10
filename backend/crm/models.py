@@ -1,5 +1,8 @@
 """
-Nurul Hadis — savdo hisobi (CRM).
+Insta Seller — Instagram sotuvchilari uchun savdo hisobi (CRM).
+
+Har bir sotuvchi o'z do'koniga ega (Dokon). Barcha ma'lumotlar (mahsulot, mijoz, buyurtma,
+xarajat, ombor) do'konga bog'langan va boshqa do'konlarga ko'rinmaydi.
 
 Hisob-kitob qoidalari (hammasi so'mda):
 
@@ -13,6 +16,7 @@ Material xaridi (ombor kirimi) foydaga ta'sir qilmaydi — bu tannarxda allaqach
 u faqat "pul oqimi" hisobotida ko'rinadi.
 """
 
+from django.conf import settings
 from django.db import models
 from django.db.models import Sum
 from django.utils import timezone
@@ -22,9 +26,64 @@ def bugun():
     return timezone.localdate()
 
 
+MANBALAR = [
+    ("ig_reklama", "Instagram reklama"),
+    ("ig_organik", "Instagram (bio, direct)"),
+    ("telegram", "Telegram"),
+    ("sayt", "Sayt"),
+    ("tanish", "Tanish / og'zaki"),
+    ("boshqa", "Boshqa"),
+]
+
+
+class Dokon(models.Model):
+    """Sotuvchining do'koni. Barcha ma'lumotlar shunga tegishli."""
+
+    nom = models.CharField("Do'kon nomi", max_length=120)
+    standart_manba = models.CharField(
+        "Buyurtma qayerdan keladi (odatda)", max_length=12, choices=MANBALAR, default="ig_organik",
+        help_text="Yangi buyurtmada shu manba oldindan tanlanib turadi.")
+    faol = models.BooleanField("Faol", default=True, help_text="O'chirilsa, do'kon egasi tizimga kira olmaydi.")
+    sayt_statistika = models.BooleanField(
+        "Sayt statistikasi", default=False,
+        help_text="Faqat Nurul Hadis uchun: sayt tashriflari reklama hisobotiga qo'shiladi.")
+    yaratilgan = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Do'kon"
+        verbose_name_plural = "Do'konlar"
+        ordering = ["id"]
+
+    def __str__(self):
+        return self.nom
+
+
+class Aza(models.Model):
+    """Foydalanuvchi qaysi do'konga tegishli va qanday huquqda: egasi yoki yordamchi."""
+
+    ROLLAR = [("egasi", "Egasi"), ("yordamchi", "Yordamchi")]
+
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="aza")
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, related_name="azolar")
+    rol = models.CharField("Huquqi", max_length=10, choices=ROLLAR, default="yordamchi",
+                           help_text="Yordamchi tannarx, xarajat, ombor va foydani ko'rmaydi.")
+
+    class Meta:
+        verbose_name = "Do'kon a'zosi"
+        verbose_name_plural = "Do'kon a'zolari"
+
+    def __str__(self):
+        return f"{self.user} — {self.dokon} ({self.get_rol_display()})"
+
+    @property
+    def egasi(self):
+        return self.rol == "egasi"
+
+
 class Mahsulot(models.Model):
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
     nom = models.CharField("Nomi", max_length=120)
-    narx = models.PositiveIntegerField("Sotuv narxi (so'm)", default=235000)
+    narx = models.PositiveIntegerField("Sotuv narxi (so'm)", default=0)
     tannarx = models.PositiveIntegerField(
         "Tannarx (so'm)", default=0,
         help_text="Bitta dona sizga qanchaga tushadi. Har sotuvda shu narx foydadan ayriladi.",
@@ -52,7 +111,8 @@ class Mahsulot(models.Model):
 class OmborTovar(models.Model):
     """Omborda hisobi yuritiladigan narsa: banka, qopqoq, qog'ozcha, quti, sumka..."""
 
-    nom = models.CharField("Nomi", max_length=120, unique=True)
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
+    nom = models.CharField("Nomi", max_length=120)
     birlik = models.CharField("Birlik", max_length=20, default="dona")
     min_qoldiq = models.PositiveIntegerField(
         "Kam qoldiq chegarasi", default=0,
@@ -63,6 +123,7 @@ class OmborTovar(models.Model):
         verbose_name = "Ombor tovari"
         verbose_name_plural = "Ombor"
         ordering = ["nom"]
+        constraints = [models.UniqueConstraint(fields=["dokon", "nom"], name="ombor_tovar_nomi_dokonda_yagona")]
 
     def __str__(self):
         return self.nom
@@ -92,6 +153,7 @@ class Tarkib(models.Model):
 
 
 class Mijoz(models.Model):
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
     ism = models.CharField("Ismi", max_length=120)
     telefon = models.CharField("Telefon", max_length=40, blank=True)
     username = models.CharField("Telegram / Instagram", max_length=80, blank=True)
@@ -122,14 +184,7 @@ class Buyurtma(models.Model):
         ("bekor", "Bekor qilindi"),
         ("qaytarildi", "Qaytarildi"),
     ]
-    MANBA = [
-        ("ig_reklama", "Instagram reklama"),
-        ("ig_organik", "Instagram (bio, direct)"),
-        ("telegram", "Telegram"),
-        ("sayt", "Sayt"),
-        ("tanish", "Tanish / og'zaki"),
-        ("boshqa", "Boshqa"),
-    ]
+    MANBA = MANBALAR
     TOLOV = [
         ("naqd", "Naqd"),
         ("karta", "Karta (Click, Payme, ...)"),
@@ -137,6 +192,7 @@ class Buyurtma(models.Model):
         ("yetkazganda", "Yetkazganda to'laydi"),
     ]
 
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
     sana = models.DateField("Sana", default=bugun, db_index=True)
     mijoz = models.ForeignKey(Mijoz, verbose_name="Mijoz", on_delete=models.PROTECT,
                               related_name="buyurtmalar")
@@ -306,7 +362,7 @@ class Buyurtma(models.Model):
                 sarf[t.tovar_id] = sarf.get(t.tovar_id, 0) + t.miqdor * q.miqdor
         for tovar_id, miqdor in sarf.items():
             OmborHarakat.objects.create(
-                tovar_id=tovar_id, turi="chiqim", miqdor=-miqdor,
+                dokon_id=self.dokon_id, tovar_id=tovar_id, turi="chiqim", miqdor=-miqdor,
                 sana=self.sana, buyurtma=self, izoh=f"Buyurtma #{self.pk}",
             )
 
@@ -365,6 +421,7 @@ class OmborHarakat(models.Model):
         ("tuzatish", "Tuzatish (buzildi, yo'qoldi, sanoq)"),
     ]
 
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
     tovar = models.ForeignKey(OmborTovar, verbose_name="Tovar", on_delete=models.PROTECT,
                               related_name="harakatlar")
     turi = models.CharField("Turi", max_length=10, choices=TURI, default="kirim")
@@ -411,12 +468,14 @@ class OmborHarakat(models.Model):
     def save(self, *args, **kwargs):
         if self.turi != "kirim":
             self.qoshimcha_xarajat = 0
+        if not self.dokon_id:
+            self.dokon_id = self.tovar.dokon_id
         super().save(*args, **kwargs)
         # Xarid xarajat sifatida yoziladi (foydaga ta'sir qilmaydi, pul oqimida ko'rinadi)
         if self.turi == "kirim" and self.xarajatga and self.jami:
             Xarajat.objects.update_or_create(
                 harakat=self, defaults={
-                    "sana": self.sana, "kategoriya": "material", "summa": self.jami,
+                    "dokon_id": self.dokon_id, "sana": self.sana, "kategoriya": "material", "summa": self.jami,
                     "izoh": f"Ombor kirimi: {self.tovar} × {self.miqdor}"
                             + (f" (yo'l/boshqa: {self.qoshimcha_xarajat:,} so'm)".replace(",", " ")
                                if self.qoshimcha_xarajat else ""),
@@ -437,6 +496,7 @@ class Xarajat(models.Model):
         ("material", "Material xaridi (ombor kirimi)"),
     ]
 
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
     sana = models.DateField("Sana", default=bugun, db_index=True)
     kategoriya = models.CharField("Turi", max_length=12, choices=KATEGORIYA, default="reklama")
     summa = models.PositiveIntegerField("Summa (so'm)")
@@ -473,8 +533,9 @@ class Hisobot(Buyurtma):
 
 
 class Bildirishnoma(models.Model):
-    """Ilova ichidagi xabar (qo'ng'iroqcha). Hamma foydalanuvchi bir xil ro'yxatni ko'radi."""
+    """Ilova ichidagi xabar (qo'ng'iroqcha). Do'konning hamma xodimi bir xil ro'yxatni ko'radi."""
 
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
     kalit = models.CharField(max_length=60, unique=True, help_text="Bir xabar ikki marta yaratilmasligi uchun.")
     turi = models.CharField(max_length=12, default="yolda")
     sarlavha = models.CharField(max_length=120)

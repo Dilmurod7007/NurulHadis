@@ -120,7 +120,13 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
     "UNICODE_JSON": True,
+    # kirish va ro'yxatdan o'tishni ketma-ket urinishlardan himoya qilish
+    "DEFAULT_THROTTLE_RATES": {"kirish": "30/min", "royxat": "10/hour"},
+    "NUM_PROXIES": 1,          # nginx ortida: haqiqiy IP X-Forwarded-For'dan olinadi
 }
+
+# Yangi sotuvchilar o'zi ro'yxatdan o'ta oladimi (0 qilib yopish mumkin)
+CRM_RO_YXAT_OCHIQ = os.environ.get("CRM_RO_YXAT_OCHIQ", "1") == "1"
 
 # --- CORS ---
 # Ishlab chiqishda frontend boshqa portdan (Live Server) kelishi mumkin.

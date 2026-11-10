@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 from .hisobot import davr_boshi, hisobla
 from .models import (
-    Buyurtma, BuyurtmaBonus, BuyurtmaQator, Hisobot, Mahsulot, Mijoz, OmborHarakat, OmborTovar,
+    Aza, Buyurtma, BuyurtmaBonus, BuyurtmaQator, Dokon, Hisobot, Mahsulot, Mijoz, OmborHarakat, OmborTovar,
     Tarkib, Xarajat,
 )
 
@@ -15,7 +15,45 @@ def som(n):
 
 
 def foyda_huquqi(request):
-    return request.user.has_perm("crm.view_foyda")
+    """Django admin faqat platforma administratori (superuser) uchun: u hamma narsani ko'radi."""
+    return request.user.is_superuser
+
+
+class DokonAdminMixin:
+    """Admin ichida yangi yozuv administratorning o'z do'koniga bog'lanadi; do'kon maydoni yashirin."""
+
+    exclude = ("dokon",)
+
+    def save_model(self, request, obj, form, change):
+        if not getattr(obj, "dokon_id", None):
+            a = Aza.objects.filter(user=request.user).first()
+            if a:
+                obj.dokon = a.dokon
+        super().save_model(request, obj, form, change)
+
+
+class AzaInline(admin.TabularInline):
+    model = Aza
+    extra = 0
+    raw_id_fields = ("user",)
+
+
+@admin.register(Dokon)
+class DokonAdmin(admin.ModelAdmin):
+    """Platforma administratori uchun: hamma do'konlar, ularni o'chirib qo'yish mumkin."""
+
+    list_display = ("nom", "faol", "xodimlar", "buyurtmalar", "yaratilgan")
+    list_filter = ("faol",)
+    search_fields = ("nom", "azolar__user__username")
+    inlines = [AzaInline]
+
+    @admin.display(description="Xodimlar")
+    def xodimlar(self, o):
+        return o.azolar.count()
+
+    @admin.display(description="Buyurtmalar")
+    def buyurtmalar(self, o):
+        return o.buyurtma_set.count()
 
 
 # ── Mahsulot, tarkib, ombor ────────────────────────────────────────────
@@ -26,9 +64,10 @@ class TarkibInline(admin.TabularInline):
 
 
 @admin.register(Mahsulot)
-class MahsulotAdmin(admin.ModelAdmin):
+class MahsulotAdmin(DokonAdminMixin, admin.ModelAdmin):
     inlines = [TarkibInline]
-    list_display = ("nom", "narx_k", "tannarx_k", "faol")
+    list_display = ("nom", "dokon", "narx_k", "tannarx_k", "faol")
+    list_filter = ("dokon", "faol")
 
     def get_list_display(self, request):
         if foyda_huquqi(request):
@@ -52,8 +91,9 @@ class MahsulotAdmin(admin.ModelAdmin):
 
 
 @admin.register(OmborTovar)
-class OmborTovarAdmin(admin.ModelAdmin):
-    list_display = ("nom", "qoldiq_k", "min_qoldiq", "holat")
+class OmborTovarAdmin(DokonAdminMixin, admin.ModelAdmin):
+    list_display = ("nom", "dokon", "qoldiq_k", "min_qoldiq", "holat")
+    list_filter = ("dokon",)
     search_fields = ("nom",)
 
     @admin.display(description="Qoldiq")
@@ -68,9 +108,9 @@ class OmborTovarAdmin(admin.ModelAdmin):
 
 
 @admin.register(OmborHarakat)
-class OmborHarakatAdmin(admin.ModelAdmin):
-    list_display = ("sana", "tovar", "turi", "miqdor", "birlik_narx", "qoshimcha_xarajat", "xarajatga", "izoh")
-    list_filter = ("turi", "tovar")
+class OmborHarakatAdmin(DokonAdminMixin, admin.ModelAdmin):
+    list_display = ("sana", "dokon", "tovar", "turi", "miqdor", "birlik_narx", "qoshimcha_xarajat", "xarajatga", "izoh")
+    list_filter = ("dokon", "turi")
     date_hierarchy = "sana"
     autocomplete_fields = ("tovar",)
 
@@ -81,8 +121,9 @@ class OmborHarakatAdmin(admin.ModelAdmin):
 # ── Mijoz, buyurtma ────────────────────────────────────────────────────
 
 @admin.register(Mijoz)
-class MijozAdmin(admin.ModelAdmin):
-    list_display = ("ism", "telefon", "username", "manzil", "buyurtmalar_soni")
+class MijozAdmin(DokonAdminMixin, admin.ModelAdmin):
+    list_display = ("ism", "dokon", "telefon", "username", "manzil", "buyurtmalar_soni")
+    list_filter = ("dokon",)
     search_fields = ("ism", "telefon", "username", "manzil")
 
     @admin.display(description="Buyurtmalar")
@@ -103,10 +144,10 @@ class BonusInline(admin.TabularInline):
 
 
 @admin.register(Buyurtma)
-class BuyurtmaAdmin(admin.ModelAdmin):
+class BuyurtmaAdmin(DokonAdminMixin, admin.ModelAdmin):
     inlines = [QatorInline, BonusInline]
     date_hierarchy = "sana"
-    list_filter = ("holat", "tur", "manba", "tolov_usuli", "sana")
+    list_filter = ("dokon", "holat", "tur", "manba", "tolov_usuli", "sana")
     search_fields = ("mijoz__ism", "mijoz__telefon", "mijoz__username", "izoh", "kampaniya")
     autocomplete_fields = ("mijoz",)
     actions = ["yetkazildi", "tolangan_deb"]
@@ -122,7 +163,7 @@ class BuyurtmaAdmin(admin.ModelAdmin):
     readonly_fields = ("hisob",)
 
     def get_list_display(self, request):
-        base = ["nomer", "sana", "mijoz", "tur", "holat", "dona_k", "tushum_k"]
+        base = ["nomer", "dokon", "sana", "mijoz", "tur", "holat", "dona_k", "tushum_k"]
         if foyda_huquqi(request):
             base.append("foyda_k")
         return base + ["tolov"]
@@ -202,9 +243,9 @@ class BuyurtmaAdmin(admin.ModelAdmin):
 # ── Xarajat ─────────────────────────────────────────────────────────────
 
 @admin.register(Xarajat)
-class XarajatAdmin(admin.ModelAdmin):
-    list_display = ("sana", "kategoriya", "summa_k", "kampaniya", "izoh")
-    list_filter = ("kategoriya", "sana")
+class XarajatAdmin(DokonAdminMixin, admin.ModelAdmin):
+    list_display = ("sana", "dokon", "kategoriya", "summa_k", "kampaniya", "izoh")
+    list_filter = ("dokon", "kategoriya", "sana")
     date_hierarchy = "sana"
     search_fields = ("izoh", "kampaniya")
 
@@ -227,10 +268,10 @@ class HisobotAdmin(admin.ModelAdmin):
         return False
 
     def has_view_permission(self, request, obj=None):
-        return request.user.has_perm("crm.view_foyda")
+        return request.user.is_superuser
 
     def has_module_permission(self, request):
-        return request.user.has_perm("crm.view_foyda")
+        return request.user.is_superuser
 
     def changelist_view(self, request, extra_context=None):
         if not self.has_view_permission(request):
@@ -238,7 +279,8 @@ class HisobotAdmin(admin.ModelAdmin):
         kod = request.GET.get("davr", "30")
         if kod not in ("0", "1", "7", "30", "oy"):
             kod = "30"
-        r = hisobla(davr_boshi(kod))
+        dokon = Dokon.objects.filter(pk=request.GET.get("dokon")).first() if request.GET.get("dokon") else None
+        r = hisobla(davr_boshi(kod), dokon=dokon)
         context = {
             **self.admin_site.each_context(request),
             "title": "Hisobot: foyda va xarajat",

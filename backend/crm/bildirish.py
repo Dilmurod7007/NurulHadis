@@ -1,5 +1,5 @@
 """
-Bildirishnomalar: ilova ichidagi xabarlar va telefonga push.
+Bildirishnomalar: ilova ichidagi xabarlar va telefonga push (har bir do'kon uchun alohida).
 
 Hozirgi hodisa: buyurtma «Yetkazilmoqda» holatida KUN kundan ortiq turib qolsa eslatadi
 (har KUN kunda bir marta takrorlanadi, buyurtma yetkazilgach to'xtaydi).
@@ -11,24 +11,26 @@ from datetime import timedelta
 from django.conf import settings
 from django.utils import timezone
 
-from .models import Bildirishnoma, Buyurtma, PushObuna
+from .models import Bildirishnoma, Buyurtma, Dokon, PushObuna
 
 KUN = 3
 VAPID_FAYL = os.environ.get("VAPID_PRIVATE_KEY_FILE", str(settings.BASE_DIR / "vapid_private.pem"))
 VAPID_CLAIMS = {"sub": "mailto:admin@nurulhadis.uz"}
 
 
-def yolda_eslatma():
+def yolda_eslatma(dokon=None):
     """Yangi eslatmalarni yaratadi (mavjudlari qayta yaratilmaydi). Yangi yaratilganlar ro'yxatini qaytaradi."""
     hozir = timezone.now()
     yangi = []
     qs = Buyurtma.objects.filter(holat="yolda", holat_ozgargan__lte=hozir - timedelta(days=KUN)).select_related("mijoz")
+    if dokon is not None:
+        qs = qs.filter(dokon=dokon)
     for b in qs:
         kunlar = (hozir - b.holat_ozgargan).days
         obj, yaratildi = Bildirishnoma.objects.get_or_create(
             kalit=f"yolda-{b.id}-{kunlar // KUN}",
             defaults=dict(
-                turi="yolda", buyurtma=b,
+                turi="yolda", buyurtma=b, dokon_id=b.dokon_id,
                 sarlavha="Buyurtma hali yetkazilmadi",
                 matn=f"#{b.id} {b.mijoz.ism} — {kunlar} kundan beri «Yetkazilmoqda» holatida.",
             ),
@@ -60,13 +62,15 @@ def ochiq_kalit():
     return base64.urlsafe_b64encode(raw).rstrip(b"=").decode()
 
 
-def push_yubor(sarlavha, matn, url="/crm/#/buyurtmalar", user=None):
-    """Obunalarga xabar yuboradi. Qancha obunaga yetib borgani qaytariladi."""
+def push_yubor(sarlavha, matn, url="/crm/#/buyurtmalar", user=None, dokon=None):
+    """Obunalarga xabar yuboradi (user yoki do'kon bo'yicha). Qancha obunaga yetib borgani qaytariladi."""
     from pywebpush import WebPushException, webpush
     fayl = vapid_kalit_yarat()
     obunalar = PushObuna.objects.all()
     if user is not None:
         obunalar = obunalar.filter(user=user)
+    if dokon is not None:
+        obunalar = obunalar.filter(user__aza__dokon=dokon)
     yuborildi = 0
     for o in obunalar:
         try:
@@ -85,14 +89,15 @@ def push_yubor(sarlavha, matn, url="/crm/#/buyurtmalar", user=None):
 
 
 def yuborilmaganlarni_yubor():
-    """Hali pushga chiqmagan xabarlarni bitta push qilib yuboradi."""
-    yangi = list(Bildirishnoma.objects.filter(push_yuborildi=False))
-    if not yangi:
-        return 0
-    if len(yangi) == 1:
-        sarlavha, matn = yangi[0].sarlavha, yangi[0].matn
-    else:
-        sarlavha, matn = f"{len(yangi)} ta buyurtma yetkazilmadi", "Buyurtmalarni tekshiring."
-    n = push_yubor(sarlavha, matn)
-    Bildirishnoma.objects.filter(pk__in=[x.pk for x in yangi]).update(push_yuborildi=True)
-    return n
+    """Hali pushga chiqmagan xabarlarni har bir do'kon uchun bitta push qilib yuboradi."""
+    jami = 0
+    dokonlar = Bildirishnoma.objects.filter(push_yuborildi=False).values_list("dokon_id", flat=True).distinct()
+    for dokon_id in list(dokonlar):
+        yangi = list(Bildirishnoma.objects.filter(push_yuborildi=False, dokon_id=dokon_id))
+        if len(yangi) == 1:
+            sarlavha, matn = yangi[0].sarlavha, yangi[0].matn
+        else:
+            sarlavha, matn = f"{len(yangi)} ta buyurtma yetkazilmadi", "Buyurtmalarni tekshiring."
+        jami += push_yubor(sarlavha, matn, dokon=Dokon.objects.get(pk=dokon_id))
+        Bildirishnoma.objects.filter(pk__in=[x.pk for x in yangi]).update(push_yuborildi=True)
+    return jami

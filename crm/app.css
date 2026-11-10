@@ -456,3 +456,21 @@ div.hist#thist{padding:0;margin-bottom:0.375rem}
 .dd-btn,.dd{min-width:0}
 
 .dd-o mark{background:var(--mark);color:inherit;border-radius:0.1875rem;padding:0 0.0625rem;font-weight:inherit}
+
+/* Insta Seller: kirish/ro'yxat, sozlamalar, boshlash kartasi */
+.brand>div{min-width:0}
+.brand b,.brand small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.login .authtab{margin-bottom:1rem}
+.login .box h1{margin-top:0.875rem}
+.login .box{max-height:calc(100dvh - 2.5rem);overflow-y:auto}
+.rowbtn{display:flex;gap:0.625rem;flex-wrap:wrap;margin-top:1rem}
+.welcome{margin-bottom:1rem;border-color:var(--accent-line);background:linear-gradient(135deg,var(--tint),var(--surface))}
+.welcome h3{font-size:1.0625rem;margin-bottom:0.875rem}
+.welcome h3 svg{width:1.25rem;height:1.25rem;color:var(--accent)}
+.steps{margin:0;padding:0;list-style:none;counter-reset:st;display:grid;grid-template-columns:repeat(3,1fr);gap:0.875rem}
+.steps li{counter-increment:st;position:relative;padding:0.875rem 0.875rem 0.875rem 3rem;background:var(--surface);border:1px solid var(--line);border-radius:0.875rem;display:flex;flex-direction:column;gap:0.375rem;align-items:flex-start}
+.steps li::before{content:counter(st);position:absolute;left:0.875rem;top:0.875rem;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--accent-s);color:var(--accent);font-weight:700;font-size:0.8125rem;display:grid;place-items:center}
+.steps li span{color:var(--muted);font-size:0.8125rem;line-height:1.45}
+@media (max-width:860px){.steps{grid-template-columns:1fr}}
+.card h3 svg{width:1.125rem;height:1.125rem;color:var(--accent);flex:none}
+.hrow .avatar{width:2.125rem;height:2.125rem}

@@ -1,4 +1,4 @@
-/* Nurul Hadis CRM — bitta fayldagi oddiy (vanilla) JS dastur. */
+/* Insta Seller — bitta fayldagi oddiy (vanilla) JS dastur. */
 (function () {
   "use strict";
 
@@ -48,7 +48,7 @@
       var v = d[k];
       if (Array.isArray(v)) v = v.map(function (x) { return typeof x === "object" ? xatoMatni(x) : x; }).join(" ");
       else if (typeof v === "object") v = xatoMatni(v);
-      out.push((k === "non_field_errors" ? "" : k + ": ") + v);
+      out.push((k === "non_field_errors" || /^(username|parol|dokon_nom|ism|eski|yangi|nom|standart_manba)$/.test(k) ? "" : k + ": ") + v);
     });
     return out.join(" · ");
   }
@@ -366,7 +366,7 @@
   }
   function pushYoq() {
     return Notification.requestPermission().then(function (p) {
-      if (p !== "granted") throw new Error("Ruxsat berilmadi. Telefon sozlamalaridan Nurul Hadis uchun xabarlarga ruxsat bering.");
+      if (p !== "granted") throw new Error("Ruxsat berilmadi. Telefon sozlamalaridan Insta Seller uchun xabarlarga ruxsat bering.");
       return api("/push/kalit/");
     }).then(function (k) {
       return swTayyor().then(function (reg) {
@@ -657,6 +657,7 @@
     ["xarajatlar", "Xarajatlar", "cost", true],
     ["ombor", "Ombor", "stock", true],
     ["mahsulotlar", "Mahsulotlar", "box", false],
+    ["sozlamalar", "Sozlamalar", "settings", false],
   ];
 
   function delta(a, b, teskari) {
@@ -677,6 +678,10 @@
       var maxManba = Math.max.apply(null, r.manbalar.map(function (m) { return m.soni; }).concat([1]));
       var maxX = Math.max.apply(null, r.xarajatlar.map(function (x) { return x.summa; }).concat([1]));
       var h = "";
+      if (!r.mahsulot_soni) h += '<div class="card welcome"><h3>' + ic("rocket") + "Xush kelibsiz! Do‘koningizni sozlaymiz</h3>" +
+        '<ol class="steps"><li><b>Mahsulot qo‘shing</b><span>Nima sotasiz: nomi, narxi va (ixtiyoriy) tannarxi.</span><button class="btn pri sm" id="wp">' + ic("plus") + "Mahsulot qo‘shish</button></li>" +
+        "<li><b>Birinchi buyurtmani kiriting</b><span>Mijoz Instagram’da yozganda, buyurtmani shu yerga yozib boring.</span></li>" +
+        "<li><b>Xarajat va ombor (ixtiyoriy)</b><span>Reklama, qadoq xarajatlari va ombor qoldig‘i — foyda aniq chiqishi uchun.</span></li></ol></div>";
       if (r.tannarxsiz.length) h += '<div class="alert">Tannarx kiritilmagan: <b>' + esc(r.tannarxsiz.join(", ")) + '</b>. Foyda noto‘g‘ri chiqadi. <a href="#/mahsulotlar">Mahsulotlarga o‘ting</a>.</div>';
       h += '<div class="toolbar"><div class="seg" id="davr">' + DAVR.map(function (x) {
         return '<button data-d="' + x[0] + '" class="' + (x[0] === S.davr ? "on" : "") + '">' + x[1] + "</button>";
@@ -718,8 +723,8 @@
         if (!a.xarajat && !a.kirgan && !a.buyurtma) return '<div class="muted">Hali ma‘lumot yo‘q. Reklama xarajatini «Xarajatlar»ga yozing, buyurtmaning manbasini «Instagram reklama» deb belgilang.</div>';
         return '<div class="pl">' +
           pl("Reklama xarajati", a.xarajat) +
-          '<div class="r"><span>Saytga kirgan (reklamadan)</span><span>' + a.kirgan + " ta</span></div>" +
-          '<div class="r"><span>Tugma bosgan</span><span>' + a.bosgan + " ta</span></div>" +
+          (a.sayt ? '<div class="r"><span>Saytga kirgan (reklamadan)</span><span>' + a.kirgan + " ta</span></div>" +
+            '<div class="r"><span>Tugma bosgan</span><span>' + a.bosgan + " ta</span></div>" : "") +
           '<div class="r"><span>Buyurtma (Instagram reklama)</span><span>' + a.buyurtma + " ta</span></div>" +
           pl("Shu buyurtmalardan tushum", a.tushum) +
           '<div class="r"><span>Bitta buyurtma narxi</span><span>' + (a.buyurtma_narxi === null ? "—" : som(a.buyurtma_narxi) + " so‘m") + "</span></div>" +
@@ -730,6 +735,8 @@
             '</td><td class="n">' + som(b.tushum) + "</td></tr>";
         }).join("") + "</tbody></table>" : '<div class="muted">Buyurtma yo‘q.</div>') + "</div></div>";
       el.innerHTML = h;
+      var wp = el.querySelector("#wp");
+      if (wp) wp.onclick = function () { mahsulotForm(null); };
 
       Array.prototype.forEach.call(el.querySelectorAll("#davr button"), function (b) {
         b.onclick = function () { S.davr = b.dataset.d; pageDashboard(el); };
@@ -823,7 +830,12 @@
     Promise.all([loadRef(), loadBts()]).then(function () {
       var mijozlar = S.cache.mijozlar, mahsulotlar = S.cache.mahsulotlar.filter(function (m) { return m.faol || (b && b.qatorlar.some(function (q) { return q.mahsulot === m.id; })); });
       var edit = !!b;
-      b = b || { sana: today(), tur: "sotuv", holat: "yangi", manba: "ig_reklama", tolov_usuli: "naqd", chegirma: 0, yetkazish_turi: "yandex", yetkazish_xarajati: 0, tolangan: 0, chegirma_izoh: "", izoh: "", qatorlar: [], bonuslar: [] };
+      if (!edit && !mahsulotlar.length) {
+        toast(S.me.foyda ? "Avval «Mahsulotlar» bo‘limida mahsulot qo‘shing." : "Avval do‘kon egasi mahsulot qo‘shishi kerak.", true);
+        if (S.me.foyda) location.hash = "#/mahsulotlar";
+        return;
+      }
+      b = b || { sana: today(), tur: "sotuv", holat: "yangi", manba: (S.me.dokon && S.me.dokon.standart_manba) || "ig_organik", tolov_usuli: "naqd", chegirma: 0, yetkazish_turi: "yandex", yetkazish_xarajati: 0, tolangan: 0, chegirma_izoh: "", izoh: "", qatorlar: [], bonuslar: [] };
       var cur = edit ? mijozlar.filter(function (m) { return m.id === b.mijoz; })[0] : null;
       var foyda = S.me.foyda;
       var qator = b.qatorlar.length ? b.qatorlar : [{ mahsulot: mahsulotlar[0] && mahsulotlar[0].id, miqdor: 1, narx: null }];
@@ -1136,7 +1148,7 @@
           return;
         }
         var how = '<details class="howto"' + (tov.length && har.length ? "" : " open") + "><summary>" + ic("info") + "Ombor qanday ishlaydi?</summary><ol>" +
-          "<li><b>Tovar qo‘shing</b> — ombordagi narsa: banka, quti, qopqoq… («Yangi tovar»)</li>" +
+          "<li><b>Tovar qo‘shing</b> — ombordagi narsa: quti, paket, qadoq, etiketka… («Yangi tovar»)</li>" +
           "<li><b>Sotib olganingizda «Kirim»</b> bosing: nechta kelgani va dona narxini yozing. Xohlasangiz xarajatga ham yoziladi.</li>" +
           "<li><b>Mahsulotlar</b> bo‘limida har bir mahsulot sotilganda qaysi tovardan nechta ketishini belgilang.</li>" +
           "<li>Shundan so‘ng <b>buyurtma qilganingizda qoldiq o‘zi kamayadi</b>. Buzilsa yoki sanoqda farq chiqsa — «Tuzatish».</li></ol></details>";
@@ -1164,7 +1176,7 @@
     drawer({
       title: edit ? t.nom : "Yangi tovar",
       body: (edit ? '<div class="summary" style="margin:0 0 14px"><div class="r tot" style="border:0;margin:0;padding:0"><span>Hozirgi qoldiq</span><span>' + t.qoldiq + " " + esc(t.birlik) + "</span></div></div>" : "") +
-        '<div class="field"><label>Nomi</label><input name="nom" value="' + esc(t.nom) + '" placeholder="Shisha banka"></div>' +
+        '<div class="field"><label>Nomi</label><input name="nom" value="' + esc(t.nom) + '" placeholder="Masalan: Quti"></div>' +
         '<div class="row2"><div class="field"><label>Birlik</label><input name="birlik" value="' + esc(t.birlik) + '"><small>dona, kg, metr…</small></div>' +
         '<div class="field"><label>Kam qoldiq chegarasi</label><input type="number" min="0" name="min_qoldiq" value="' + t.min_qoldiq + '"><small>Qoldiq shundan oshmasa «Kam qoldi» deb ogohlantiradi</small></div></div>' +
         (edit ? '<div class="sec">So‘nggi harakatlar</div><div class="hist" id="thist"><div class="muted">Yuklanmoqda…</div></div>' : ""),
@@ -1244,6 +1256,9 @@
       '<div class="grid g3" id="cards"><div class="empty">Yuklanmoqda…</div></div>';
     list("/mahsulotlar/").then(function (rows) {
       var box = el.querySelector("#cards");
+      if (!rows.length) {
+        box.innerHTML = '<div class="empty" style="grid-column:1/-1">Hali mahsulot yo‘q. ' + (S.me.foyda ? "«Yangi mahsulot» tugmasi bilan birinchi mahsulotingizni qo‘shing." : "Mahsulotni do‘kon egasi qo‘shadi.") + "</div>";
+      }
       box.innerHTML = rows.map(function (m) {
         var marja = S.me.foyda && m.narx ? Math.round(100 * (m.narx - m.tannarx) / m.narx) : null;
         return '<div class="card click" data-id="' + m.id + '" style="cursor:pointer"><h3>' + esc(m.nom) + (m.faol ? "" : ' <span class="badge">Sotuvda emas</span>') + "</h3>" +
@@ -1252,7 +1267,7 @@
             '<div class="r"><span>Foyda (1 dona)</span><b class="' + (m.narx - m.tannarx < 0 ? "neg" : "pos") + '">' + som(m.narx - m.tannarx) + " so‘m · " + marja + "%</b></div>" +
             '<div class="r"><span>Ombordan chiqadi</span><span class="muted">' + ((m.tarkib || []).map(function (t) { return esc(t.tovar_nom) + " ×" + t.miqdor; }).join(", ") || "—") + "</span></div>" : "") +
           "</div></div>";
-      }).join("") || '<div class="empty">Mahsulot yo‘q.</div>';
+      }).join("") || box.innerHTML;
       if (S.me.foyda) {
         Array.prototype.forEach.call(box.querySelectorAll("[data-id]"), function (c) {
           c.onclick = function () { mahsulotForm(rows.filter(function (m) { return m.id === +c.dataset.id; })[0]); };
@@ -1263,7 +1278,7 @@
   }
   function mahsulotForm(m) {
     list("/ombor/").then(function (tov) {
-      var edit = !!m; m = m || { nom: "", narx: 235000, tannarx: 0, faol: true, tarkib: [] };
+      var edit = !!m; m = m || { nom: "", narx: 0, tannarx: 0, faol: true, tarkib: [] };
       drawer({
         title: edit ? m.nom : "Yangi mahsulot",
         body: '<div class="field"><label>Nomi</label><input name="nom" value="' + esc(m.nom) + '"></div>' +
@@ -1271,7 +1286,7 @@
           '<div class="field"><label>Tannarx (so‘m)</label><input type="number" min="0" name="tannarx" value="' + m.tannarx + '"></div></div>' +
           '<div class="field"><label><input type="checkbox" name="faol" style="width:auto;margin-right:0.375rem"' + (m.faol ? " checked" : "") + ">Sotuvda</label></div>" +
           '<div class="sec">Sotilganda ombordan chiqadigan narsalar</div>' +
-          '<p class="hintp">Bu mahsulotdan 1 dona sotilganda ombordan qaysi tovardan nechta kamayishini belgilang. Masalan: 1 ta banka, 1 ta quti.</p><div class="items" id="tk"></div>' +
+          '<p class="hintp">Bu mahsulotdan 1 dona sotilganda ombordan qaysi tovardan nechta kamayishini belgilang. Masalan: 1 ta quti, 1 ta paket.</p><div class="items" id="tk"></div>' +
           '<button class="btn sm" type="button" id="addt">' + ic("plus") + "Qator qo‘shish</button>",
         onOpen: function (ov) {
           var box = ov.querySelector("#tk");
@@ -1319,21 +1334,121 @@
   });
 
   function loginView() {
-    root.innerHTML = '<div class="login"><form class="box" id="lf"><div class="brand-logo"><img src="/crm/icons/icon-192.png" alt=""></div>' +
-      "<h1>Nurul Hadis CRM</h1><p>Hisobingizga kiring</p><div id=\"err\"></div>" +
-      '<div class="field"><label>Login</label><input name="username" autocomplete="username" autocapitalize="none" autocorrect="off" autofocus></div>' +
-      '<div class="field"><label>Parol</label><input type="password" name="password" autocomplete="current-password"></div>' +
-      '<button class="btn pri" style="width:100%" type="submit">Kirish</button></form></div>';
-    document.getElementById("lf").onsubmit = function (e) {
+    var mumkin = S.royxatOchiq !== false;
+    var royxat = mumkin && S.authRejim === "royxat";
+    root.innerHTML = '<div class="login"><form class="box" id="lf" novalidate><div class="brand-logo"><img src="/crm/icons/icon-v2-192.png" alt=""></div>' +
+      "<h1>Insta Seller</h1><p>Instagram do‘koningiz: buyurtmalar, mijozlar va foyda bir joyda</p>" +
+      (mumkin ? '<div class="seg eq authtab"><button type="button" data-r="kirish" class="' + (royxat ? "" : "on") + '">Kirish</button>' +
+        '<button type="button" data-r="royxat" class="' + (royxat ? "on" : "") + '">Ro‘yxatdan o‘tish</button></div>' : "") +
+      '<div id="err"></div>' +
+      (royxat ? '<div class="field"><label>Do‘kon nomi</label><input name="dokon_nom" placeholder="Masalan: Madina shop" autocomplete="organization" maxlength="60"></div>' +
+        '<div class="field"><label>Ismingiz</label><input name="ism" autocomplete="name" maxlength="60"></div>' : "") +
+      '<div class="field"><label>Login</label><input name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"' +
+        (royxat ? ' placeholder="kichik lotin harflar, raqam" maxlength="30"' : "") + "></div>" +
+      '<div class="field"><label>Parol</label><input type="password" name="password" autocomplete="' + (royxat ? "new-password" : "current-password") + '">' +
+        (royxat ? "<small>Kamida 8 ta belgi, faqat raqamdan iborat bo‘lmasin.</small>" : "") + "</div>" +
+      '<button class="btn pri" style="width:100%" type="submit">' + (royxat ? "Do‘konni yaratish" : "Kirish") + "</button></form></div>";
+    var f = document.getElementById("lf");
+    Array.prototype.forEach.call(f.querySelectorAll(".authtab button"), function (btn) {
+      btn.onclick = function () { S.authRejim = btn.dataset.r; loginView(); };
+    });
+    var birinchi = f.querySelector("input"); if (birinchi) birinchi.focus();
+    f.onsubmit = function (e) {
       e.preventDefault();
-      var f = e.target;
-      api("/kirish/", { method: "POST", body: { username: f.username.value, password: f.password.value } }).then(function (d) {
-        S.me = d; S.cache = {};
+      var tugma = f.querySelector("[type=submit]");
+      tugma.disabled = true;
+      var p = royxat
+        ? api("/royxat/", { method: "POST", body: { dokon_nom: f.dokon_nom.value, ism: f.ism.value, username: f.username.value, parol: f.password.value } })
+        : api("/kirish/", { method: "POST", body: { username: f.username.value, password: f.password.value } });
+      p.then(function (d) {
+        S.me = d; S.cache = {}; S.authRejim = "kirish";
         location.hash = d.foyda ? "#/dashboard" : "#/buyurtmalar";
         render();
+        if (royxat) toast("Xush kelibsiz! Birinchi mahsulotingizni qo‘shing.");
       }).catch(function (er) {
+        tugma.disabled = false;
         document.getElementById("err").innerHTML = '<div class="err">' + esc(er.message) + "</div>";
       });
+    };
+  }
+
+  /* ── sozlamalar: do'kon, xodimlar, hisob ──────────────────────── */
+  function pageSozlamalar(el) {
+    var egasi = S.me.foyda, dk = S.me.dokon || {};
+    el.innerHTML = '<div class="grid g2e">' +
+      '<div class="card"><h3>' + ic("store") + "Do‘kon</h3>" +
+      '<div class="field"><label>Do‘kon nomi</label><input id="dnom" maxlength="60" value="' + esc(dk.nom) + '"' + (egasi ? "" : " disabled") + "></div>" +
+      '<div class="field"><label>Buyurtma odatda qayerdan keladi</label><select id="dmanba"' + (egasi ? "" : " disabled") + ">" + opts(MANBA, dk.standart_manba) + "</select>" +
+      "<small>Yangi buyurtmada shu manba oldindan tanlanib turadi.</small></div>" +
+      (egasi ? '<button class="btn pri" id="dsave">Saqlash</button>' : '<div class="muted">Do‘kon sozlamalarini faqat egasi o‘zgartira oladi.</div>') + "</div>" +
+      '<div class="card"><h3>' + ic("user-round") + "Hisobingiz</h3>" +
+      '<div class="pl"><div class="r"><span>Ism</span><b>' + esc(S.me.ism) + '</b></div><div class="r"><span>Login</span><b>' + esc(S.me.username) +
+      '</b></div><div class="r"><span>Huquq</span><b>' + (egasi ? "Egasi" : "Yordamchi") + "</b></div></div>" +
+      '<div class="rowbtn"><button class="btn" id="dpass">' + ic("key-round") + "Parolni o‘zgartirish</button>" +
+      '<button class="btn" id="dout">' + ic("out") + "Chiqish</button></div></div></div>" +
+      (egasi ? '<div class="card"><div class="toolbar" style="justify-content:space-between;margin:0 0 0.5rem"><h3 style="margin:0">' + ic("users") + "Xodimlar</h3>" +
+        '<button class="btn sm pri" id="azoadd">' + ic("user-plus") + 'Xodim qo‘shish</button></div><p class="hintp">Xodim buyurtma va mijozlarni kiritadi, lekin tannarx, foyda, xarajat va omborni ko‘rmaydi.</p><div id="azolar"><div class="muted">Yuklanmoqda…</div></div></div>' : "");
+
+    if (egasi) {
+      el.querySelector("#dsave").onclick = function () {
+        var nom = el.querySelector("#dnom").value.trim();
+        api("/dokon/", { method: "PATCH", body: { nom: nom, standart_manba: el.querySelector("#dmanba").value } }).then(function (d) {
+          S.me.dokon.nom = d.nom; S.me.dokon.standart_manba = d.standart_manba;
+          toast("Saqlandi"); render();
+        }).catch(function (e) { toast(e.message, true); });
+      };
+      yukla();
+      el.querySelector("#azoadd").onclick = function () {
+        drawer({
+          title: "Yangi xodim",
+          body: '<div class="field"><label>Ismi</label><input name="ism" maxlength="60"></div>' +
+            '<div class="field"><label>Login</label><input name="username" autocapitalize="none" autocorrect="off" maxlength="30" placeholder="kichik lotin harflar, raqam"></div>' +
+            '<div class="field"><label>Parol</label><input name="parol" type="text" autocomplete="off"><small>Kamida 8 ta belgi. Xodimga shu login va parolni bering.</small></div>',
+          onSave: function (ov) {
+            return api("/azolar/", { method: "POST", body: { ism: val(ov, "ism"), username: val(ov, "username"), parol: val(ov, "parol") } })
+              .then(function () { toast("Xodim qo‘shildi"); yukla(); });
+          },
+        });
+      };
+    }
+    function yukla() {
+      api("/azolar/").then(function (rows) {
+        var box = el.querySelector("#azolar");
+        box.innerHTML = '<div class="hist" style="padding:0">' + rows.map(function (x) {
+          var men = x.username === S.me.username;
+          return '<div class="hrow"><span class="avatar">' + esc((x.ism || "?").charAt(0).toUpperCase()) + '</span><div class="hm"><b>' + esc(x.ism) + (men ? ' <span class="muted">(siz)</span>' : "") +
+            "</b><small>" + esc(x.username) + " · " + esc(x.rol_nom) + "</small></div>" +
+            (x.rol === "yordamchi" ? '<button class="icon-x" data-k="' + x.id + '" title="Parolni almashtirish">' + ic("key-round") + '</button><button class="icon-x" data-d="' + x.id + '" title="O‘chirish">' + ic("trash-2") + "</button>" : "") + "</div>";
+        }).join("") + "</div>";
+        Array.prototype.forEach.call(box.querySelectorAll("[data-k]"), function (b) {
+          b.onclick = function () {
+            var x = rows.filter(function (r) { return r.id === +b.dataset.k; })[0];
+            drawer({
+              title: "Parol: " + x.ism,
+              body: '<div class="field"><label>Yangi parol</label><input name="parol" type="text" autocomplete="off"><small>Kamida 8 ta belgi.</small></div>',
+              onSave: function (ov) { return api("/azolar/" + x.id + "/", { method: "PATCH", body: { parol: val(ov, "parol") } }).then(function () { toast("Parol almashtirildi"); }); },
+            });
+          };
+        });
+        Array.prototype.forEach.call(box.querySelectorAll("[data-d]"), function (b) {
+          b.onclick = function () {
+            var x = rows.filter(function (r) { return r.id === +b.dataset.d; })[0];
+            if (!confirm(x.ism + " xodimini o‘chirasizmi? U tizimga kira olmaydi.")) return;
+            api("/azolar/" + x.id + "/", { method: "DELETE" }).then(function () { toast("O‘chirildi"); yukla(); }).catch(function (e) { toast(e.message, true); });
+          };
+        });
+      }).catch(function (e) { el.querySelector("#azolar").innerHTML = '<div class="muted">' + esc(e.message) + "</div>"; });
+    }
+    el.querySelector("#dpass").onclick = function () {
+      drawer({
+        title: "Parolni o‘zgartirish",
+        body: '<div class="field"><label>Hozirgi parol</label><input name="eski" type="password" autocomplete="current-password"></div>' +
+          '<div class="field"><label>Yangi parol</label><input name="yangi" type="password" autocomplete="new-password"><small>Kamida 8 ta belgi, faqat raqamdan iborat bo‘lmasin.</small></div>',
+        onSave: function (ov) { return api("/parol/", { method: "POST", body: { eski: val(ov, "eski"), yangi: val(ov, "yangi") } }).then(function () { toast("Parol almashtirildi"); }); },
+      });
+    };
+    el.querySelector("#dout").onclick = function () {
+      api("/chiqish/", { method: "POST" }).then(function () { S.me = null; S.cache = {}; render(); });
     };
   }
 
@@ -1352,8 +1467,8 @@
     function tab(x) { return '<a href="#/' + x[0] + '" class="' + (x[0] === p ? "on" : "") + '">' + ic(x[2]) + "<span>" + x[1] + "</span></a>"; }
 
     root.innerHTML =
-      '<div class="app"><aside class="side" id="side"><div class="brand"><span class="brand-logo"><img src="/crm/icons/icon-192.png" alt=""></span>' +
-      "<div><b>Nurul Hadis</b><small>Savdo CRM</small></div></div>" +
+      '<div class="app"><aside class="side" id="side"><div class="brand"><span class="brand-logo"><img src="/crm/icons/icon-v2-192.png" alt=""></span>' +
+      "<div class=\"brand-t\"><b>" + esc((S.me.dokon && S.me.dokon.nom) || "Insta Seller") + "</b><small>Insta Seller</small></div></div>" +
       '<nav class="nav">' + visible.map(function (x) {
         return '<a href="#/' + x[0] + '" class="' + (x[0] === p ? "on" : "") + '">' + ic(x[2]) + x[1] + "</a>";
       }).join("") + '</nav><div class="grow"></div>' +
@@ -1364,7 +1479,7 @@
       '<div class="user"><span class="avatar">' + esc((S.me.ism || "?").charAt(0).toUpperCase()) + '</span><div class="t"><b>' + esc(S.me.ism) +
       "</b><small>" + (S.me.foyda ? "Egasi" : "Yordamchi") + '</small></div><button class="linkbtn" id="out" title="Chiqish">' + ic("out") + "</button></div></aside>" +
       '<div class="scrim" id="scrim"></div>' +
-      '<div class="main"><header class="top"><span class="mlogo"><img src="/crm/icons/icon-192.png" alt=""></span><h1>' + esc(title) + "</h1>" +
+      '<div class="main"><header class="top"><span class="mlogo"><img src="/crm/icons/icon-v2-192.png" alt=""></span><h1>' + esc(title) + "</h1>" +
       '<button class="bell" id="bell" aria-label="Xabarlar">' + ic("bell") + '<i class="dot hide"></i></button>' +
       '<button class="btn pri" id="topnew">' + ic("plus") + "<span>Yangi buyurtma</span></button></header>" +
       '<div class="page" id="page"></div></div>' +
@@ -1394,7 +1509,7 @@
     xabarSoni();
     document.getElementById("fab").onclick = function () { buyurtmaForm(null); };
     var page = document.getElementById("page");
-    ({ dashboard: pageDashboard, buyurtmalar: pageBuyurtmalar, mijozlar: pageMijozlar, xarajatlar: pageXarajatlar, ombor: pageOmbor, mahsulotlar: pageMahsulotlar }[p])(page);
+    ({ dashboard: pageDashboard, buyurtmalar: pageBuyurtmalar, mijozlar: pageMijozlar, xarajatlar: pageXarajatlar, ombor: pageOmbor, mahsulotlar: pageMahsulotlar, sozlamalar: pageSozlamalar }[p])(page);
     if (yangi) { history.replaceState(null, "", "#/buyurtmalar"); buyurtmaForm(null); }
   }
 
@@ -1547,7 +1662,7 @@
   // iPhone'da ikki barmoq bilan kattalashtirishni o'chirish
   ["gesturestart", "gesturechange", "gestureend"].forEach(function (n) { document.addEventListener(n, function (e) { e.preventDefault(); }); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden) xabarSoni(true); });
-  api("/me/").then(function (d) { S.me = d.kirgan ? d : null; render(); }).catch(function () { S.me = null; render(); });
+  api("/me/").then(function (d) { S.me = d.kirgan ? d : null; S.royxatOchiq = d.royxat_ochiq !== false; render(); }).catch(function () { S.me = null; render(); });
   if ("serviceWorker" in navigator) {
     // Yangi versiya chiqsa, ochiq turgan ilova o'zi yangilanadi (eski kod bilan ishlab qolmasin)
     var swBor = !!navigator.serviceWorker.controller;

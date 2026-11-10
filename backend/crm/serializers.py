@@ -7,9 +7,24 @@ from .models import (
 )
 
 
+def _aza(request):
+    from .api import aza_ol
+    return aza_ol(request) if request else None
+
+
 def foyda_korsin(serializer):
-    request = serializer.context.get("request")
-    return bool(request and request.user.has_perm("crm.view_foyda"))
+    """Tannarx, foyda va yetkazish xarajatini faqat do'kon egasi ko'radi."""
+    a = _aza(serializer.context.get("request"))
+    return bool(a and a.egasi)
+
+
+class DokonFK(serializers.PrimaryKeyRelatedField):
+    """Faqat so'rov egasining do'konidagi obyektni tanlash mumkin (boshqa do'kon ma'lumotiga yo'l yo'q)."""
+
+    def get_queryset(self):
+        a = _aza(self.context.get("request"))
+        qs = super().get_queryset()
+        return qs.filter(dokon=a.dokon) if a else qs.none()
 
 
 class MijozSerializer(serializers.ModelSerializer):
@@ -34,6 +49,7 @@ class MijozSerializer(serializers.ModelSerializer):
 
 
 class TarkibSerializer(serializers.ModelSerializer):
+    tovar = DokonFK(queryset=OmborTovar.objects.all())
     tovar_nom = serializers.CharField(source="tovar.nom", read_only=True)
 
     class Meta:
@@ -84,8 +100,18 @@ class OmborTovarSerializer(serializers.ModelSerializer):
         model = OmborTovar
         fields = ["id", "nom", "birlik", "min_qoldiq", "qoldiq", "kam"]
 
+    def validate_nom(self, nom):
+        a = _aza(self.context.get("request"))
+        qs = OmborTovar.objects.filter(dokon=a.dokon, nom=nom) if a else OmborTovar.objects.none()
+        if self.instance:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise serializers.ValidationError("Bunday nomli tovar allaqachon bor.")
+        return nom
+
 
 class OmborHarakatSerializer(serializers.ModelSerializer):
+    tovar = DokonFK(queryset=OmborTovar.objects.all())
     tovar_nom = serializers.CharField(source="tovar.nom", read_only=True)
     turi_nom = serializers.CharField(source="get_turi_display", read_only=True)
     summa = serializers.IntegerField(read_only=True)
@@ -116,6 +142,7 @@ class XarajatSerializer(serializers.ModelSerializer):
 
 
 class QatorSerializer(serializers.ModelSerializer):
+    mahsulot = DokonFK(queryset=Mahsulot.objects.all())
     mahsulot_nom = serializers.CharField(source="mahsulot.nom", read_only=True)
     id = serializers.IntegerField(required=False)
 
@@ -131,6 +158,7 @@ class BonusSerializer(serializers.ModelSerializer):
 
 
 class BuyurtmaSerializer(serializers.ModelSerializer):
+    mijoz = DokonFK(queryset=Mijoz.objects.all())
     qatorlar = QatorSerializer(many=True)
     bonuslar = BonusSerializer(many=True, required=False)
     mijoz_nom = serializers.CharField(source="mijoz.ism", read_only=True)

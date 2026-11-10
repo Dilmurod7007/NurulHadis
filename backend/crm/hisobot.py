@@ -6,7 +6,7 @@ from datetime import timedelta
 from django.db.models import Count, Q
 from django.utils import timezone
 
-from .models import Buyurtma, OmborHarakat, OmborTovar, Xarajat
+from .models import Buyurtma, Mahsulot, OmborTovar, Xarajat
 
 
 def davr_boshi(kod):
@@ -20,11 +20,15 @@ def davr_boshi(kod):
     return bugun - timedelta(days=kod - 1)
 
 
-def hisobla(boshi=None, tugashi=None):
-    from hadis.models import Event  # sayt statistikasi
+def hisobla(boshi=None, tugashi=None, dokon=None):
+    """Hisobot. dokon berilsa faqat shu do'kon; berilmasa (faqat administrator uchun) hamma do'kon."""
+    from hadis.models import Event  # sayt statistikasi (faqat Nurul Hadis do'koni uchun)
 
     b_qs = Buyurtma.objects.select_related("mijoz").prefetch_related("qatorlar__mahsulot", "bonuslar")
     x_qs = Xarajat.objects.all()
+    if dokon is not None:
+        b_qs = b_qs.filter(dokon=dokon)
+        x_qs = x_qs.filter(dokon=dokon)
     if boshi:
         b_qs = b_qs.filter(sana__gte=boshi)
         x_qs = x_qs.filter(sana__gte=boshi)
@@ -81,13 +85,15 @@ def hisobla(boshi=None, tugashi=None):
     # Instagram reklama samaradorligi (kampaniya nomisiz, umumiy)
     reklama_xarajat = kat.get("reklama", 0)
     ig = [b for b in hisobdagi if b.manba == "ig_reklama"]
-    ev = Event.objects.filter(from_ad=True)
+    sayt = dokon is None or dokon.sayt_statistika
+    ev = Event.objects.filter(from_ad=True) if sayt else Event.objects.none()
     if boshi:
         ev = ev.filter(created__date__gte=boshi)
     if tugashi:
         ev = ev.filter(created__date__lte=tugashi)
     ig_tushum = sum(b.tushum for b in ig)
     r["reklama"] = {
+        "sayt": sayt,
         "xarajat": reklama_xarajat,
         "kirgan": ev.filter(kind="view", name="landing").values("visitor").distinct().count(),
         "bosgan": ev.filter(kind="click").values("visitor").distinct().count(),
@@ -106,7 +112,7 @@ def hisobla(boshi=None, tugashi=None):
         if b.kampaniya:
             kamp[b.kampaniya]["buyurtma"] += 1
             kamp[b.kampaniya]["tushum"] += b.tushum
-    evk = Event.objects.exclude(utm_campaign="")
+    evk = Event.objects.exclude(utm_campaign="") if sayt else Event.objects.none()
     if boshi:
         evk = evk.filter(created__date__gte=boshi)
     if tugashi:
@@ -127,11 +133,14 @@ def hisobla(boshi=None, tugashi=None):
     # Ombor
     r["ombor"] = [
         {"nom": t.nom, "qoldiq": t.qoldiq, "birlik": t.birlik, "kam": t.kam, "min": t.min_qoldiq}
-        for t in OmborTovar.objects.all()
+        for t in (OmborTovar.objects.filter(dokon=dokon) if dokon is not None else OmborTovar.objects.all())
     ]
     # Tannarxi kiritilmagan mahsulot ogohlantirishi
-    from .models import Mahsulot
-    r["tannarxsiz"] = list(Mahsulot.objects.filter(faol=True, tannarx=0).values_list("nom", flat=True))
+    m_qs = Mahsulot.objects.filter(faol=True, tannarx=0)
+    if dokon is not None:
+        m_qs = m_qs.filter(dokon=dokon)
+    r["tannarxsiz"] = list(m_qs.values_list("nom", flat=True))
+    r["mahsulot_soni"] = (Mahsulot.objects.filter(dokon=dokon) if dokon is not None else Mahsulot.objects.all()).count()
 
     # Kunlar bo'yicha
     kun = defaultdict(lambda: {"soni": 0, "tushum": 0, "foyda": 0})

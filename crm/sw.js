@@ -1,18 +1,18 @@
-/* Nurul Hadis CRM — service worker.
+/* Insta Seller — service worker.
    Ilova qobig'i (HTML, CSS, JS, ikonkalar) keshlanadi, shuning uchun telefon tez ochiladi.
    /api/ so'rovlari HECH QACHON keshlanmaydi: pul va buyurtma ma'lumotlari doim yangi bo'lishi kerak. */
 
-var VERSIYA = "nh-crm-v19";
+var VERSIYA = "is-crm-v20";
 var QOBIQ = [
   "/crm/",
-  "/crm/app.css?v=19",
-  "/crm/lucide.js?v=19",
-  "/crm/app.js?v=19",
+  "/crm/app.css?v=20",
+  "/crm/lucide.js?v=20",
+  "/crm/app.js?v=20",
   "/crm/bts.json",
   "/crm/manifest.webmanifest",
-  "/crm/icons/icon-192.png",
-  "/crm/icons/icon-512.png",
-  "/crm/icons/favicon-32.png",
+  "/crm/icons/icon-v2-192.png",
+  "/crm/icons/icon-v2-512.png",
+  "/crm/icons/favicon-v2-32.png",
 ];
 
 self.addEventListener("install", function (e) {
@@ -63,9 +63,9 @@ self.addEventListener("fetch", function (e) {
 // Push xabarlar (yetkazilmagan buyurtma eslatmalari)
 self.addEventListener("push", function (e) {
   var d = {};
-  try { d = e.data.json(); } catch (x) { d = { sarlavha: "Nurul Hadis CRM", matn: e.data ? e.data.text() : "" }; }
-  e.waitUntil(self.registration.showNotification(d.sarlavha || "Nurul Hadis CRM", {
-    body: d.matn || "", icon: "/crm/icons/icon-192.png", badge: "/crm/icons/favicon-32.png",
+  try { d = e.data.json(); } catch (x) { d = { sarlavha: "Insta Seller", matn: e.data ? e.data.text() : "" }; }
+  e.waitUntil(self.registration.showNotification(d.sarlavha || "Insta Seller", {
+    body: d.matn || "", icon: "/crm/icons/icon-v2-192.png", badge: "/crm/icons/favicon-v2-32.png",
     data: { url: d.url || "/crm/" }, tag: "nh-crm",
   }));
 });
