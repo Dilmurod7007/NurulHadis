@@ -145,12 +145,12 @@ CORS_ALLOWED_ORIGINS = [
 # API javobining "meta" qismida qaytadi va sahifa pastida ko'rinadi.
 NURUL_META = {
     "project": "Nurul Hadis",
-    "manba": "hadis.islom.uz — O'zbekiston musulmonlari idorasi",
-    "toplam": "Riyozus solihiyn (Imom Navaviy), tarjimon: Anvar Ahmad, Toshkent 2021",
-    "sharh_manbasi": "Riyozus solihiyn sharhi — hadis.islom.uz",
+    "manba": "hadis.islom.uz — Özbekiston musulmonlari idorasi",
+    "toplam": "Riyozus solihiyn (Imom Navaviy), tarjimon: Anvar Ahmad, Toşkent 2021",
+    "sharh_manbasi": "Riyozus solihiyn şarhi — hadis.islom.uz",
     "eslatma": (
-        "Matnlar manbadan so'zma-so'z olingan, kirilldan lotinga o'girilgan. "
-        "Chop etishdan oldin manba bilan solishtirilishi kerak."
+        "Matnlar manbadan sözma-söz olingan, kirilldan lotinga ögirilgan. "
+        "Çop etişdan oldin manba bilan soliştirilişi kerak."
     ),
     "qogozcha_chegarasi": 280,
 }

@@ -11,6 +11,7 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .alifbo import yangi
 from .models import Category, Event, Hadith
 from .serializers import (
     CategorySerializer,
@@ -40,7 +41,8 @@ class HadithListView(APIView):
         if kategoriya:
             hadislar = hadislar.filter(category__slug=kategoriya)
 
-        q = (request.query_params.get("q") or "").strip()
+        # eski yozuvda kiritilgan so'rov ham topiladi (sh → ş, o' → ö ...)
+        q = yangi((request.query_params.get("q") or "").strip())
         if q:
             hadislar = hadislar.filter(
                 Q(title__icontains=q)

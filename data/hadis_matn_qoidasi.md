@@ -3,9 +3,11 @@
 ## Asosiy printsip
 Hadis matni (arab tili, o'zbekcha tarjima, sharh, ravkinlar ismi) — muqaddas manba. Uni hech qachon, hech qanday bahona bilan o'zimcha o'zgartirib, qisqartirib yoki qayta ifodalab (parafraz) bo'lmaydi. Faqat manbadan (hadis.islom.uz, kitob 28/32) so'zma-so'z ko'chiriladi.
 
-## Ruxsat etilgan yagona ikki o'zgartirish
+## Ruxsat etilgan yagona uch o'zgartirish
 1. **"sallallohu alayhi vasallam"** so'zi o'rniga **ﷺ** arabiy belgisini qo'yish.
 2. **Tinish belgilari va o'zbek lotin yozuvi belgilarini** loyihadagi `tuzat_qoshtirnoq.py` qoidasiga muvofiq to'g'irlash (qo'shtirnoq “ ”, o‘/g‘ uchun ‘, tutuq belgisi ’).
+
+3. **Yangi o'zbek lotin alifbosiga o'tkazish** (foydalanuvchi so'ragan, 2026): `sh→ş, ch→ç, o‘→ö, g‘→ğ`. Bu faqat harflarni mexanik almashtirish — `python manage.py yangi_alifbo` buyrug'i bilan; so'z, tartib va tinish belgilariga tegilmaydi. Arabcha matn va havolalar o'zgarmaydi.
 
 Shundan boshqa **hech narsaga** — hadisning bironta so'ziga, so'z tartibiga, "Nabiy"/"Rasululloh" kabi manbada aynan qanday yozilgan bo'lsa o'sha so'zga, footnote (masalan "*") belgisiga — tegilmaydi.
 

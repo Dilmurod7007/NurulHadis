@@ -127,7 +127,7 @@
       })
       .catch(function () {
         store.yuklanmoqda = false;
-        if (!zaxiraniYuk()) store.xato = "Ma’lumotni yuklab bo‘lmadi.";
+        if (!zaxiraniYuk()) store.xato = "Ma’lumotni yuklab bölmadi.";
         render();
       });
   }
@@ -144,7 +144,7 @@
       })
       .catch(function () {
         store.yuklanmoqda = false;
-        store.xato = "Bu hadisni yuklab bo‘lmadi.";
+        store.xato = "Bu hadisni yuklab bölmadi.";
         render();
       });
   }
@@ -171,13 +171,20 @@
   applyTheme(readTheme());
 
   function themeBtn() {
-    return '<button class="iconbtn" id="theme" aria-label="Rejimni almashtirish">' +
+    return '<button class="iconbtn" id="theme" aria-label="Rejimni almaştiriş">' +
       (currentIsDark() ? ICON.sun : ICON.moon) + "</button>";
   }
 
   /* ---------- RO'YXAT ---------- */
+  /* Qidiruvda eski va yangi yozuv bir xil: ş=sh, ç=ch, ğ=g, ö=o, apostrof hisobga olinmaydi */
+  function qid(s) {
+    return String(s == null ? "" : s).toLowerCase()
+      .replace(/ş/g, "sh").replace(/ç/g, "ch").replace(/ğ/g, "g").replace(/ö/g, "o")
+      .replace(/[ʻʼ‘’'`´]/g, "");
+  }
+
   function viewList() {
-    var q = state.q.trim().toLowerCase();
+    var q = qid(state.q.trim());
     var html = "";
 
     html += '<header class="topbar"><h1 class="topbar__title">Nurul Hadis</h1>' +
@@ -191,7 +198,7 @@
     }
 
     html += '<div class="search">' + ICON.search +
-      '<input id="q" type="search" placeholder="Hadis yoki manba bo‘yicha qidirish" value="' +
+      '<input id="q" type="search" placeholder="Hadis yoki manba böyiça qidiriş" value="' +
       esc(state.q) + '" autocomplete="off"></div>';
 
     html += '<div class="chips" role="group" aria-label="Kategoriyalar">';
@@ -212,8 +219,8 @@
       var items = store.royxat.filter(function (h) {
         if (h.category !== k.name) return false;
         if (!q) return true;
-        return (h.title + " " + h.paper_text + " " + h.paper_source_line + " " +
-                h.narrator + " " + h.collection).toLowerCase().indexOf(q) >= 0;
+        return qid(h.title + " " + h.paper_text + " " + h.paper_source_line + " " +
+                   h.narrator + " " + h.collection).indexOf(q) >= 0;
       });
       if (q && !items.length) continue;
       total += items.length;
@@ -223,7 +230,7 @@
         '<span class="group__count">' + items.length + "</span></div>";
 
       if (!items.length) {
-        html += '<div class="empty empty--slim">Hadislar hali yig‘ilmagan</div>';
+        html += '<div class="empty empty--slim">Hadislar hali yiğilmagan</div>';
       } else {
         html += '<div class="group__list">';
         for (var n = 0; n < items.length; n++) {
@@ -237,7 +244,7 @@
               esc(h.collection_no) + '</span><span class="sep">·</span><span>' +
               esc(String(h.narrator).split(" roziyallohu")[0]) + "</span>" +
               (h.sharh_status === "bor"
-                ? '<span class="sep">·</span><span>Sharhli</span>' : "") +
+                ? '<span class="sep">·</span><span>Şarhli</span>' : "") +
             "</div></button>";
         }
         html += "</div>";
@@ -247,7 +254,7 @@
 
     if (q && !total) {
       html += '<div class="empty">“' + esc(state.q) +
-        '” bo‘yicha hech narsa topilmadi</div>';
+        '” böyiça heç narsa topilmadi</div>';
     }
 
     html += footer();
@@ -267,7 +274,7 @@
   function viewDetail(id) {
     var h = store.tafsilot[id];
     var html = '<header class="topbar">' +
-      '<button class="back" id="back">' + ICON.back + "Ro‘yxat</button>" +
+      '<button class="back" id="back">' + ICON.back + "Röyxat</button>" +
       '<span style="flex:1"></span>' + themeBtn() + "</header>";
 
     if (!h) {
@@ -286,7 +293,7 @@
       '<button class="tab" role="tab" data-tab="manba" aria-selected="' +
         (state.tab === "manba") + '">Manba</button>' +
       '<button class="tab" role="tab" data-tab="sharh" aria-selected="' +
-        (state.tab === "sharh") + '">Sharh' +
+        (state.tab === "sharh") + '">Şarh' +
         (h.sharh_status === "bor" ? "" : '<span class="tab__badge">—</span>') +
       "</button></div>";
 
@@ -307,17 +314,17 @@
 
     if (h.parent_hadith && h.parent_hadith.bor) {
       s += '<button class="fullbtn" id="fullbtn" aria-expanded="' + state.full + '">' +
-        '<span><span class="fullbtn__label">Hadisning to‘liq matnini ko‘rish</span>' +
+        '<span><span class="fullbtn__label">Hadisning töliq matnini köriş</span>' +
         '<span class="fullbtn__note">' + esc(h.parent_hadith.ref_book) + "</span></span>" +
         ICON.chev + "</button>";
       if (state.full) {
-        s += '<div class="fulltext"><p class="fulltext__label">To‘liq matn</p>' +
+        s += '<div class="fulltext"><p class="fulltext__label">Töliq matn</p>' +
           '<p class="uz">' + markCore(h.parent_hadith.uzbek_full, h.uzbek_full) + "</p>" +
           '<p class="srcline">' + esc(h.parent_hadith.ref_book) + "</p></div>";
       }
     }
 
-    s += '<div class="slip"><div class="slip__head"><span>Qog‘ozchada</span>' +
+    s += '<div class="slip"><div class="slip__head"><span>Qoğozçada</span>' +
       '<span class="slip__len">' + esc(h.paper_len) + " belgi</span></div>" +
       '<div class="slip__paper"><p class="slip__text">' + esc(h.paper_text) + "</p>" +
       '<p class="slip__src">' + esc(h.paper_source_line) + "</p></div></div>";
@@ -331,11 +338,11 @@
       return '<div class="linkrow"><a href="' + esc(url) +
         '" target="_blank" rel="noopener">' + text + "</a>" + ICON.ext + "</div>";
     }
-    if (h.sharh_url) s += link(h.sharh_url, "hadis.islom.uz — sharhning manbadagi sahifasi");
-    var re = /;\s*(\d+)-hadis ostidagi sharh/g, m;
+    if (h.sharh_url) s += link(h.sharh_url, "hadis.islom.uz — şarhning manbadagi sahifasi");
+    var re = /;\s*(\d+)-hadis ostidagi (?:sharh|şarh)/g, m;
     while ((m = re.exec(h.sharh_ref || ""))) {
       s += link("https://hadis.islom.uz/kitob/32/0/" + m[1],
-        "hadis.islom.uz — " + m[1] + "-hadis sharhi");
+        "hadis.islom.uz — " + m[1] + "-hadis şarhi");
     }
     return s;
   }
@@ -343,7 +350,7 @@
   function panelSharh(h) {
     if (h.sharh_status !== "bor" || !h.sharh) {
       return '<div class="panel"><div class="empty" style="border:0;padding:8px 0">' +
-        "Bu hadisga manbada sharh berilmagan.</div>" +
+        "Bu hadisga manbada şarh berilmagan.</div>" +
         sharhLinks(h) +
         "</div>";
     }
@@ -368,10 +375,10 @@
     function row(k, v) { return '<div class="fact"><dt>' + k + "</dt><dd>" + v + "</dd></div>"; }
     var s = '<div class="panel"><dl class="facts">';
     s += row("Roviy", esc(h.narrator));
-    s += row("To‘plam", esc(h.collection) + ", " + esc(h.collection_no) + "-hadis");
+    s += row("Töplam", esc(h.collection) + ", " + esc(h.collection_no) + "-hadis");
     s += row("Daraja", '<span class="badge">' + esc(h.grade) + "</span>");
     s += row("Kitob", esc(h.ref_book));
-    if (h.sharh_ref) s += row("Sharh", esc(h.sharh_ref));
+    if (h.sharh_ref) s += row("Şarh", esc(h.sharh_ref));
     s += "</dl>";
     if (h.ref_url) {
       s += '<div class="linkrow"><a href="' + esc(h.ref_url) +
