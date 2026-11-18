@@ -97,7 +97,7 @@ def yuborilmaganlarni_yubor():
         if len(yangi) == 1:
             sarlavha, matn = yangi[0].sarlavha, yangi[0].matn
         else:
-            sarlavha, matn = f"{len(yangi)} ta buyurtma yetkazilmadi", "Buyurtmalarni tekshiring."
+            sarlavha, matn = f"{len(yangi)} ta buyurtma yetkazilmadi", "Buyurtmalarni tekşiring."
         jami += push_yubor(sarlavha, matn, dokon=Dokon.objects.get(pk=dokon_id))
         Bildirishnoma.objects.filter(pk__in=[x.pk for x in yangi]).update(push_yuborildi=True)
     return jami

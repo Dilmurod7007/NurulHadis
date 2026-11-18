@@ -61,7 +61,7 @@
       method: opt.method || "GET", headers: h, credentials: "same-origin",
       body: opt.body !== undefined ? JSON.stringify(opt.body) : undefined,
     }).catch(function () {
-      throw new Error("Internet yo‘q yoki server javob bermayapti. Ulanishni tekshiring.");
+      throw new Error("Internet yöq yoki server javob bermayapti. Ulanişni tekşiring.");
     }).then(function (r) {
       if (r.status === 204) return null;
       return r.json().catch(function () { return null; }).then(function (d) {
@@ -93,10 +93,10 @@
     ov.className = "ov";
     ov.innerHTML =
       '<div class="drawer" role="dialog"><div class="hd"><h2>' + esc(opt.title) + '</h2>' +
-      '<button class="icon-x" data-x aria-label="Yopish">' + ic("x") + '</button></div>' +
+      '<button class="icon-x" data-x aria-label="Yopiş">' + ic("x") + '</button></div>' +
       '<div class="bd">' + opt.body + '</div>' +
-      '<div class="ft">' + (opt.onDelete ? '<button class="btn bad" data-del>O‘chirish</button><span class="sp"></span>' : "") +
-      '<button class="btn" data-x>Bekor</button><button class="btn pri" data-save>Saqlash</button></div></div>';
+      '<div class="ft">' + (opt.onDelete ? '<button class="btn bad" data-del>Öçiriş</button><span class="sp"></span>' : "") +
+      '<button class="btn" data-x>Bekor</button><button class="btn pri" data-save>Saqlaş</button></div></div>';
     document.body.appendChild(ov);
     var oldOverflow = document.body.style.overflow, yopilgan = false;
     document.body.style.overflow = "hidden";
@@ -127,7 +127,7 @@
     };
     var del = ov.querySelector("[data-del]");
     if (del) del.onclick = function () {
-      if (!confirm("Rostdan ham o‘chirasizmi?")) return;
+      if (!confirm("Rostdan ham öçirasizmi?")) return;
       Promise.resolve(opt.onDelete()).then(function () { close(); }).catch(function (e) { toast(e.message, true); });
     };
     if (opt.onOpen) opt.onOpen(ov);
@@ -142,12 +142,12 @@
     }).join("");
   }
 
-  var TUR = [["sotuv", "Oddiy sotuv"], ["reklama", "Reklama uchun tekin"], ["sovga", "Sovg‘a (tekin)"]];
+  var TUR = [["sotuv", "Oddiy sotuv"], ["reklama", "Reklama uçun tekin"], ["sovga", "Sovğa (tekin)"]];
   var HOLAT = [["yangi", "Yangi"], ["tasdiqlandi", "Tasdiqlandi"], ["yolda", "Yetkazilmoqda"], ["yetkazildi", "Yetkazildi"], ["bekor", "Bekor qilindi"], ["qaytarildi", "Qaytarildi"]];
-  var MANBA = [["ig_reklama", "Instagram reklama"], ["ig_organik", "Instagram (bio, direct)"], ["telegram", "Telegram"], ["sayt", "Sayt"], ["tanish", "Tanish / og‘zaki"], ["boshqa", "Boshqa"]];
-  var YET = [["yandex", "Yandex"], ["pochta", "Pochta orqali"], ["ozim", "O‘zim olib beraman"], ["ozi", "O‘zi olib ketadi"]];
-  var TOLOV = [["naqd", "Naqd"], ["karta", "Karta (Click, Payme)"], ["otkazma", "Hisobga o‘tkazma"], ["yetkazganda", "Yetkazganda to‘laydi"]];
-  var XKAT = [["reklama", "Reklama (Instagram, Meta)"], ["qadoqlash", "Qadoqlash, bosma"], ["ish_haqi", "Ish haqi"], ["sayt", "Sayt, server, domen"], ["ijara", "Ijara, kommunal"], ["soliq", "Soliq, to‘lov komissiyasi"], ["boshqa", "Boshqa"], ["material", "Material xaridi"]];
+  var MANBA = [["ig_reklama", "Instagram reklama"], ["ig_organik", "Instagram (bio, direct)"], ["telegram", "Telegram"], ["sayt", "Sayt"], ["tanish", "Taniş / oğzaki"], ["boshqa", "Boşqa"]];
+  var YET = [["yandex", "Yandex"], ["pochta", "Poçta orqali"], ["ozim", "Özim olib beraman"], ["ozi", "Özi olib ketadi"]];
+  var TOLOV = [["naqd", "Naqd"], ["karta", "Karta (Click, Payme)"], ["otkazma", "Hisobga ötkazma"], ["yetkazganda", "Yetkazganda tölaydi"]];
+  var XKAT = [["reklama", "Reklama (Instagram, Meta)"], ["qadoqlash", "Qadoqlaş, bosma"], ["ish_haqi", "Iş haqi"], ["sayt", "Sayt, server, domen"], ["ijara", "Ijara, kommunal"], ["soliq", "Soliq, tölov komissiyasi"], ["boshqa", "Boşqa"], ["material", "Material xaridi"]];
   var TEL0 = "+998 ";
   function telTozala(t) { t = String(t || "").trim(); return /^\+?998?$/.test(t.replace(/\s/g, "")) ? "" : t; }
   function fmtTel(t) {
@@ -155,7 +155,7 @@
     return d.length === 12 && d.indexOf("998") === 0 ? "+998 " + d.slice(3, 5) + " " + d.slice(5, 8) + " " + d.slice(8, 10) + " " + d.slice(10) : String(t || "");
   }
   /* ── mavzu: yorug' / tungi / avto ── */
-  var MAVZU = [["light", "Yorug‘", "sun"], ["dark", "Tungi", "moon"], ["auto", "Avto", "monitor"]];
+  var MAVZU = [["light", "Yoruğ", "sun"], ["dark", "Tungi", "moon"], ["auto", "Avto", "monitor"]];
   function mavzuTanlangan() { try { return localStorage.getItem("nh_theme") || "auto"; } catch (e) { return "auto"; } }
   function mavzuQoll(r) {
     var qora = r === "dark" || (r === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
@@ -170,16 +170,16 @@
   var HOLAT_IC = { yangi: "sparkles", tasdiqlandi: "circle-check", yolda: "truck", yetkazildi: "package-check", bekor: "circle-x", qaytarildi: "undo-2" };
   var TUR_IC = { sotuv: "shopping-bag", reklama: "megaphone", sovga: "gift" };
   var YET_IC = { yandex: "car-taxi-front", pochta: "mail", ozim: "user-round", ozi: "store" };
-  var TOLOV_IC = { "To'langan": "badge-check", "Qisman": "circle-dashed", "To'lanmagan": "circle-alert" };
+  var TOLOV_IC = { "Tölangan": "badge-check", "Qisman": "circle-dashed", "Tölanmagan": "circle-alert" };
   function badge(c, icon, text) { return '<span class="badge ' + c + '">' + (icon ? ic(icon) : "") + esc(text) + "</span>"; }
   function holatBadge(h) {
     return badge(HOLAT_C[h] || "", HOLAT_IC[h], nomi(HOLAT, h));
   }
   function turBadge(t) {
-    return badge(t === "sotuv" ? "" : "warn", TUR_IC[t], t === "sotuv" ? "Sotuv" : t === "reklama" ? "Reklama" : "Sovg‘a");
+    return badge(t === "sotuv" ? "" : "warn", TUR_IC[t], t === "sotuv" ? "Sotuv" : t === "reklama" ? "Reklama" : "Sovğa");
   }
   function tolovBadge(h) {
-    var c = h === "To'langan" ? "ok" : h === "Qisman" ? "warn" : h === "To'lanmagan" ? "bad" : "";
+    var c = h === "Tölangan" ? "ok" : h === "Qisman" ? "warn" : h === "Tölanmagan" ? "bad" : "";
     return badge(c, TOLOV_IC[h], h);
   }
   function yetLabel(k, nom) { return '<span class="yl">' + (YET_IC[k] ? ic(YET_IC[k]) : "") + '<span class="yt">' + esc(nom) + "</span></span>"; }
@@ -209,7 +209,7 @@
     var ov = document.createElement("div");
     ov.className = "ov sheetov";
     ov.innerHTML = '<div class="sheet" role="dialog"><div class="hd"><h2>' + esc(opt.title) + '</h2>' +
-      '<button class="icon-x" data-x aria-label="Yopish">' + ic("x") + '</button></div><div class="bd">' + opt.body + "</div></div>";
+      '<button class="icon-x" data-x aria-label="Yopiş">' + ic("x") + '</button></div><div class="bd">' + opt.body + "</div></div>";
     document.body.appendChild(ov);
     var oldOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -232,7 +232,7 @@
   var HOLAT_KEYIN = { yangi: "tasdiqlandi", tasdiqlandi: "yolda", yolda: "yetkazildi" };
   // Ro'yxatdagi holat belgisi: bosilsa holatni tezda o'zgartirish oynasi ochiladi
   function holatQuick(b) {
-    return '<button type="button" class="badge qs ' + (HOLAT_C[b.holat] || "") + '" data-q="' + b.id + '" title="Holatni o‘zgartirish">' +
+    return '<button type="button" class="badge qs ' + (HOLAT_C[b.holat] || "") + '" data-q="' + b.id + '" title="Holatni özgartiriş">' +
       ic(HOLAT_IC[b.holat]) + esc(nomi(HOLAT, b.holat)) + ic("chevron-down") + "</button>";
   }
   function holatTanla(b, done) {
@@ -262,6 +262,14 @@
   var POCHTA = [["bts", "BTS"], ["emu", "EMU"], ["uzpost", "UZ POST"]];
   var VILOYAT = ["Toshkent shahri", "Toshkent viloyati", "Andijon viloyati", "Buxoro viloyati", "Farg'ona viloyati", "Jizzax viloyati", "Namangan viloyati",
     "Navoiy viloyati", "Qashqadaryo viloyati", "Qoraqalpog'iston Respublikasi", "Samarqand viloyati", "Sirdaryo viloyati", "Surxondaryo viloyati", "Xorazm viloyati"];
+  // BTS filiallari va viloyat nomlari eski alifboda saqlanadi (bazadagi qiymatlar o‘zgarmaydi); ekranda yangi alifboda ko‘rsatiladi
+  function ya(s) {
+    return String(s == null ? "" : s)
+      .replace(/([oO])['‘’ʻʼ`´]/g, function (m, c) { return c === "o" ? "ö" : "Ö"; })
+      .replace(/([gG])['‘’ʻʼ`´]/g, function (m, c) { return c === "g" ? "ğ" : "Ğ"; })
+      .replace(/[sS][hH]/g, function (m) { return m.charAt(0) === "S" ? "Ş" : "ş"; })
+      .replace(/[cC][hH]/g, function (m) { return m.charAt(0) === "C" ? "Ç" : "ç"; });
+  }
   function loadBts() {
     if (S.bts) return Promise.resolve(S.bts);
     return fetch("/crm/bts.json").then(function (r) { return r.json(); }).then(function (d) { Object.keys(d).forEach(function (k) { d[k].forEach(function (x) { x.v = k; }); }); S.bts = d; return d; }).catch(function () { return {}; });
@@ -269,7 +277,7 @@
   function yetNom(b) {
     if (b.yetkazish_turi !== "pochta" || !b.pochta) return b.yetkazish_turi_nom;
     var f = b.bts_filial ? b.bts_filial.split(" · ")[1] : "";
-    return b.pochta_nom + (f ? " · " + f : b.viloyat ? " · " + b.viloyat : "");
+    return b.pochta_nom + (f ? " · " + ya(f) : b.viloyat ? " · " + ya(b.viloyat) : "");
   }
   // Buyurtma formasidagi viloyat → tuman → BTS filiali tanlovlari
   function btsOrnat(ov, b) {
@@ -285,19 +293,19 @@
       set.sort(function (a, c) { return a.localeCompare(c); });
       t.disabled = !v.value;
       t.innerHTML = '<option value="">Hammasi' + (l.length ? " (" + l.length + " ta filial)" : "") + "</option>" +
-        set.map(function (x) { return '<option value="' + esc(x) + '">' + esc(x) + "</option>"; }).join("");
+        set.map(function (x) { return '<option value="' + esc(x) + '">' + esc(ya(x)) + "</option>"; }).join("");
       t.value = tanlangan || "";
     }
     function izoh(x) {
       var m = x.manzil || "";
-      if (x.moljal && m.toLowerCase().indexOf(x.moljal.toLowerCase()) < 0) m += (m ? " · " : "") + "Mo‘ljal: " + x.moljal;
-      return m;
+      if (x.moljal && m.toLowerCase().indexOf(x.moljal.toLowerCase()) < 0) m += (m ? " · " : "") + "Möljal: " + x.moljal;
+      return ya(m);
     }
     function filiallar(tanlangan) {
       var l = royxat().filter(function (x) { return !t.value || x.tuman === t.value; });
-      f.innerHTML = '<option value="">' + (v.value ? "Filialni tanlang yoki qidiring…" : "Filialni qidiring (viloyat tanlash shart emas)…") + "</option>" + l.map(function (x) {
+      f.innerHTML = '<option value="">' + (v.value ? "Filialni tanlang yoki qidiring…" : "Filialni qidiring (viloyat tanlaş şart emas)…") + "</option>" + l.map(function (x) {
         return '<option value="' + esc(x.kod + " · " + x.nom) + '" data-v="' + esc(x.v || "") + '" data-sub="' + esc(izoh(x)) + '" data-s="' +
-          esc([x.nom, x.tuman, x.manzil, x.moljal, x.kod, x.v].join(" ")) + '">' + esc(x.nom + " — " + x.tuman + (v.value ? "" : ", " + (x.v || "").replace(/ (viloyati|shahri|Respublikasi)$/, ""))) + "</option>";
+          esc([x.nom, x.tuman, x.manzil, x.moljal, x.kod, x.v].join(" ")) + '">' + esc(ya(x.nom + " — " + x.tuman + (v.value ? "" : ", " + (x.v || "").replace(/ (viloyati|shahri|Respublikasi)$/, "")))) + "</option>";
       }).join("");
       if (tanlangan) {
         f.value = tanlangan;
@@ -307,8 +315,8 @@
     }
     function korsat() {
       var x = hammasi.filter(function (y) { return y.kod === kodi(f.value); })[0];
-      info.innerHTML = x ? "<div>" + ic("map-pin") + esc(x.manzil) + "</div>" + (x.moljal ? '<div class="muted">Mo‘ljal: ' + esc(x.moljal) + "</div>" : "") +
-        '<div class="muted">' + esc(x.vaqt) + "</div>" : "";
+      info.innerHTML = x ? "<div>" + ic("map-pin") + esc(ya(x.manzil)) + "</div>" + (x.moljal ? '<div class="muted">Möljal: ' + esc(ya(x.moljal)) + "</div>" : "") +
+        '<div class="muted">' + esc(ya(x.vaqt)) + "</div>" : "";
     }
     function tumanQoy(nom) {          // tumanni filialga mos qilib qo'yish (ro'yxatni o'zgartirmasdan)
       if (!nom || t.value === nom) return;
@@ -328,7 +336,7 @@
       if (x) tumanQoy(x.tuman);
       korsat();
     };
-    f.dataset.sph = "Filial nomi, manzil yoki mo‘ljal bo‘yicha qidiring…";
+    f.dataset.sph = "Filial nomi, manzil yoki möljal böyiça qidiring…";
     v.value = b.viloyat || "";
     var saqlangan = royxat().filter(function (x) { return x.kod === kodi(b.bts_filial); })[0];
     tumanlar(saqlangan ? saqlangan.tuman : "");
@@ -352,7 +360,7 @@
     var d = new Date(iso), n = new Date(), p = function (x) { return (x < 10 ? "0" : "") + x; };
     var kun = Math.round((new Date(n.getFullYear(), n.getMonth(), n.getDate()) - new Date(d.getFullYear(), d.getMonth(), d.getDate())) / 86400000);
     var s = p(d.getHours()) + ":" + p(d.getMinutes());
-    return kun === 0 ? "Bugun " + s : kun === 1 ? "Kecha " + s : p(d.getDate()) + "." + p(d.getMonth() + 1) + "." + d.getFullYear();
+    return kun === 0 ? "Bugun " + s : kun === 1 ? "Keça " + s : p(d.getDate()) + "." + p(d.getMonth() + 1) + "." + d.getFullYear();
   }
   function urlB64(b) {
     var pad = "=".repeat((4 - b.length % 4) % 4), raw = atob((b + pad).replace(/-/g, "+").replace(/_/g, "/"));
@@ -366,7 +374,7 @@
   }
   function pushYoq() {
     return Notification.requestPermission().then(function (p) {
-      if (p !== "granted") throw new Error("Ruxsat berilmadi. Telefon sozlamalaridan Insta Seller uchun xabarlarga ruxsat bering.");
+      if (p !== "granted") throw new Error("Ruxsat berilmadi. Telefon sozlamalaridan Insta Seller uçun xabarlarga ruxsat bering.");
       return api("/push/kalit/");
     }).then(function (k) {
       return swTayyor().then(function (reg) {
@@ -387,22 +395,22 @@
     if (!qoll) {
       var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
       el.innerHTML = '<div class="pushc"><span class="hic">' + ic("bell-off") + "</span><div><b>Telefonga xabar kelmaydi</b><small>" +
-        (ios && !standalone() ? "iPhone’da avval ilovani Bosh ekranga qo‘shing (Safari → Ulashish → Bosh ekranga qo‘shish), so‘ng uni Bosh ekrandan oching." : "Bu brauzer push xabarlarni qo‘llamaydi.") +
+        (ios && !standalone() ? "iPhone’da avval ilovani Boş ekranga qöşing (Safari → Ulaşiş → Boş ekranga qöşiş), söng uni Boş ekrandan oçing." : "Bu brauzer push xabarlarni qöllamaydi.") +
         "</small></div></div>";
       return;
     }
     function chiz(on) {
       el.innerHTML = on
-        ? '<div class="pushc on"><span class="hic kirim">' + ic("bell-ring") + "</span><div><b>Telefonga xabar yoqilgan</b><small>Ilova yopiq bo‘lsa ham eslatma keladi.</small></div>" +
-          '<div class="pa"><button class="btn sm" id="ptest">' + ic("send") + 'Sinash</button><button class="btn sm" id="poff">O‘chirish</button></div></div>'
-        : '<div class="pushc"><span class="hic">' + ic("bell") + "</span><div><b>Telefonga xabarni yoqing</b><small>Yetkazilmagan buyurtmalar haqida ilova yopiq bo‘lsa ham xabar keladi.</small></div>" +
-          '<div class="pa"><button class="btn pri sm" id="pon">Yoqish</button></div></div>';
+        ? '<div class="pushc on"><span class="hic kirim">' + ic("bell-ring") + "</span><div><b>Telefonga xabar yoqilgan</b><small>Ilova yopiq bölsa ham eslatma keladi.</small></div>" +
+          '<div class="pa"><button class="btn sm" id="ptest">' + ic("send") + 'Sinaş</button><button class="btn sm" id="poff">Öçiriş</button></div></div>'
+        : '<div class="pushc"><span class="hic">' + ic("bell") + "</span><div><b>Telefonga xabarni yoqing</b><small>Yetkazilmagan buyurtmalar haqida ilova yopiq bölsa ham xabar keladi.</small></div>" +
+          '<div class="pa"><button class="btn pri sm" id="pon">Yoqiş</button></div></div>';
       var on_ = el.querySelector("#pon"), off = el.querySelector("#poff"), test = el.querySelector("#ptest");
       if (on_) on_.onclick = function () {
         on_.disabled = true;
         pushYoq().then(function () { toast("Xabarlar yoqildi"); chiz(true); }).catch(function (e) { on_.disabled = false; toast(e.message, true); });
       };
-      if (off) off.onclick = function () { pushOchir().then(function () { toast("Xabarlar o‘chirildi"); chiz(false); }).catch(function (e) { toast(e.message, true); }); };
+      if (off) off.onclick = function () { pushOchir().then(function () { toast("Xabarlar öçirildi"); chiz(false); }).catch(function (e) { toast(e.message, true); }); };
       if (test) test.onclick = function () {
         api("/push/sinov/", { method: "POST" }).then(function (d) { toast(d.yuborildi ? "Sinov xabari yuborildi" : "Yuborilmadi: obuna topilmadi, qayta yoqing", !d.yuborildi); })
           .catch(function (e) { toast(e.message, true); });
@@ -420,7 +428,7 @@
           ov.querySelector("#xlist").innerHTML = d.royxat.length ? '<div class="hist">' + d.royxat.map(function (x) {
             return '<div class="hrow click xit' + (x.yangi ? " new" : "") + '" data-b="' + (x.buyurtma || "") + '"><span class="hic tuzatish">' + ic("truck") + '</span><div class="hm"><b>' +
               esc(x.sarlavha) + "</b><small>" + esc(x.matn) + '</small><small class="t">' + fvaqt(x.vaqt) + "</small></div></div>";
-          }).join("") + "</div>" : '<div class="muted" style="padding:0.375rem 0">Hozircha xabar yo‘q. Buyurtma 3 kundan ortiq «Yetkazilmoqda»da tursa, shu yerda eslatma chiqadi.</div>';
+          }).join("") + "</div>" : '<div class="muted" style="padding:0.375rem 0">Hozirça xabar yöq. Buyurtma 3 kundan ortiq «Yetkazilmoqda»da tursa, şu yerda eslatma çiqadi.</div>';
           Array.prototype.forEach.call(ov.querySelectorAll(".xit"), function (r) {
             r.onclick = function () {
               if (!r.dataset.b) return;
@@ -445,10 +453,10 @@
     if (b.yetkazish_turi === "pochta") {
       var f = b.bts_filial ? b.bts_filial.split(" · ") : [], x = null;
       if (f[0] && S.bts && S.bts[b.viloyat]) x = S.bts[b.viloyat].filter(function (y) { return y.kod === f[0]; })[0] || null;
-      adr.push((b.pochta_nom || "Pochta") + (f[1] ? " · " + f[1] : ""));
-      var joy = [b.viloyat, x && x.tuman].filter(Boolean).join(", ");
+      adr.push((b.pochta_nom || "Poçta") + (f[1] ? " · " + ya(f[1]) : ""));
+      var joy = [b.viloyat, x && x.tuman].filter(Boolean).map(ya).join(", ");
       if (joy) adr.push(joy);
-      if (x && x.manzil) adr.push(x.manzil);
+      if (x && x.manzil) adr.push(ya(x.manzil));
     } else {
       adr.push(b.yetkazish_turi_nom);
     }
@@ -545,7 +553,7 @@
     return r;
   }
   function btYoz(bytes) {
-    if (!navigator.bluetooth) return Promise.reject(new Error("Bu brauzer Bluetooth’ni qo‘llamaydi. Android’da Chrome ishlating."));
+    if (!navigator.bluetooth) return Promise.reject(new Error("Bu brauzer Bluetooth’ni qöllamaydi. Android’da Chrome işlating."));
     var p = S.btDev ? Promise.resolve(S.btDev) : navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: BT_XIZMAT }).then(function (d) { S.btDev = d; return d; });
     return p.then(function (d) { return d.gatt.connected ? d.gatt : d.gatt.connect(); }).then(function (server) {
       return server.getPrimaryServices();
@@ -560,7 +568,7 @@
       }, Promise.resolve(null));
       return qidir;
     }).then(function (char) {
-      if (!char) throw new Error("Printerda yozish kanali topilmadi. Bu printer oddiy Bluetooth (SPP) bo‘lishi mumkin — u brauzerdan ishlamaydi.");
+      if (!char) throw new Error("Printerda yoziş kanali topilmadi. Bu printer oddiy Bluetooth (SPP) bölişi mumkin — u brauzerdan işlamaydi.");
       function yubor(hajm) {
         var navbat = Promise.resolve();
         for (let i = 0; i < bytes.length; i += hajm) {
@@ -585,10 +593,10 @@
       sheet({
         title: "Stiker · #" + b.id,
         body: '<div class="stprev" id="stprev"></div>' +
-          '<p class="hintp">Stiker o‘lchami ' + STIKER_ENI + "×" + STIKER_BOYI + " mm: mijoz ismi, telefon va pochta filiali.</p>" +
-          '<div class="stbtn"><button class="btn pri" id="stp">' + ic("printer") + "Chop etish</button>" +
+          '<p class="hintp">Stiker ölçami ' + STIKER_ENI + "×" + STIKER_BOYI + " mm: mijoz ismi, telefon va poçta filiali.</p>" +
+          '<div class="stbtn"><button class="btn pri" id="stp">' + ic("printer") + "Çop etiş</button>" +
           (btBor ? '<button class="btn" id="stb">' + ic("bluetooth") + "Bluetooth orqali</button>" : "") + "</div>" +
-          (btBor ? '<label class="chk" style="margin-top:0.875rem"><input type="checkbox" id="stinv"' + (teskari ? " checked" : "") + "> Bluetooth: stiker teskari (qora fon) chiqsa, buni yoqing</label>" : '<p class="hintp" style="margin-top:0.75rem">Telefondan Bluetooth orqali chop etish faqat Android’dagi Chrome’da ishlaydi.</p>'),
+          (btBor ? '<label class="chk" style="margin-top:0.875rem"><input type="checkbox" id="stinv"' + (teskari ? " checked" : "") + "> Bluetooth: stiker teskari (qora fon) çiqsa, buni yoqing</label>" : '<p class="hintp" style="margin-top:0.75rem">Telefondan Bluetooth orqali çop etiş faqat Android’dagi Chrome’da işlaydi.</p>'),
         onOpen: function (ov) {
           var rasm = stikerRasm(t, 16);
           ov.querySelector("#stprev").appendChild(rasm);
@@ -639,7 +647,7 @@
     Array.prototype.forEach.call(host.querySelectorAll(".bg"), function (r) {
       r.addEventListener("mouseenter", function () {
         var s = seriya[+r.dataset.i];
-        tip.innerHTML = esc(s.nom) + "<b>" + som(s[key]) + (key === "soni" ? " ta" : " so‘m") + "</b>";
+        tip.innerHTML = esc(s.nom) + "<b>" + som(s[key]) + (key === "soni" ? " ta" : " söm") + "</b>";
         tip.classList.remove("hide");
         var bx = box.getBoundingClientRect(), rr = r.getBoundingClientRect();
         tip.style.left = rr.left - bx.left + rr.width / 2 + "px";
@@ -678,62 +686,62 @@
       var maxManba = Math.max.apply(null, r.manbalar.map(function (m) { return m.soni; }).concat([1]));
       var maxX = Math.max.apply(null, r.xarajatlar.map(function (x) { return x.summa; }).concat([1]));
       var h = "";
-      if (!r.mahsulot_soni) h += '<div class="card welcome"><h3>' + ic("rocket") + "Xush kelibsiz! Do‘koningizni sozlaymiz</h3>" +
-        '<ol class="steps"><li><b>Mahsulot qo‘shing</b><span>Nima sotasiz: nomi, narxi va (ixtiyoriy) tannarxi.</span><button class="btn pri sm" id="wp">' + ic("plus") + "Mahsulot qo‘shish</button></li>" +
-        "<li><b>Birinchi buyurtmani kiriting</b><span>Mijoz Instagram’da yozganda, buyurtmani shu yerga yozib boring.</span></li>" +
-        "<li><b>Xarajat va ombor (ixtiyoriy)</b><span>Reklama, qadoq xarajatlari va ombor qoldig‘i — foyda aniq chiqishi uchun.</span></li></ol></div>";
-      if (r.tannarxsiz.length) h += '<div class="alert">Tannarx kiritilmagan: <b>' + esc(r.tannarxsiz.join(", ")) + '</b>. Foyda noto‘g‘ri chiqadi. <a href="#/mahsulotlar">Mahsulotlarga o‘ting</a>.</div>';
+      if (!r.mahsulot_soni) h += '<div class="card welcome"><h3>' + ic("rocket") + "Xuş kelibsiz! Dökoningizni sozlaymiz</h3>" +
+        '<ol class="steps"><li><b>Mahsulot qöşing</b><span>Nima sotasiz: nomi, narxi va (ixtiyoriy) tannarxi.</span><button class="btn pri sm" id="wp">' + ic("plus") + "Mahsulot qöşiş</button></li>" +
+        "<li><b>Birinçi buyurtmani kiriting</b><span>Mijoz Instagram’da yozganda, buyurtmani şu yerga yozib boring.</span></li>" +
+        "<li><b>Xarajat va ombor (ixtiyoriy)</b><span>Reklama, qadoq xarajatlari va ombor qoldiği — foyda aniq çiqişi uçun.</span></li></ol></div>";
+      if (r.tannarxsiz.length) h += '<div class="alert">Tannarx kiritilmagan: <b>' + esc(r.tannarxsiz.join(", ")) + '</b>. Foyda notöğri çiqadi. <a href="#/mahsulotlar">Mahsulotlarga öting</a>.</div>';
       h += '<div class="toolbar"><div class="seg" id="davr">' + DAVR.map(function (x) {
         return '<button data-d="' + x[0] + '" class="' + (x[0] === S.davr ? "on" : "") + '">' + x[1] + "</button>";
       }).join("") + "</div></div>";
       h += '<div class="grid kpis">' +
-        kpi("money", "Tushum", som(r.tushum), "so‘m", hasPrev ? delta(r.tushum, o.tushum) : "") +
-        kpi("trend", "Sof foyda", '<span class="' + (r.sof_foyda < 0 ? "neg" : "") + '">' + som(r.sof_foyda) + "</span>", "so‘m · " + r.marja + "%", hasPrev ? delta(r.sof_foyda, o.sof_foyda) : "") +
+        kpi("money", "Tuşum", som(r.tushum), "söm", hasPrev ? delta(r.tushum, o.tushum) : "") +
+        kpi("trend", "Sof foyda", '<span class="' + (r.sof_foyda < 0 ? "neg" : "") + '">' + som(r.sof_foyda) + "</span>", "söm · " + r.marja + "%", hasPrev ? delta(r.sof_foyda, o.sof_foyda) : "") +
         kpi("cart", "Buyurtmalar", r.buyurtma_soni, r.pullik_soni + " pullik · " + r.tekin_soni + " tekin", hasPrev ? delta(r.buyurtma_soni, o.buyurtma_soni) : "") +
-        kpi("debt", "Qarz (to‘lanmagan)", '<span class="' + (r.qarz ? "neg" : "") + '">' + som(r.qarz) + "</span>", "so‘m", hasPrev ? delta(r.qarz, o.qarz, true) : "") +
+        kpi("debt", "Qarz (tölanmagan)", '<span class="' + (r.qarz ? "neg" : "") + '">' + som(r.qarz) + "</span>", "söm", hasPrev ? delta(r.qarz, o.qarz, true) : "") +
         "</div>";
       h += '<div class="grid g2"><div class="card"><div class="toolbar" style="margin:0 0 6px;justify-content:space-between">' +
         '<h3 style="margin:0">Grafik</h3><div class="seg" id="ck">' +
-        [["tushum", "Tushum"], ["foyda", "Sof foyda"], ["soni", "Buyurtma"]].map(function (x) {
+        [["tushum", "Tuşum"], ["foyda", "Sof foyda"], ["soni", "Buyurtma"]].map(function (x) {
           return '<button data-k="' + x[0] + '" class="' + (x[0] === S.chartKey ? "on" : "") + '">' + x[1] + "</button>";
         }).join("") + '</div></div><div id="chart"></div></div>' +
-        '<div class="card"><h3>Foyda qanday chiqdi</h3><div class="pl">' +
-        pl("Mahsulotlar summasi", r.mahsulot_summasi) + pl("− Chegirmalar", -r.chegirma) +
-        '<div class="r tot"><span>Tushum</span><span>' + som(r.tushum) + "</span></div>" +
+        '<div class="card"><h3>Foyda qanday çiqdi</h3><div class="pl">' +
+        pl("Mahsulotlar summasi", r.mahsulot_summasi) + pl("− Çegirmalar", -r.chegirma) +
+        '<div class="r tot"><span>Tuşum</span><span>' + som(r.tushum) + "</span></div>" +
         pl("− Tannarx", -r.tannarx) +
-        '<div class="r muted" style="font-size:0.8125rem"><span>&nbsp;&nbsp;shundan bonuslar</span><span>' + som(r.bonus_tannarx) + "</span></div>" +
-        '<div class="r muted" style="font-size:0.8125rem"><span>&nbsp;&nbsp;shundan tekin buyurtmalar</span><span>' + som(r.tekin_tannarx) + "</span></div>" +
-        pl("− Yetkazish xarajati", -r.yetkazish_xarajati) + pl("− Xarajatlar", -r.operatsion) +
+        '<div class="r muted" style="font-size:0.8125rem"><span>&nbsp;&nbsp;şundan bonuslar</span><span>' + som(r.bonus_tannarx) + "</span></div>" +
+        '<div class="r muted" style="font-size:0.8125rem"><span>&nbsp;&nbsp;şundan tekin buyurtmalar</span><span>' + som(r.tekin_tannarx) + "</span></div>" +
+        pl("− Yetkaziş xarajati", -r.yetkazish_xarajati) + pl("− Xarajatlar", -r.operatsion) +
         '<div class="r tot"><span>Sof foyda</span><span class="' + (r.sof_foyda < 0 ? "neg" : "pos") + '">' + som(r.sof_foyda) + "</span></div>" +
         "</div></div></div>";
 
       h += '<div class="grid g3">' +
         '<div class="card"><h3>Qayerdan keldi</h3><div class="bars">' + (r.manbalar.map(function (m) {
           return '<div class="bar"><div class="t"><span>' + esc(m.nom) + "</span><span>" + m.soni + ' ta · ' + compact(m.tushum) + '</span></div><div class="tr"><i style="width:' + Math.round(m.soni / maxManba * 100) + '%"></i></div></div>';
-        }).join("") || '<div class="muted">Ma’lumot yo‘q</div>') + "</div></div>" +
+        }).join("") || '<div class="muted">Ma’lumot yöq</div>') + "</div></div>" +
         '<div class="card"><h3>Xarajatlar</h3><div class="bars">' + (r.xarajatlar.map(function (x) {
           return '<div class="bar"><div class="t"><span>' + esc(x.nom) + "</span><span>" + som(x.summa) + '</span></div><div class="tr"><i style="width:' + Math.round(x.summa / maxX * 100) + '%;background:' + (x.foydaga ? "var(--accent)" : "var(--bar-off)") + '"></i></div></div>';
         }).join("") || '<div class="muted">Xarajat kiritilmagan</div>') + "</div></div>" +
         '<div class="card"><h3>Ombor</h3>' + (r.ombor.length ? '<div class="pl">' + r.ombor.map(function (t) {
           return '<div class="r"><span>' + esc(t.nom) + "</span><span>" + (t.kam ? '<span class="badge bad">Kam: ' : "<b>") + t.qoldiq + " " + esc(t.birlik) + (t.kam ? "</span>" : "</b>") + "</span></div>";
-        }).join("") + "</div>" : '<div class="muted">Ombor bo‘sh. <a href="#/ombor">Qo‘shing</a>.</div>') + "</div></div>";
+        }).join("") + "</div>" : '<div class="muted">Ombor böş. <a href="#/ombor">Qöşing</a>.</div>') + "</div></div>";
 
       h += '<div class="grid g2e"><div class="card"><h3>Instagram reklama</h3>' + (function () {
         var a = r.reklama;
-        if (!a.xarajat && !a.kirgan && !a.buyurtma) return '<div class="muted">Hali ma‘lumot yo‘q. Reklama xarajatini «Xarajatlar»ga yozing, buyurtmaning manbasini «Instagram reklama» deb belgilang.</div>';
+        if (!a.xarajat && !a.kirgan && !a.buyurtma) return '<div class="muted">Hali ma’lumot yöq. Reklama xarajatini «Xarajatlar»ga yozing, buyurtmaning manbasini «Instagram reklama» deb belgilang.</div>';
         return '<div class="pl">' +
           pl("Reklama xarajati", a.xarajat) +
           (a.sayt ? '<div class="r"><span>Saytga kirgan (reklamadan)</span><span>' + a.kirgan + " ta</span></div>" +
             '<div class="r"><span>Tugma bosgan</span><span>' + a.bosgan + " ta</span></div>" : "") +
           '<div class="r"><span>Buyurtma (Instagram reklama)</span><span>' + a.buyurtma + " ta</span></div>" +
-          pl("Shu buyurtmalardan tushum", a.tushum) +
-          '<div class="r"><span>Bitta buyurtma narxi</span><span>' + (a.buyurtma_narxi === null ? "—" : som(a.buyurtma_narxi) + " so‘m") + "</span></div>" +
-          '<div class="r tot"><span>ROI (tushum ÷ xarajat)</span><span>' + (a.roi === null ? "—" : "×" + a.roi) + "</span></div></div>";
+          pl("Şu buyurtmalardan tuşum", a.tushum) +
+          '<div class="r"><span>Bitta buyurtma narxi</span><span>' + (a.buyurtma_narxi === null ? "—" : som(a.buyurtma_narxi) + " söm") + "</span></div>" +
+          '<div class="r tot"><span>ROI (tuşum ÷ xarajat)</span><span>' + (a.roi === null ? "—" : "×" + a.roi) + "</span></div></div>";
       })() + "</div>" +
         '<div class="card"><h3>Oxirgi buyurtmalar</h3>' + (last.length ? '<table class="tbl"><tbody>' + last.map(function (b) {
           return '<tr class="click" data-o="' + b.id + '"><td><b>' + esc(b.mijoz_nom) + '</b><div class="muted" style="font-size:0.7812rem">' + fdate(b.sana) + " · " + b.dona + ' dona</div></td><td>' + holatBadge(b.holat) +
             '</td><td class="n">' + som(b.tushum) + "</td></tr>";
-        }).join("") + "</tbody></table>" : '<div class="muted">Buyurtma yo‘q.</div>') + "</div></div>";
+        }).join("") + "</tbody></table>" : '<div class="muted">Buyurtma yöq.</div>') + "</div></div>";
       el.innerHTML = h;
       var wp = el.querySelector("#wp");
       if (wp) wp.onclick = function () { mahsulotForm(null); };
@@ -764,14 +772,14 @@
   /* ── buyurtmalar ──────────────────────────────────────────────── */
   function pageBuyurtmalar(el) {
     var f = S.fb || (S.fb = { q: "", holat: "", tur: "" });
-    var TABS = [["", "Hammasi", "list"], ["sotuv", "Sotuvlar", "shopping-bag"], ["reklama", "Reklama", "megaphone"], ["sovga", "Sovg‘a", "gift"]];
+    var TABS = [["", "Hammasi", "list"], ["sotuv", "Sotuvlar", "shopping-bag"], ["reklama", "Reklama", "megaphone"], ["sovga", "Sovğa", "gift"]];
     el.innerHTML = '<div class="toolbar"><div class="seg eq" id="turtab">' + TABS.map(function (x) {
         return '<button data-t="' + x[0] + '" class="' + (x[0] === f.tur ? "on" : "") + '">' + ic(x[2]) + x[1] + "</button>";
       }).join("") + "</div>" +
       '<input type="search" id="q" placeholder="Mijoz, telefon, izoh…" value="' + esc(f.q) + '">' +
-      '<select id="holat"><option value="">Barcha holatlar</option>' + opts(HOLAT, f.holat) + "</select>" +
+      '<select id="holat"><option value="">Barça holatlar</option>' + opts(HOLAT, f.holat) + "</select>" +
       "</div>" +
-      (S.mijozFilter ? '<div class="alert" style="display:flex;justify-content:space-between;align-items:center;gap:0.625rem">Bitta mijozning buyurtmalari ko‘rsatilmoqda <button class="btn sm" id="clrf">Hammasini ko‘rsat</button></div>' : "") +
+      (S.mijozFilter ? '<div class="alert" style="display:flex;justify-content:space-between;align-items:center;gap:0.625rem">Bitta mijozning buyurtmalari körsatilmoqda <button class="btn sm" id="clrf">Hammasini körsat</button></div>' : "") +
       '<div class="card tcard" id="tbl"><div class="empty">Yuklanmoqda…</div></div>';
     var timer;
     el.querySelector("#q").oninput = function (e) { f.q = e.target.value; clearTimeout(timer); timer = setTimeout(load, 250); };
@@ -793,13 +801,13 @@
         var box = el.querySelector("#tbl");
         if (!rows.length) { box.innerHTML = '<div class="empty">Buyurtma topilmadi.</div>'; return; }
         var foyda = S.me.foyda;
-        box.innerHTML = '<table class="tbl stack"><thead><tr><th class="hide-l">№</th><th>Sana</th><th>Mijoz</th><th class="xl">Telefon</th><th>Turi</th><th>Holati</th><th class="hide-l">Yetkazish</th><th class="xl">Qayerdan</th><th class="n">Dona</th><th class="n">Tushum</th>' +
-          (foyda ? '<th class="n">Qolgan summa</th>' : "") + "<th>To‘lov</th><th></th></tr></thead><tbody>" + rows.map(function (b) {
+        box.innerHTML = '<table class="tbl stack"><thead><tr><th class="hide-l">№</th><th>Sana</th><th>Mijoz</th><th class="xl">Telefon</th><th>Turi</th><th>Holati</th><th class="hide-l">Yetkaziş</th><th class="xl">Qayerdan</th><th class="n">Dona</th><th class="n">Tuşum</th>' +
+          (foyda ? '<th class="n">Qolgan summa</th>' : "") + "<th>Tölov</th><th></th></tr></thead><tbody>" + rows.map(function (b) {
             return '<tr class="click" data-id="' + b.id + '"><td class="hide-m hide-l">#' + b.id + '</td><td class="c-sub">' + fdate(b.sana) + '</td><td class="c-main">' + esc(b.mijoz_nom) +
               '</td><td class="xl muted">' + esc(b.mijoz_telefon || "") + '</td><td class="c-sub">' + turBadge(b.tur) + '</td><td class="c-sub">' + holatQuick(b) + '</td><td class="c-sub hide-l">' + yetLabel(b.yetkazish_turi, yetNom(b)) + '</td><td class="xl muted">' + esc(b.manba_nom || "") +
               '</td><td class="n c-sub">' + b.dona + ' dona</td><td class="n c-amt">' + (b.tur === "sotuv" ? som(b.tushum) : '<span class="muted">tekin</span>') + '</td><td class="br"></td>' +
               (foyda ? '<td class="n c-sub' + (b.qolgan_summa ? "" : " hide-m") + '" data-l="Qolgan">' + som(b.qolgan_summa) + "</td>" : "") +
-              '<td class="c-sub' + (b.tolov_holati === "—" ? " hide-m" : "") + '">' + tolovBadge(b.tolov_holati) + '</td><td class="c-sub pr"><button type="button" class="icon-x" data-p="' + b.id + '" title="Stiker chop etish" aria-label="Stiker chop etish">' + ic("printer") + "</button></td></tr>";
+              '<td class="c-sub' + (b.tolov_holati === "—" ? " hide-m" : "") + '">' + tolovBadge(b.tolov_holati) + '</td><td class="c-sub pr"><button type="button" class="icon-x" data-p="' + b.id + '" title="Stiker çop etiş" aria-label="Stiker çop etiş">' + ic("printer") + "</button></td></tr>";
           }).join("") + "</tbody></table>";
         Array.prototype.forEach.call(box.querySelectorAll("tr[data-id]"), function (tr) {
           tr.onclick = function () { buyurtmaForm(rows.filter(function (b) { return b.id === +tr.dataset.id; })[0]); };
@@ -831,7 +839,7 @@
       var mijozlar = S.cache.mijozlar, mahsulotlar = S.cache.mahsulotlar.filter(function (m) { return m.faol || (b && b.qatorlar.some(function (q) { return q.mahsulot === m.id; })); });
       var edit = !!b;
       if (!edit && !mahsulotlar.length) {
-        toast(S.me.foyda ? "Avval «Mahsulotlar» bo‘limida mahsulot qo‘shing." : "Avval do‘kon egasi mahsulot qo‘shishi kerak.", true);
+        toast(S.me.foyda ? "Avval «Mahsulotlar» bölimida mahsulot qöşing." : "Avval dökon egasi mahsulot qöşişi kerak.", true);
         if (S.me.foyda) location.hash = "#/mahsulotlar";
         return;
       }
@@ -845,28 +853,28 @@
         '<datalist id="mlist">' + mijozlar.map(function (m) { return '<option value="' + esc(m.ism) + '">' + esc(m.telefon) + "</option>"; }).join("") + "</datalist></div>" +
         '<div class="row2"><div class="field"><label>Telefon</label><input name="mijoz_tel" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" value="' + esc((cur && cur.telefon) || TEL0) + '"></div>' +
         '<div class="field"><label>Telegram / Instagram</label><input name="mijoz_user" placeholder="@username" value="' + esc(cur ? cur.username : "") + '"></div></div>' +
-        chipField("tur", "Turi <span style=\"font-weight:400;color:var(--faint)\">(reklama va sovg‘a — tekin)</span>", TUR, b.tur, TUR_IC, { sotuv: "Sotuv", reklama: "Reklama", sovga: "Sovg‘a" }) +
+        chipField("tur", "Turi <span style=\"font-weight:400;color:var(--faint)\">(reklama va sovğa — tekin)</span>", TUR, b.tur, TUR_IC, { sotuv: "Sotuv", reklama: "Reklama", sovga: "Sovğa" }) +
         '<div class="row2 keep"><div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(b.sana) + '"></div>' +
         '<div class="field"><label>Qayerdan keldi</label><select name="manba">' + opts(MANBA, b.manba) + "</select></div></div>" +
         chipField("holat", "Holati", HOLAT, b.holat, HOLAT_IC) +
-        '<div class="sec">Mahsulotlar</div><div class="ith" id="ith"><span>Mahsulot</span><span>Soni</span><span>Narxi (so‘m)</span></div><div class="items" id="items"></div>' +
-        '<button class="btn sm" type="button" id="addrow">' + ic("plus") + "Mahsulot qo‘shish</button>" +
-        '<div class="sec">Bonus (sovg‘a)</div><div class="items bonus" id="bonus"></div>' +
-        '<button class="btn sm" type="button" id="addbonus">' + ic("plus") + "Bonus qo‘shish</button>" +
-        '<div data-pay><div class="sec">Narx va to‘lov</div>' +
-        '<div class="row2"><div class="field"><label>Chegirma (so‘m)</label><input type="number" min="0" name="chegirma" value="' + b.chegirma + '"></div>' +
-        '<div class="field"><label>Chegirma sababi</label><input name="chegirma_izoh" value="' + esc(b.chegirma_izoh) + '"></div></div></div>' +
-        '<div class="sec">Yetkazish</div>' +
-        chipField("yetkazish_turi", "Yetkazish turi", YET, b.yetkazish_turi || "yandex", YET_IC, { pochta: "Pochta", ozim: "O‘zim olib beraman", ozi: "O‘zi olib ketadi" }) +
-        '<div data-poch>' + chipField("pochta", "Qaysi pochta?", POCHTA, b.pochta || "bts", {}) +
+        '<div class="sec">Mahsulotlar</div><div class="ith" id="ith"><span>Mahsulot</span><span>Soni</span><span>Narxi (söm)</span></div><div class="items" id="items"></div>' +
+        '<button class="btn sm" type="button" id="addrow">' + ic("plus") + "Mahsulot qöşiş</button>" +
+        '<div class="sec">Bonus (sovğa)</div><div class="items bonus" id="bonus"></div>' +
+        '<button class="btn sm" type="button" id="addbonus">' + ic("plus") + "Bonus qöşiş</button>" +
+        '<div data-pay><div class="sec">Narx va tölov</div>' +
+        '<div class="row2"><div class="field"><label>Çegirma (söm)</label><input type="number" min="0" name="chegirma" value="' + b.chegirma + '"></div>' +
+        '<div class="field"><label>Çegirma sababi</label><input name="chegirma_izoh" value="' + esc(b.chegirma_izoh) + '"></div></div></div>' +
+        '<div class="sec">Yetkaziş</div>' +
+        chipField("yetkazish_turi", "Yetkaziş turi", YET, b.yetkazish_turi || "yandex", YET_IC, { pochta: "Poçta", ozim: "Özim olib beraman", ozi: "Özi olib ketadi" }) +
+        '<div data-poch>' + chipField("pochta", "Qaysi poçta?", POCHTA, b.pochta || "bts", {}) +
         '<div class="row2 keep"><div class="field"><label>Viloyat</label><select name="viloyat"><option value="">Tanlang…</option>' +
-        VILOYAT.map(function (x) { return '<option value="' + esc(x) + '">' + esc(x) + "</option>"; }).join("") + "</select></div>" +
-        '<div class="field" data-bts><label>Tuman / shahar</label><select id="btstuman"><option value="">Hammasi</option></select></div></div>' +
+        VILOYAT.map(function (x) { return '<option value="' + esc(x) + '">' + esc(ya(x)) + "</option>"; }).join("") + "</select></div>" +
+        '<div class="field" data-bts><label>Tuman / şahar</label><select id="btstuman"><option value="">Hammasi</option></select></div></div>' +
         '<div class="field" data-bts><label>BTS filiali</label><select name="bts_filial"><option value="">Avval viloyatni tanlang</option></select><div class="btsinfo" id="btsinfo"></div></div>' +
         '</div>' +
-        (foyda ? '<div class="field" data-yx><label>Yetkazish xarajati (so‘m)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "") +
-        '<div class="row2" data-pay><div class="field"><label>To‘lov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
-        '<div class="field"><label>To‘langan summa <a href="#" id="full" style="font-weight:600">to‘liq</a></label><input type="number" min="0" name="tolangan" value="' + b.tolangan + '"></div></div>' +
+        (foyda ? '<div class="field" data-yx><label>Yetkaziş xarajati (söm)</label><input type="number" min="0" name="yetkazish_xarajati" value="' + b.yetkazish_xarajati + '"></div>' : "") +
+        '<div class="row2" data-pay><div class="field"><label>Tölov usuli</label><select name="tolov_usuli">' + opts(TOLOV, b.tolov_usuli) + "</select></div>" +
+        '<div class="field"><label>Tölangan summa <a href="#" id="full" style="font-weight:600">töliq</a></label><input type="number" min="0" name="tolangan" value="' + b.tolangan + '"></div></div>' +
         '<div class="field"><label>Izoh</label><textarea name="izoh">' + esc(b.izoh) + "</textarea></div>" +
         '<div class="summary" id="sum"></div>';
 
@@ -888,8 +896,8 @@
             d.className = "it";
             d.innerHTML = '<select data-f="mahsulot">' + opts(mahsulotlar, q.mahsulot) + "</select>" +
               '<input type="number" min="1" data-f="miqdor" value="' + (q.miqdor || 1) + '" title="Soni">' +
-              '<input type="number" min="0" data-f="narx" placeholder="narx" value="' + (q.narx === null || q.narx === undefined ? (mah(q.mahsulot) || {}).narx || "" : q.narx) + '" title="Narxi (so‘m). Mahsulot narxi avtomatik qo‘yiladi, kerak bo‘lsa o‘zgartiring.">' +
-              '<button type="button" class="icon-x" data-rm title="Olib tashlash">' + ic("x") + "</button>";
+              '<input type="number" min="0" data-f="narx" placeholder="narx" value="' + (q.narx === null || q.narx === undefined ? (mah(q.mahsulot) || {}).narx || "" : q.narx) + '" title="Narxi (söm). Mahsulot narxi avtomatik qöyiladi, kerak bölsa özgartiring.">' +
+              '<button type="button" class="icon-x" data-rm title="Olib taşlaş">' + ic("x") + "</button>";
             if (q.id) d.dataset.id = q.id;
             d.querySelector("[data-rm]").onclick = function () { d.remove(); calc(); };
             d.querySelector('[data-f="mahsulot"]').addEventListener("change", function () {
@@ -901,8 +909,8 @@
             var d = document.createElement("div");
             d.className = "it bn";
             d.innerHTML = '<input data-f="nom" placeholder="Bonus nomi" value="' + esc(x.nom || "") + '">' +
-              (foyda ? '<input type="number" min="0" data-f="tannarx" placeholder="tannarx" value="' + (x.tannarx || "") + '" title="Ixtiyoriy: sizga qanchaga tushgan">' : "") +
-              '<button type="button" class="icon-x" data-rm title="Olib tashlash">' + ic("x") + "</button>";
+              (foyda ? '<input type="number" min="0" data-f="tannarx" placeholder="tannarx" value="' + (x.tannarx || "") + '" title="Ixtiyoriy: sizga qançaga tuşgan">' : "") +
+              '<button type="button" class="icon-x" data-rm title="Olib taşlaş">' + ic("x") + "</button>";
             d.querySelector("[data-rm]").onclick = function () { d.remove(); calc(); };
             bonus.appendChild(d);
           }
@@ -944,11 +952,11 @@
             ov._tushum = tushum;
             var yetkazish = foyda && !oziOladi ? intv(ov, "yetkazish_xarajati") : 0;
             ov.querySelector("#sum").innerHTML =
-              '<div class="r"><span>Mahsulotlar</span><span>' + (tekin ? "tekin" : som(jami) + " so‘m") + "</span></div>" +
-              (tekin ? "" : '<div class="r"><span>Chegirma</span><span>− ' + som(ch) + "</span></div>") +
-              '<div class="r tot"><span>Tushum</span><span>' + som(tushum) + " so‘m</span></div>" +
-              (foyda ? '<div class="r"><span>Yetkazib berish narxi</span><span>− ' + som(yetkazish) + " so‘m</span></div>" +
-                '<div class="r tot"><span>Qolgan summa</span><span class="' + (tushum - yetkazish < 0 ? "neg" : "") + '">' + som(tushum - yetkazish) + " so‘m</span></div>" : "");
+              '<div class="r"><span>Mahsulotlar</span><span>' + (tekin ? "tekin" : som(jami) + " söm") + "</span></div>" +
+              (tekin ? "" : '<div class="r"><span>Çegirma</span><span>− ' + som(ch) + "</span></div>") +
+              '<div class="r tot"><span>Tuşum</span><span>' + som(tushum) + " söm</span></div>" +
+              (foyda ? '<div class="r"><span>Yetkazib beriş narxi</span><span>− ' + som(yetkazish) + " söm</span></div>" +
+                '<div class="r tot"><span>Qolgan summa</span><span class="' + (tushum - yetkazish < 0 ? "neg" : "") + '">' + som(tushum - yetkazish) + " söm</span></div>" : "");
           }
           ov.addEventListener("input", calc);
           ov.addEventListener("change", calc);
@@ -969,7 +977,7 @@
             if (r.dataset.id) q.id = +r.dataset.id;
             qatorlar.push(q);
           });
-          if (!qatorlar.length) { toast("Kamida bitta mahsulot qo‘shing.", true); return false; }
+          if (!qatorlar.length) { toast("Kamida bitta mahsulot qöşing.", true); return false; }
           Array.prototype.forEach.call(ov.querySelectorAll("#bonus .it"), function (r) {
             var nom = r.querySelector('[data-f="nom"]').value.trim();
             var t = r.querySelector('[data-f="tannarx"]');
@@ -1003,7 +1011,7 @@
           }).then(function () { toast("Saqlandi"); S.cache = {}; render(); });
         },
         onDelete: edit ? function () {
-          return api("/buyurtmalar/" + b.id + "/", { method: "DELETE" }).then(function () { toast("O‘chirildi"); render(); });
+          return api("/buyurtmalar/" + b.id + "/", { method: "DELETE" }).then(function () { toast("Öçirildi"); render(); });
         } : null,
       });
     }).catch(function (e) { toast(e.message, true); });
@@ -1042,9 +1050,9 @@
       body: '<div class="field"><label>Ism</label><input name="ism" value="' + esc(m.ism) + '"></div>' +
         '<div class="row2"><div class="field"><label>Telefon</label><input name="telefon" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" value="' + esc(m.telefon || TEL0) + '"></div>' +
         '<div class="field"><label>Telegram / Instagram</label><input name="username" value="' + esc(m.username) + '"></div></div>' +
-        '<div class="field"><label>Manzil / shahar</label><input name="manzil" value="' + esc(m.manzil) + '"></div>' +
+        '<div class="field"><label>Manzil / şahar</label><input name="manzil" value="' + esc(m.manzil) + '"></div>' +
         '<div class="field"><label>Izoh</label><textarea name="izoh">' + esc(m.izoh) + "</textarea></div>" +
-        (edit ? '<a class="btn sm" href="#/buyurtmalar" id="ords">Buyurtmalarini ko‘rish</a>' : ""),
+        (edit ? '<a class="btn sm" href="#/buyurtmalar" id="ords">Buyurtmalarini köriş</a>' : ""),
       onOpen: function (ov) {
         var a = ov.querySelector("#ords");
         if (a) a.onclick = function () { S.mijozFilter = m.id; ov.close(); };
@@ -1056,14 +1064,14 @@
           .then(function () { toast("Saqlandi"); S.cache = {}; render(); });
       },
       onDelete: edit ? function () {
-        return api("/mijozlar/" + m.id + "/", { method: "DELETE" }).then(function () { toast("O‘chirildi"); render(); });
+        return api("/mijozlar/" + m.id + "/", { method: "DELETE" }).then(function () { toast("Öçirildi"); render(); });
       } : null,
     });
   }
 
   /* ── xarajatlar ───────────────────────────────────────────────── */
   function pageXarajatlar(el) {
-    el.innerHTML = '<div class="toolbar"><span class="sp"></span><button class="btn pri" id="new">' + ic("plus") + "Xarajat qo‘shish</button></div>" +
+    el.innerHTML = '<div class="toolbar"><span class="sp"></span><button class="btn pri" id="new">' + ic("plus") + "Xarajat qöşiş</button></div>" +
       '<div class="card tcard" id="tbl"><div class="empty">Yuklanmoqda…</div></div>';
     el.querySelector("#new").onclick = function () { xarajatForm(null); };
     list("/xarajatlar/").then(function (rows) {
@@ -1085,7 +1093,7 @@
       title: edit ? "Xarajat" : "Yangi xarajat",
       body: '<div class="row2"><div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(x.sana) + '"></div>' +
         '<div class="field"><label>Turi</label><select name="kategoriya">' + opts(XKAT, x.kategoriya) + "</select></div></div>" +
-        '<div class="field"><label>Summa (so‘m)</label><input type="number" min="0" name="summa" value="' + esc(x.summa) + '"></div>' +
+        '<div class="field"><label>Summa (söm)</label><input type="number" min="0" name="summa" value="' + esc(x.summa) + '"></div>' +
         '<div class="field"><label>Izoh</label><input name="izoh" value="' + esc(x.izoh) + '"></div>',
       onSave: function (ov) {
         var data = { sana: val(ov, "sana"), kategoriya: val(ov, "kategoriya"), summa: intv(ov, "summa"), izoh: val(ov, "izoh") };
@@ -1094,7 +1102,7 @@
           .then(function () { toast("Saqlandi"); render(); });
       },
       onDelete: edit ? function () {
-        return api("/xarajatlar/" + x.id + "/", { method: "DELETE" }).then(function () { toast("O‘chirildi"); render(); });
+        return api("/xarajatlar/" + x.id + "/", { method: "DELETE" }).then(function () { toast("Öçirildi"); render(); });
       } : null,
     });
   }
@@ -1102,7 +1110,7 @@
   /* ── ombor ────────────────────────────────────────────────────── */
   var HAR_IC = { kirim: "arrow-down-to-line", chiqim: "arrow-up-from-line", tuzatish: "sliders-horizontal" };
   function stokHolat(t) {
-    if (t.qoldiq < 0) return ["bad", "circle-x", "Yetishmaydi"];
+    if (t.qoldiq < 0) return ["bad", "circle-x", "Yetişmaydi"];
     if (t.qoldiq === 0) return ["bad", "circle-x", "Tugagan"];
     if (t.kam) return ["warn", "triangle-alert", "Kam qoldi"];
     return ["ok", "circle-check", "Yetarli"];
@@ -1110,9 +1118,9 @@
   // Ombor harakati — bitta qator (tovar sahifasida tovar nomi kerak emas)
   function harRow(h, tovarNomi) {
     var t = h.turi, info = [fdate(h.sana)];
-    var nom = t === "kirim" ? "Kirim" : t === "chiqim" ? "Buyurtmaga ketdi" : "Tuzatish";
+    var nom = t === "kirim" ? "Kirim" : t === "chiqim" ? "Buyurtmaga ketdi" : "Tuzatiş";
     if (t === "chiqim" && h.buyurtma && String(h.izoh || "").indexOf("#" + h.buyurtma) < 0) info.push("Buyurtma #" + h.buyurtma);
-    if (t === "kirim" && h.birlik_narx) info.push(Math.abs(h.miqdor) + " × " + som(h.birlik_narx) + (h.jami ? " = " + som(h.jami) + " so‘m" : ""));
+    if (t === "kirim" && h.birlik_narx) info.push(Math.abs(h.miqdor) + " × " + som(h.birlik_narx) + (h.jami ? " = " + som(h.jami) + " söm" : ""));
     if (h.izoh) info.push(esc(h.izoh));
     return '<div class="hrow ' + (t === "chiqim" || h.buyurtma ? "" : "click") + '" data-id="' + h.id + '"><span class="hic ' + t + '">' + ic(HAR_IC[t] || "sliders-horizontal") + "</span>" +
       '<div class="hm"><b>' + (tovarNomi ? esc(h.tovar_nom) + ' <span class="muted">· ' + nom + "</span>" : nom) + "</b><small>" + info.join(" · ") + "</small></div>" +
@@ -1141,25 +1149,25 @@
       function draw() {
         if ((S.omborTab || "qoldiq") === "tarix") {
           ob.innerHTML = har.length ? '<div class="card hist">' + har.map(function (h) { return harRow(h, true); }).join("") + "</div>"
-            : '<div class="empty">Hali harakat yo‘q. Birinchi «Kirim»ni yozing.</div>';
+            : '<div class="empty">Hali harakat yöq. Birinçi «Kirim»ni yozing.</div>';
           Array.prototype.forEach.call(ob.querySelectorAll(".hrow.click"), function (r) {
             r.onclick = function () { harakatForm(tov, har.filter(function (h) { return h.id === +r.dataset.id; })[0]); };
           });
           return;
         }
-        var how = '<details class="howto"' + (tov.length && har.length ? "" : " open") + "><summary>" + ic("info") + "Ombor qanday ishlaydi?</summary><ol>" +
-          "<li><b>Tovar qo‘shing</b> — ombordagi narsa: quti, paket, qadoq, etiketka… («Yangi tovar»)</li>" +
-          "<li><b>Sotib olganingizda «Kirim»</b> bosing: nechta kelgani va dona narxini yozing. Xohlasangiz xarajatga ham yoziladi.</li>" +
-          "<li><b>Mahsulotlar</b> bo‘limida har bir mahsulot sotilganda qaysi tovardan nechta ketishini belgilang.</li>" +
-          "<li>Shundan so‘ng <b>buyurtma qilganingizda qoldiq o‘zi kamayadi</b>. Buzilsa yoki sanoqda farq chiqsa — «Tuzatish».</li></ol></details>";
-        if (!tov.length) { ob.innerHTML = how + '<div class="empty">Ombor bo‘sh. «Yangi tovar» bilan boshlang.</div>'; return; }
+        var how = '<details class="howto"' + (tov.length && har.length ? "" : " open") + "><summary>" + ic("info") + "Ombor qanday işlaydi?</summary><ol>" +
+          "<li><b>Tovar qöşing</b> — ombordagi narsa: quti, paket, qadoq, etiketka… («Yangi tovar»)</li>" +
+          "<li><b>Sotib olganingizda «Kirim»</b> bosing: neçta kelgani va dona narxini yozing. Xohlasangiz xarajatga ham yoziladi.</li>" +
+          "<li><b>Mahsulotlar</b> bölimida har bir mahsulot sotilganda qaysi tovardan neçta ketişini belgilang.</li>" +
+          "<li>Şundan söng <b>buyurtma qilganingizda qoldiq özi kamayadi</b>. Buzilsa yoki sanoqda farq çiqsa — «Tuzatiş».</li></ol></details>";
+        if (!tov.length) { ob.innerHTML = how + '<div class="empty">Ombor böş. «Yangi tovar» bilan boşlang.</div>'; return; }
         ob.innerHTML = how + '<div class="stock">' + tov.map(function (t) {
           var sh = stokHolat(t);
           return '<div class="scard click" data-id="' + t.id + '"><div class="sh"><span class="sic">' + ic("package") + '</span><div class="sn"><b>' + esc(t.nom) + "</b><small>" +
-            (t.min_qoldiq > 0 ? "Kam qoldiq chegarasi: " + t.min_qoldiq : "Chegara belgilanmagan") + "</small></div>" + badge(sh[0], sh[1], sh[2]) + "</div>" +
+            (t.min_qoldiq > 0 ? "Kam qoldiq çegarasi: " + t.min_qoldiq : "Çegara belgilanmagan") + "</small></div>" + badge(sh[0], sh[1], sh[2]) + "</div>" +
             '<div class="sq ' + (t.qoldiq <= 0 ? "neg" : "") + '"><b>' + t.qoldiq + "</b><span>" + esc(t.birlik) + " qoldi</span></div>" +
             (t.qoldiq < 0 ? '<div class="sw">Sotilgan, lekin omborga kirim yozilmagan. «Kirim» bosib, sotib olganingizni yozing.</div>' : "") +
-            '<div class="sa"><button class="btn sm" data-k>' + ic("arrow-down-to-line") + 'Kirim</button><button class="btn sm" data-z>' + ic("sliders-horizontal") + "Tuzatish</button></div></div>";
+            '<div class="sa"><button class="btn sm" data-k>' + ic("arrow-down-to-line") + 'Kirim</button><button class="btn sm" data-z>' + ic("sliders-horizontal") + "Tuzatiş</button></div></div>";
         }).join("") + "</div>";
         Array.prototype.forEach.call(ob.querySelectorAll(".scard"), function (c) {
           var t = tovarById(c.dataset.id);
@@ -1178,12 +1186,12 @@
       body: (edit ? '<div class="summary" style="margin:0 0 14px"><div class="r tot" style="border:0;margin:0;padding:0"><span>Hozirgi qoldiq</span><span>' + t.qoldiq + " " + esc(t.birlik) + "</span></div></div>" : "") +
         '<div class="field"><label>Nomi</label><input name="nom" value="' + esc(t.nom) + '" placeholder="Masalan: Quti"></div>' +
         '<div class="row2"><div class="field"><label>Birlik</label><input name="birlik" value="' + esc(t.birlik) + '"><small>dona, kg, metr…</small></div>' +
-        '<div class="field"><label>Kam qoldiq chegarasi</label><input type="number" min="0" name="min_qoldiq" value="' + t.min_qoldiq + '"><small>Qoldiq shundan oshmasa «Kam qoldi» deb ogohlantiradi</small></div></div>' +
-        (edit ? '<div class="sec">So‘nggi harakatlar</div><div class="hist" id="thist"><div class="muted">Yuklanmoqda…</div></div>' : ""),
+        '<div class="field"><label>Kam qoldiq çegarasi</label><input type="number" min="0" name="min_qoldiq" value="' + t.min_qoldiq + '"><small>Qoldiq şundan oşmasa «Kam qoldi» deb ogohlantiradi</small></div></div>' +
+        (edit ? '<div class="sec">Sönggi harakatlar</div><div class="hist" id="thist"><div class="muted">Yuklanmoqda…</div></div>' : ""),
       onOpen: edit ? function (ov) {
         list("/harakatlar/?tovar=" + t.id).then(function (rows) {
-          ov.querySelector("#thist").innerHTML = rows.slice(0, 10).map(function (h) { return harRow(h, false); }).join("") || '<div class="muted">Hali harakat yo‘q.</div>';
-        }).catch(function () { ov.querySelector("#thist").innerHTML = '<div class="muted">Yuklab bo‘lmadi.</div>'; });
+          ov.querySelector("#thist").innerHTML = rows.slice(0, 10).map(function (h) { return harRow(h, false); }).join("") || '<div class="muted">Hali harakat yöq.</div>';
+        }).catch(function () { ov.querySelector("#thist").innerHTML = '<div class="muted">Yuklab bölmadi.</div>'; });
       } : null,
       onSave: function (ov) {
         var data = { nom: val(ov, "nom").trim(), birlik: val(ov, "birlik") || "dona", min_qoldiq: intv(ov, "min_qoldiq") };
@@ -1191,46 +1199,46 @@
         return api(edit ? "/ombor/" + t.id + "/" : "/ombor/", { method: edit ? "PUT" : "POST", body: data }).then(function () { toast("Saqlandi"); render(); });
       },
       onDelete: edit ? function () {
-        return api("/ombor/" + t.id + "/", { method: "DELETE" }).then(function () { toast("O‘chirildi"); render(); });
+        return api("/ombor/" + t.id + "/", { method: "DELETE" }).then(function () { toast("Öçirildi"); render(); });
       } : null,
     });
   }
   function harakatForm(tov, h, pre) {
     var edit = !!h;
     pre = pre || {};
-    if (!tov.length) { toast("Avval «Yangi tovar» qo‘shing.", true); return; }
+    if (!tov.length) { toast("Avval «Yangi tovar» qöşing.", true); return; }
     h = h || { tovar: pre.tovar || (tov[0] && tov[0].id), turi: pre.turi || "kirim", miqdor: "", birlik_narx: "", sana: today(), izoh: "", xarajatga: true, qoshimcha_xarajat: "" };
     var turi = h.turi === "kirim" ? "kirim" : "tuzatish";
     drawer({
-      title: edit ? "Ombor harakati" : turi === "kirim" ? "Omborga kirim" : "Ombor tuzatishi",
+      title: edit ? "Ombor harakati" : turi === "kirim" ? "Omborga kirim" : "Ombor tuzatişi",
       body: '<div class="field"><label>Tovar</label><select name="tovar">' + opts(tov, h.tovar) + "</select></div>" +
-        chipField("turi", "Nima bo‘ldi?", [["kirim", "Kirim (sotib olindi)"], ["tuzatish", "Tuzatish (buzildi, yo‘qoldi, sanoq)"]], turi, HAR_IC, { kirim: "Kirim", tuzatish: "Tuzatish" }) +
+        chipField("turi", "Nima böldi?", [["kirim", "Kirim (sotib olindi)"], ["tuzatish", "Tuzatiş (buzildi, yöqoldi, sanoq)"]], turi, HAR_IC, { kirim: "Kirim", tuzatish: "Tuzatiş" }) +
         '<div class="row2 keep"><div class="field"><label id="mlabel">Omborga kirgan soni</label><input type="number" inputmode="numeric" name="miqdor" value="' + esc(h.miqdor) + '" placeholder="0"></div>' +
-        '<div class="field" data-k><label>Dona narxi (so‘m)</label><input type="number" inputmode="numeric" min="0" name="birlik_narx" value="' + esc(h.birlik_narx || "") + '" placeholder="0"></div></div>' +
-        '<div class="field" data-tz><small style="margin:-0.375rem 0 0">Kamaytirish uchun minus bilan yozing: <b>−3</b> (3 ta buzildi). Ko‘paytirish: <b>3</b>.</small></div>' +
+        '<div class="field" data-k><label>Dona narxi (söm)</label><input type="number" inputmode="numeric" min="0" name="birlik_narx" value="' + esc(h.birlik_narx || "") + '" placeholder="0"></div></div>' +
+        '<div class="field" data-tz><small style="margin:-0.375rem 0 0">Kamaytiriş uçun minus bilan yozing: <b>−3</b> (3 ta buzildi). Köpaytiriş: <b>3</b>.</small></div>' +
         '<div data-k><div class="summary" id="ksum"></div>' +
         '<div class="field" style="margin-top:0.875rem"><label class="chk"><input type="checkbox" name="xarajatga"' + (h.xarajatga !== false ? " checked" : "") + '> Xarajat sifatida yozilsin</label></div>' +
-        '<div class="field" data-x><label>Qo‘shimcha xarajat (yo‘l kira, olib kelish…) (so‘m)</label><input type="number" inputmode="numeric" min="0" name="qoshimcha_xarajat" value="' + esc(h.qoshimcha_xarajat || "") + '" placeholder="0">' +
-        "<small>Xarid summasiga qo‘shilib, bitta xarajat bo‘lib yoziladi.</small></div></div>" +
+        '<div class="field" data-x><label>Qöşimça xarajat (yöl kira, olib keliş…) (söm)</label><input type="number" inputmode="numeric" min="0" name="qoshimcha_xarajat" value="' + esc(h.qoshimcha_xarajat || "") + '" placeholder="0">' +
+        "<small>Xarid summasiga qöşilib, bitta xarajat bölib yoziladi.</small></div></div>" +
         '<div class="field"><label>Sana</label><input type="date" name="sana" value="' + esc(h.sana) + '"></div>' +
-        '<div class="field"><label>Izoh</label><input name="izoh" value="' + esc(h.izoh) + '" placeholder="Masalan: Chorsudan olindi"></div>',
+        '<div class="field"><label>Izoh</label><input name="izoh" value="' + esc(h.izoh) + '" placeholder="Masalan: Çorsudan olindi"></div>',
       onOpen: function (ov) {
         bindChips(ov);
         function calc() {
           var kirim = val(ov, "turi") === "kirim";
           Array.prototype.forEach.call(ov.querySelectorAll("[data-k]"), function (e) { e.classList.toggle("hide", !kirim); });
           ov.querySelector("[data-tz]").classList.toggle("hide", kirim);
-          ov.querySelector("#mlabel").textContent = kirim ? "Omborga kirgan soni" : "Qancha o‘zgardi? (−3 yoki +3)";
+          ov.querySelector("#mlabel").textContent = kirim ? "Omborga kirgan soni" : "Qança özgardi? (−3 yoki +3)";
           var xg = ov.querySelector('[name="xarajatga"]').checked;
           ov.querySelector("[data-x]").classList.toggle("hide", !xg);
           var soni = Math.abs(intv(ov, "miqdor")), narx = intv(ov, "birlik_narx"), qosh = xg ? intv(ov, "qoshimcha_xarajat") : 0;
           var xarid = soni * narx, jami = xarid + qosh;
           ov.querySelector("#ksum").innerHTML =
-            '<div class="r"><span>Xarid jami (' + soni + " × " + som(narx) + ")</span><span>" + som(xarid) + " so‘m</span></div>" +
-            (xg ? '<div class="r"><span>Qo‘shimcha xarajat</span><span>+ ' + som(qosh) + " so‘m</span></div>" +
-              '<div class="r tot"><span>Xarajatga yoziladi</span><span>' + som(jami) + " so‘m</span></div>"
+            '<div class="r"><span>Xarid jami (' + soni + " × " + som(narx) + ")</span><span>" + som(xarid) + " söm</span></div>" +
+            (xg ? '<div class="r"><span>Qöşimça xarajat</span><span>+ ' + som(qosh) + " söm</span></div>" +
+              '<div class="r tot"><span>Xarajatga yoziladi</span><span>' + som(jami) + " söm</span></div>"
               : '<div class="r tot"><span>Xarajatga yozilmaydi</span><span>—</span></div>') +
-            (soni && jami ? '<div class="r"><span>Bitta dona tannarxi' + (qosh ? " (yo‘l bilan)" : "") + "</span><span>" + som(Math.round(jami / soni)) + " so‘m</span></div>" : "");
+            (soni && jami ? '<div class="r"><span>Bitta dona tannarxi' + (qosh ? " (yöl bilan)" : "") + "</span><span>" + som(Math.round(jami / soni)) + " söm</span></div>" : "");
         }
         ov.addEventListener("input", calc);
         ov.addEventListener("change", calc);
@@ -1245,7 +1253,7 @@
         return api(edit ? "/harakatlar/" + h.id + "/" : "/harakatlar/", { method: edit ? "PUT" : "POST", body: data }).then(function () { toast("Saqlandi"); render(); });
       },
       onDelete: edit ? function () {
-        return api("/harakatlar/" + h.id + "/", { method: "DELETE" }).then(function () { toast("O‘chirildi"); render(); });
+        return api("/harakatlar/" + h.id + "/", { method: "DELETE" }).then(function () { toast("Öçirildi"); render(); });
       } : null,
     });
   }
@@ -1257,15 +1265,15 @@
     list("/mahsulotlar/").then(function (rows) {
       var box = el.querySelector("#cards");
       if (!rows.length) {
-        box.innerHTML = '<div class="empty" style="grid-column:1/-1">Hali mahsulot yo‘q. ' + (S.me.foyda ? "«Yangi mahsulot» tugmasi bilan birinchi mahsulotingizni qo‘shing." : "Mahsulotni do‘kon egasi qo‘shadi.") + "</div>";
+        box.innerHTML = '<div class="empty" style="grid-column:1/-1">Hali mahsulot yöq. ' + (S.me.foyda ? "«Yangi mahsulot» tugmasi bilan birinçi mahsulotingizni qöşing." : "Mahsulotni dökon egasi qöşadi.") + "</div>";
       }
       box.innerHTML = rows.map(function (m) {
         var marja = S.me.foyda && m.narx ? Math.round(100 * (m.narx - m.tannarx) / m.narx) : null;
         return '<div class="card click" data-id="' + m.id + '" style="cursor:pointer"><h3>' + esc(m.nom) + (m.faol ? "" : ' <span class="badge">Sotuvda emas</span>') + "</h3>" +
-          '<div class="pl"><div class="r"><span>Sotuv narxi</span><b>' + som(m.narx) + " so‘m</b></div>" +
-          (S.me.foyda ? '<div class="r"><span>Tannarx</span><b>' + som(m.tannarx) + " so‘m</b></div>" +
-            '<div class="r"><span>Foyda (1 dona)</span><b class="' + (m.narx - m.tannarx < 0 ? "neg" : "pos") + '">' + som(m.narx - m.tannarx) + " so‘m · " + marja + "%</b></div>" +
-            '<div class="r"><span>Ombordan chiqadi</span><span class="muted">' + ((m.tarkib || []).map(function (t) { return esc(t.tovar_nom) + " ×" + t.miqdor; }).join(", ") || "—") + "</span></div>" : "") +
+          '<div class="pl"><div class="r"><span>Sotuv narxi</span><b>' + som(m.narx) + " söm</b></div>" +
+          (S.me.foyda ? '<div class="r"><span>Tannarx</span><b>' + som(m.tannarx) + " söm</b></div>" +
+            '<div class="r"><span>Foyda (1 dona)</span><b class="' + (m.narx - m.tannarx < 0 ? "neg" : "pos") + '">' + som(m.narx - m.tannarx) + " söm · " + marja + "%</b></div>" +
+            '<div class="r"><span>Ombordan çiqadi</span><span class="muted">' + ((m.tarkib || []).map(function (t) { return esc(t.tovar_nom) + " ×" + t.miqdor; }).join(", ") || "—") + "</span></div>" : "") +
           "</div></div>";
       }).join("") || box.innerHTML;
       if (S.me.foyda) {
@@ -1282,12 +1290,12 @@
       drawer({
         title: edit ? m.nom : "Yangi mahsulot",
         body: '<div class="field"><label>Nomi</label><input name="nom" value="' + esc(m.nom) + '"></div>' +
-          '<div class="row2"><div class="field"><label>Sotuv narxi (so‘m)</label><input type="number" min="0" name="narx" value="' + m.narx + '"></div>' +
-          '<div class="field"><label>Tannarx (so‘m)</label><input type="number" min="0" name="tannarx" value="' + m.tannarx + '"></div></div>' +
+          '<div class="row2"><div class="field"><label>Sotuv narxi (söm)</label><input type="number" min="0" name="narx" value="' + m.narx + '"></div>' +
+          '<div class="field"><label>Tannarx (söm)</label><input type="number" min="0" name="tannarx" value="' + m.tannarx + '"></div></div>' +
           '<div class="field"><label><input type="checkbox" name="faol" style="width:auto;margin-right:0.375rem"' + (m.faol ? " checked" : "") + ">Sotuvda</label></div>" +
-          '<div class="sec">Sotilganda ombordan chiqadigan narsalar</div>' +
-          '<p class="hintp">Bu mahsulotdan 1 dona sotilganda ombordan qaysi tovardan nechta kamayishini belgilang. Masalan: 1 ta quti, 1 ta paket.</p><div class="items" id="tk"></div>' +
-          '<button class="btn sm" type="button" id="addt">' + ic("plus") + "Qator qo‘shish</button>",
+          '<div class="sec">Sotilganda ombordan çiqadigan narsalar</div>' +
+          '<p class="hintp">Bu mahsulotdan 1 dona sotilganda ombordan qaysi tovardan neçta kamayişini belgilang. Masalan: 1 ta quti, 1 ta paket.</p><div class="items" id="tk"></div>' +
+          '<button class="btn sm" type="button" id="addt">' + ic("plus") + "Qator qöşiş</button>",
         onOpen: function (ov) {
           var box = ov.querySelector("#tk");
           function row(t) {
@@ -1300,7 +1308,7 @@
           }
           (m.tarkib || []).forEach(row);
           ov.querySelector("#addt").onclick = function () {
-            if (!tov.length) { toast("Avval Omborda tovar qo‘shing.", true); return; }
+            if (!tov.length) { toast("Avval Omborda tovar qöşing.", true); return; }
             row({ tovar: tov[0].id, miqdor: 1 });
           };
         },
@@ -1314,7 +1322,7 @@
           return api(edit ? "/mahsulotlar/" + m.id + "/" : "/mahsulotlar/", { method: edit ? "PUT" : "POST", body: data }).then(function () { toast("Saqlandi"); S.cache = {}; render(); });
         },
         onDelete: edit ? function () {
-          return api("/mahsulotlar/" + m.id + "/", { method: "DELETE" }).then(function () { toast("O‘chirildi"); render(); });
+          return api("/mahsulotlar/" + m.id + "/", { method: "DELETE" }).then(function () { toast("Öçirildi"); render(); });
         } : null,
       });
     });
@@ -1330,24 +1338,24 @@
   window.addEventListener("appinstalled", function () {
     installEvt = null;
     var b = document.getElementById("install"); if (b) b.classList.add("hide");
-    toast("Ilova o‘rnatildi");
+    toast("Ilova örnatildi");
   });
 
   function loginView() {
     var mumkin = S.royxatOchiq !== false;
     var royxat = mumkin && S.authRejim === "royxat";
     root.innerHTML = '<div class="login"><form class="box" id="lf" novalidate><div class="brand-logo"><img src="/crm/icons/icon-v2-192.png" alt=""></div>' +
-      "<h1>Insta Seller</h1><p>Instagram do‘koningiz: buyurtmalar, mijozlar va foyda bir joyda</p>" +
-      (mumkin ? '<div class="seg eq authtab"><button type="button" data-r="kirish" class="' + (royxat ? "" : "on") + '">Kirish</button>' +
-        '<button type="button" data-r="royxat" class="' + (royxat ? "on" : "") + '">Ro‘yxatdan o‘tish</button></div>' : "") +
+      "<h1>Insta Seller</h1><p>Instagram dökoningiz: buyurtmalar, mijozlar va foyda bir joyda</p>" +
+      (mumkin ? '<div class="seg eq authtab"><button type="button" data-r="kirish" class="' + (royxat ? "" : "on") + '">Kiriş</button>' +
+        '<button type="button" data-r="royxat" class="' + (royxat ? "on" : "") + '">Röyxatdan ötiş</button></div>' : "") +
       '<div id="err"></div>' +
-      (royxat ? '<div class="field"><label>Do‘kon nomi</label><input name="dokon_nom" placeholder="Masalan: Madina shop" autocomplete="organization" maxlength="60"></div>' +
+      (royxat ? '<div class="field"><label>Dökon nomi</label><input name="dokon_nom" placeholder="Masalan: Madina shop" autocomplete="organization" maxlength="60"></div>' +
         '<div class="field"><label>Ismingiz</label><input name="ism" autocomplete="name" maxlength="60"></div>' : "") +
       '<div class="field"><label>Login</label><input name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"' +
-        (royxat ? ' placeholder="kichik lotin harflar, raqam" maxlength="30"' : "") + "></div>" +
+        (royxat ? ' placeholder="kiçik lotin harflar, raqam" maxlength="30"' : "") + "></div>" +
       '<div class="field"><label>Parol</label><input type="password" name="password" autocomplete="' + (royxat ? "new-password" : "current-password") + '">' +
-        (royxat ? "<small>Kamida 8 ta belgi, faqat raqamdan iborat bo‘lmasin.</small>" : "") + "</div>" +
-      '<button class="btn pri" style="width:100%" type="submit">' + (royxat ? "Do‘konni yaratish" : "Kirish") + "</button></form></div>";
+        (royxat ? "<small>Kamida 8 ta belgi, faqat raqamdan iborat bölmasin.</small>" : "") + "</div>" +
+      '<button class="btn pri" style="width:100%" type="submit">' + (royxat ? "Dökonni yaratiş" : "Kiriş") + "</button></form></div>";
     var f = document.getElementById("lf");
     Array.prototype.forEach.call(f.querySelectorAll(".authtab button"), function (btn) {
       btn.onclick = function () { S.authRejim = btn.dataset.r; loginView(); };
@@ -1364,7 +1372,7 @@
         S.me = d; S.cache = {}; S.authRejim = "kirish";
         location.hash = d.foyda ? "#/dashboard" : "#/buyurtmalar";
         render();
-        if (royxat) toast("Xush kelibsiz! Birinchi mahsulotingizni qo‘shing.");
+        if (royxat) toast("Xuş kelibsiz! Birinçi mahsulotingizni qöşing.");
       }).catch(function (er) {
         tugma.disabled = false;
         document.getElementById("err").innerHTML = '<div class="err">' + esc(er.message) + "</div>";
@@ -1376,18 +1384,18 @@
   function pageSozlamalar(el) {
     var egasi = S.me.foyda, dk = S.me.dokon || {};
     el.innerHTML = '<div class="grid g2e">' +
-      '<div class="card"><h3>' + ic("store") + "Do‘kon</h3>" +
-      '<div class="field"><label>Do‘kon nomi</label><input id="dnom" maxlength="60" value="' + esc(dk.nom) + '"' + (egasi ? "" : " disabled") + "></div>" +
+      '<div class="card"><h3>' + ic("store") + "Dökon</h3>" +
+      '<div class="field"><label>Dökon nomi</label><input id="dnom" maxlength="60" value="' + esc(dk.nom) + '"' + (egasi ? "" : " disabled") + "></div>" +
       '<div class="field"><label>Buyurtma odatda qayerdan keladi</label><select id="dmanba"' + (egasi ? "" : " disabled") + ">" + opts(MANBA, dk.standart_manba) + "</select>" +
-      "<small>Yangi buyurtmada shu manba oldindan tanlanib turadi.</small></div>" +
-      (egasi ? '<button class="btn pri" id="dsave">Saqlash</button>' : '<div class="muted">Do‘kon sozlamalarini faqat egasi o‘zgartira oladi.</div>') + "</div>" +
+      "<small>Yangi buyurtmada şu manba oldindan tanlanib turadi.</small></div>" +
+      (egasi ? '<button class="btn pri" id="dsave">Saqlaş</button>' : '<div class="muted">Dökon sozlamalarini faqat egasi özgartira oladi.</div>') + "</div>" +
       '<div class="card"><h3>' + ic("user-round") + "Hisobingiz</h3>" +
       '<div class="pl"><div class="r"><span>Ism</span><b>' + esc(S.me.ism) + '</b></div><div class="r"><span>Login</span><b>' + esc(S.me.username) +
-      '</b></div><div class="r"><span>Huquq</span><b>' + (egasi ? "Egasi" : "Yordamchi") + "</b></div></div>" +
-      '<div class="rowbtn"><button class="btn" id="dpass">' + ic("key-round") + "Parolni o‘zgartirish</button>" +
-      '<button class="btn" id="dout">' + ic("out") + "Chiqish</button></div></div></div>" +
+      '</b></div><div class="r"><span>Huquq</span><b>' + (egasi ? "Egasi" : "Yordamçi") + "</b></div></div>" +
+      '<div class="rowbtn"><button class="btn" id="dpass">' + ic("key-round") + "Parolni özgartiriş</button>" +
+      '<button class="btn" id="dout">' + ic("out") + "Çiqiş</button></div></div></div>" +
       (egasi ? '<div class="card"><div class="toolbar" style="justify-content:space-between;margin:0 0 0.5rem"><h3 style="margin:0">' + ic("users") + "Xodimlar</h3>" +
-        '<button class="btn sm pri" id="azoadd">' + ic("user-plus") + 'Xodim qo‘shish</button></div><p class="hintp">Xodim buyurtma va mijozlarni kiritadi, lekin tannarx, foyda, xarajat va omborni ko‘rmaydi.</p><div id="azolar"><div class="muted">Yuklanmoqda…</div></div></div>' : "");
+        '<button class="btn sm pri" id="azoadd">' + ic("user-plus") + 'Xodim qöşiş</button></div><p class="hintp">Xodim buyurtma va mijozlarni kiritadi, lekin tannarx, foyda, xarajat va omborni körmaydi.</p><div id="azolar"><div class="muted">Yuklanmoqda…</div></div></div>' : "");
 
     if (egasi) {
       el.querySelector("#dsave").onclick = function () {
@@ -1402,11 +1410,11 @@
         drawer({
           title: "Yangi xodim",
           body: '<div class="field"><label>Ismi</label><input name="ism" maxlength="60"></div>' +
-            '<div class="field"><label>Login</label><input name="username" autocapitalize="none" autocorrect="off" maxlength="30" placeholder="kichik lotin harflar, raqam"></div>' +
-            '<div class="field"><label>Parol</label><input name="parol" type="text" autocomplete="off"><small>Kamida 8 ta belgi. Xodimga shu login va parolni bering.</small></div>',
+            '<div class="field"><label>Login</label><input name="username" autocapitalize="none" autocorrect="off" maxlength="30" placeholder="kiçik lotin harflar, raqam"></div>' +
+            '<div class="field"><label>Parol</label><input name="parol" type="text" autocomplete="off"><small>Kamida 8 ta belgi. Xodimga şu login va parolni bering.</small></div>',
           onSave: function (ov) {
             return api("/azolar/", { method: "POST", body: { ism: val(ov, "ism"), username: val(ov, "username"), parol: val(ov, "parol") } })
-              .then(function () { toast("Xodim qo‘shildi"); yukla(); });
+              .then(function () { toast("Xodim qöşildi"); yukla(); });
           },
         });
       };
@@ -1418,7 +1426,7 @@
           var men = x.username === S.me.username;
           return '<div class="hrow"><span class="avatar">' + esc((x.ism || "?").charAt(0).toUpperCase()) + '</span><div class="hm"><b>' + esc(x.ism) + (men ? ' <span class="muted">(siz)</span>' : "") +
             "</b><small>" + esc(x.username) + " · " + esc(x.rol_nom) + "</small></div>" +
-            (x.rol === "yordamchi" ? '<button class="icon-x" data-k="' + x.id + '" title="Parolni almashtirish">' + ic("key-round") + '</button><button class="icon-x" data-d="' + x.id + '" title="O‘chirish">' + ic("trash-2") + "</button>" : "") + "</div>";
+            (x.rol === "yordamchi" ? '<button class="icon-x" data-k="' + x.id + '" title="Parolni almaştiriş">' + ic("key-round") + '</button><button class="icon-x" data-d="' + x.id + '" title="Öçiriş">' + ic("trash-2") + "</button>" : "") + "</div>";
         }).join("") + "</div>";
         Array.prototype.forEach.call(box.querySelectorAll("[data-k]"), function (b) {
           b.onclick = function () {
@@ -1426,25 +1434,25 @@
             drawer({
               title: "Parol: " + x.ism,
               body: '<div class="field"><label>Yangi parol</label><input name="parol" type="text" autocomplete="off"><small>Kamida 8 ta belgi.</small></div>',
-              onSave: function (ov) { return api("/azolar/" + x.id + "/", { method: "PATCH", body: { parol: val(ov, "parol") } }).then(function () { toast("Parol almashtirildi"); }); },
+              onSave: function (ov) { return api("/azolar/" + x.id + "/", { method: "PATCH", body: { parol: val(ov, "parol") } }).then(function () { toast("Parol almaştirildi"); }); },
             });
           };
         });
         Array.prototype.forEach.call(box.querySelectorAll("[data-d]"), function (b) {
           b.onclick = function () {
             var x = rows.filter(function (r) { return r.id === +b.dataset.d; })[0];
-            if (!confirm(x.ism + " xodimini o‘chirasizmi? U tizimga kira olmaydi.")) return;
-            api("/azolar/" + x.id + "/", { method: "DELETE" }).then(function () { toast("O‘chirildi"); yukla(); }).catch(function (e) { toast(e.message, true); });
+            if (!confirm(x.ism + " xodimini öçirasizmi? U tizimga kira olmaydi.")) return;
+            api("/azolar/" + x.id + "/", { method: "DELETE" }).then(function () { toast("Öçirildi"); yukla(); }).catch(function (e) { toast(e.message, true); });
           };
         });
       }).catch(function (e) { el.querySelector("#azolar").innerHTML = '<div class="muted">' + esc(e.message) + "</div>"; });
     }
     el.querySelector("#dpass").onclick = function () {
       drawer({
-        title: "Parolni o‘zgartirish",
+        title: "Parolni özgartiriş",
         body: '<div class="field"><label>Hozirgi parol</label><input name="eski" type="password" autocomplete="current-password"></div>' +
-          '<div class="field"><label>Yangi parol</label><input name="yangi" type="password" autocomplete="new-password"><small>Kamida 8 ta belgi, faqat raqamdan iborat bo‘lmasin.</small></div>',
-        onSave: function (ov) { return api("/parol/", { method: "POST", body: { eski: val(ov, "eski"), yangi: val(ov, "yangi") } }).then(function () { toast("Parol almashtirildi"); }); },
+          '<div class="field"><label>Yangi parol</label><input name="yangi" type="password" autocomplete="new-password"><small>Kamida 8 ta belgi, faqat raqamdan iborat bölmasin.</small></div>',
+        onSave: function (ov) { return api("/parol/", { method: "POST", body: { eski: val(ov, "eski"), yangi: val(ov, "yangi") } }).then(function () { toast("Parol almaştirildi"); }); },
       });
     };
     el.querySelector("#dout").onclick = function () {
@@ -1475,9 +1483,9 @@
       '<div class="seg eq themeseg" id="themeseg">' + MAVZU.map(function (x) {
         return '<button data-m="' + x[0] + '" class="' + (x[0] === mavzuTanlangan() ? "on" : "") + '" title="' + x[1] + '">' + ic(x[2]) + x[1] + "</button>";
       }).join("") + "</div>" +
-      (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone() ? '<div class="hint"><b>iPhone:</b> Safari’da pastdagi «Ulashish» tugmasini bosing, so‘ng «Bosh ekranga qo‘shish»ni tanlang.</div>' : "") +
+      (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone() ? '<div class="hint"><b>iPhone:</b> Safari’da pastdagi «Ulaşiş» tugmasini bosing, söng «Boş ekranga qöşiş»ni tanlang.</div>' : "") +
       '<div class="user"><span class="avatar">' + esc((S.me.ism || "?").charAt(0).toUpperCase()) + '</span><div class="t"><b>' + esc(S.me.ism) +
-      "</b><small>" + (S.me.foyda ? "Egasi" : "Yordamchi") + '</small></div><button class="linkbtn" id="out" title="Chiqish">' + ic("out") + "</button></div></aside>" +
+      "</b><small>" + (S.me.foyda ? "Egasi" : "Yordamçi") + '</small></div><button class="linkbtn" id="out" title="Çiqiş">' + ic("out") + "</button></div></aside>" +
       '<div class="scrim" id="scrim"></div>' +
       '<div class="main"><header class="top"><span class="mlogo"><img src="/crm/icons/icon-v2-192.png" alt=""></span><h1>' + esc(title) + "</h1>" +
       '<button class="bell" id="bell" aria-label="Xabarlar">' + ic("bell") + '<i class="dot hide"></i></button>' +
@@ -1531,7 +1539,7 @@
     if (!terms.length) return esc(matn);
     var n = "", xar = [];
     for (var i = 0; i < matn.length; i++) {
-      var c = matn.charAt(i).toLowerCase().replace(/[ʻʼ‘’`´'"]/g, "");
+      var c = ddHarf(matn.charAt(i));
       for (var k = 0; k < c.length; k++) { n += c.charAt(k); xar.push(i); }
     }
     var oral = [];
@@ -1549,13 +1557,23 @@
     });
     return out + esc(matn.slice(pos));
   }
-  function ddNorm(s) { return String(s || "").toLowerCase().replace(/[ʻʼ‘’`´'"]/g, ""); }
+  // Qidiruvda eski va yangi alifbo farq qilmaydi: ş=sh, ç=ch, ğ=g, ö=o, apostrof hisobga olinmaydi
+  function ddHarf(c) {
+    c = c.toLowerCase();
+    return c === "ş" ? "sh" : c === "ç" ? "ch" : c === "ğ" ? "g" : c === "ö" ? "o" : c.replace(/[ʻʼ‘’`´'"]/g, "");
+  }
+  function ddNorm(s) {
+    s = String(s || "");
+    var o = "";
+    for (var i = 0; i < s.length; i++) o += ddHarf(s.charAt(i));
+    return o;
+  }
   function ddOch(sel, btn) {
     ddYop();
     var optlar = Array.prototype.slice.call(sel.options), mobil = window.matchMedia("(max-width:860px)").matches;
     var bg = document.createElement("div"); bg.className = "dd-bg" + (mobil ? " m" : "");
     var menu = document.createElement("div"); menu.className = "dd-menu" + (mobil ? " m" : ""); menu.setAttribute("role", "listbox");
-    menu.innerHTML = (optlar.length > 10 ? '<input class="dd-q" type="search" placeholder="' + esc(sel.dataset.sph || "Qidirish…") + '" autocomplete="off">' : "") + '<div class="dd-l"></div>';
+    menu.innerHTML = (optlar.length > 10 ? '<input class="dd-q" type="search" placeholder="' + esc(sel.dataset.sph || "Qidiriş…") + '" autocomplete="off">' : "") + '<div class="dd-l"></div>';
     var list = menu.querySelector(".dd-l"), q = menu.querySelector(".dd-q"), hot = -1;
     function chiz(f) {
       var terms = ddNorm(f).split(/\s+/).filter(Boolean);

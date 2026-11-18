@@ -1,7 +1,7 @@
 {
   "name": "Insta Seller",
   "short_name": "Insta Seller",
-  "description": "Instagram sotuvchilari uchun savdo hisobi: buyurtmalar, mijozlar, ombor, xarajat va foyda",
+  "description": "Instagram sotuvchilari uçun savdo hisobi: buyurtmalar, mijozlar, ombor, xarajat va foyda",
   "lang": "uz",
   "start_url": "/crm/",
   "scope": "/crm/",

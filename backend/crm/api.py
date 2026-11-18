@@ -118,9 +118,9 @@ def kirish(request):
                         password=request.data.get("password", ""))
     a = Aza.objects.select_related("dokon").filter(user=user).first() if user else None
     if user is None or not user.is_active or a is None:
-        return Response({"xato": "Login yoki parol noto'g'ri."}, status=400)
+        return Response({"xato": "Login yoki parol notöğri."}, status=400)
     if not a.dokon.faol:
-        return Response({"xato": "Bu do'kon o'chirilgan. Administrator bilan bog'laning."}, status=400)
+        return Response({"xato": "Bu dökon öçirilgan. Administrator bilan boğlaning."}, status=400)
     login(request, user)
     get_token(request)
     return Response({"kirgan": True, **me_data(user)})
@@ -140,13 +140,13 @@ def parolni_tekshir(parol, user=None):
     """Parol qoidalari (xabarlar o'zbekcha)."""
     xato = []
     if len(parol) < 8:
-        xato.append("Parol kamida 8 ta belgidan iborat bo'lsin.")
+        xato.append("Parol kamida 8 ta belgidan iborat bölsin.")
     elif parol.isdigit():
-        xato.append("Parol faqat raqamdan iborat bo'lmasin.")
+        xato.append("Parol faqat raqamdan iborat bölmasin.")
     elif parol.lower() in CommonPasswordValidator().passwords:
-        xato.append("Bu parol juda oddiy. Boshqasini tanlang.")
+        xato.append("Bu parol juda oddiy. Boşqasini tanlang.")
     elif user is not None and len(user.username) >= 3 and user.username.lower() in parol.lower():
-        xato.append("Parol loginga o'xshamasin.")
+        xato.append("Parol loginga öxşamasin.")
     if xato:
         raise ValidationError({"parol": xato})
 
@@ -154,9 +154,9 @@ def parolni_tekshir(parol, user=None):
 def login_tekshir(username):
     username = str(username or "").strip().lower()
     if not USERNAME_RE.match(username):
-        raise ValidationError({"username": "Login 3–30 belgi: kichik lotin harflar, raqam, _ yoki nuqta."})
+        raise ValidationError({"username": "Login 3–30 belgi: kiçik lotin harflar, raqam, _ yoki nuqta."})
     if User.objects.filter(username__iexact=username).exists():
-        raise ValidationError({"username": "Bu login band. Boshqasini tanlang."})
+        raise ValidationError({"username": "Bu login band. Boşqasini tanlang."})
     return username
 
 
@@ -166,12 +166,12 @@ def login_tekshir(username):
 def royxat(request):
     """Yangi sotuvchi: do'kon + egasi hisobini yaratadi va tizimga kiritadi."""
     if not settings.CRM_RO_YXAT_OCHIQ:
-        return Response({"xato": "Hozircha ro'yxatdan o'tish yopiq."}, status=403)
+        return Response({"xato": "Hozirça röyxatdan ötiş yopiq."}, status=403)
     d = request.data
     dokon_nom = str(d.get("dokon_nom", "")).strip()
     ism = str(d.get("ism", "")).strip()
     if not 2 <= len(dokon_nom) <= 60:
-        raise ValidationError({"dokon_nom": "Do'kon nomini yozing (2–60 belgi)."})
+        raise ValidationError({"dokon_nom": "Dökon nomini yozing (2–60 belgi)."})
     if not 2 <= len(ism) <= 60:
         raise ValidationError({"ism": "Ismingizni yozing."})
     username = login_tekshir(d.get("username"))
@@ -206,11 +206,11 @@ class DokonView(APIView):
         if "nom" in request.data:
             nom = str(request.data["nom"]).strip()
             if not 2 <= len(nom) <= 60:
-                raise ValidationError({"nom": "Do'kon nomini yozing (2–60 belgi)."})
+                raise ValidationError({"nom": "Dökon nomini yozing (2–60 belgi)."})
             d.nom = nom
         if "standart_manba" in request.data:
             if request.data["standart_manba"] not in dict(MANBALAR):
-                raise ValidationError({"standart_manba": "Noto'g'ri tanlov."})
+                raise ValidationError({"standart_manba": "Notöğri tanlov."})
             d.standart_manba = request.data["standart_manba"]
         d.save()
         return Response({"id": d.id, "nom": d.nom, "standart_manba": d.standart_manba})
@@ -231,7 +231,7 @@ class AzolarView(APIView):
     def post(self, request):
         a = aza_ol(request)
         if a.dokon.azolar.count() >= MAX_AZO:
-            raise ValidationError({"xato": f"Bitta do'konda {MAX_AZO} tadan ortiq xodim bo'lmaydi."})
+            raise ValidationError({"xato": f"Bitta dökonda {MAX_AZO} tadan ortiq xodim bölmaydi."})
         ism = str(request.data.get("ism", "")).strip()
         if not 2 <= len(ism) <= 60:
             raise ValidationError({"ism": "Xodim ismini yozing."})
@@ -265,7 +265,7 @@ class AzoView(APIView):
     def delete(self, request, pk):
         x = self._azo(request, pk)
         if x.user_id == request.user.id or x.egasi:
-            raise ValidationError({"xato": "Egasini o'chirib bo'lmaydi."})
+            raise ValidationError({"xato": "Egasini öçirib bölmaydi."})
         x.user.delete()
         return Response(status=204)
 
@@ -275,7 +275,7 @@ class AzoView(APIView):
 def parol_almashtir(request):
     eski, yangi = str(request.data.get("eski", "")), str(request.data.get("yangi", ""))
     if not request.user.check_password(eski):
-        raise ValidationError({"eski": "Hozirgi parol noto'g'ri."})
+        raise ValidationError({"eski": "Hozirgi parol notöğri."})
     parolni_tekshir(yangi, request.user)
     request.user.set_password(yangi)
     request.user.save()
@@ -343,7 +343,7 @@ class BuyurtmaViewSet(DokonMixin, viewsets.ModelViewSet):
         b = self.get_object()
         yangi = request.data.get("holat")
         if yangi not in dict(Buyurtma.HOLAT):
-            raise ValidationError("Noto'g'ri holat.")
+            raise ValidationError("Notöğri holat.")
         if yangi != b.holat:
             b.holat = yangi
             b.save()
@@ -384,7 +384,7 @@ class OmborHarakatViewSet(DokonMixin, viewsets.ModelViewSet):
 
     def perform_destroy(self, obj):
         if obj.buyurtma_id:
-            raise ValidationError("Buyurtmadan chiqqan chiqimni o'chirib bo'lmaydi.")
+            raise ValidationError("Buyurtmadan çiqqan çiqimni öçirib bölmaydi.")
         obj.delete()
 
 
@@ -430,7 +430,7 @@ def push_obuna(request):
     d = request.data
     kalitlar = d.get("keys") or {}
     if not d.get("endpoint") or not kalitlar.get("p256dh") or not kalitlar.get("auth"):
-        raise ValidationError("Obuna ma'lumoti to'liq emas.")
+        raise ValidationError("Obuna ma’lumoti töliq emas.")
     PushObuna.objects.update_or_create(
         endpoint=d["endpoint"],
         defaults={"user": request.user, "p256dh": kalitlar["p256dh"], "auth": kalitlar["auth"]},
@@ -448,5 +448,5 @@ def push_bekor(request):
 @api_view(["POST"])
 @permission_classes([DokonHuquqi])
 def push_sinov(request):
-    n = bildirish.push_yubor("Insta Seller", "Xabarlar ishlayapti ✅", user=request.user)
+    n = bildirish.push_yubor("Insta Seller", "Xabarlar işlayapti ✅", user=request.user)
     return Response({"yuborildi": n})

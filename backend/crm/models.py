@@ -31,27 +31,27 @@ MANBALAR = [
     ("ig_organik", "Instagram (bio, direct)"),
     ("telegram", "Telegram"),
     ("sayt", "Sayt"),
-    ("tanish", "Tanish / og'zaki"),
-    ("boshqa", "Boshqa"),
+    ("tanish", "Taniş / oğzaki"),
+    ("boshqa", "Boşqa"),
 ]
 
 
 class Dokon(models.Model):
     """Sotuvchining do'koni. Barcha ma'lumotlar shunga tegishli."""
 
-    nom = models.CharField("Do'kon nomi", max_length=120)
+    nom = models.CharField("Dökon nomi", max_length=120)
     standart_manba = models.CharField(
         "Buyurtma qayerdan keladi (odatda)", max_length=12, choices=MANBALAR, default="ig_organik",
-        help_text="Yangi buyurtmada shu manba oldindan tanlanib turadi.")
-    faol = models.BooleanField("Faol", default=True, help_text="O'chirilsa, do'kon egasi tizimga kira olmaydi.")
+        help_text="Yangi buyurtmada şu manba oldindan tanlanib turadi.")
+    faol = models.BooleanField("Faol", default=True, help_text="Öçirilsa, dökon egasi tizimga kira olmaydi.")
     sayt_statistika = models.BooleanField(
         "Sayt statistikasi", default=False,
-        help_text="Faqat Nurul Hadis uchun: sayt tashriflari reklama hisobotiga qo'shiladi.")
+        help_text="Faqat Nurul Hadis uçun: sayt taşriflari reklama hisobotiga qöşiladi.")
     yaratilgan = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "Do'kon"
-        verbose_name_plural = "Do'konlar"
+        verbose_name = "Dökon"
+        verbose_name_plural = "Dökonlar"
         ordering = ["id"]
 
     def __str__(self):
@@ -61,16 +61,16 @@ class Dokon(models.Model):
 class Aza(models.Model):
     """Foydalanuvchi qaysi do'konga tegishli va qanday huquqda: egasi yoki yordamchi."""
 
-    ROLLAR = [("egasi", "Egasi"), ("yordamchi", "Yordamchi")]
+    ROLLAR = [("egasi", "Egasi"), ("yordamchi", "Yordamçi")]
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="aza")
     dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, related_name="azolar")
     rol = models.CharField("Huquqi", max_length=10, choices=ROLLAR, default="yordamchi",
-                           help_text="Yordamchi tannarx, xarajat, ombor va foydani ko'rmaydi.")
+                           help_text="Yordamçi tannarx, xarajat, ombor va foydani körmaydi.")
 
     class Meta:
-        verbose_name = "Do'kon a'zosi"
-        verbose_name_plural = "Do'kon a'zolari"
+        verbose_name = "Dökon a’zosi"
+        verbose_name_plural = "Dökon a’zolari"
 
     def __str__(self):
         return f"{self.user} — {self.dokon} ({self.get_rol_display()})"
@@ -81,12 +81,12 @@ class Aza(models.Model):
 
 
 class Mahsulot(models.Model):
-    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Dökon")
     nom = models.CharField("Nomi", max_length=120)
-    narx = models.PositiveIntegerField("Sotuv narxi (so'm)", default=0)
+    narx = models.PositiveIntegerField("Sotuv narxi (söm)", default=0)
     tannarx = models.PositiveIntegerField(
-        "Tannarx (so'm)", default=0,
-        help_text="Bitta dona sizga qanchaga tushadi. Har sotuvda shu narx foydadan ayriladi.",
+        "Tannarx (söm)", default=0,
+        help_text="Bitta dona sizga qançaga tuşadi. Har sotuvda şu narx foydadan ayriladi.",
     )
     faol = models.BooleanField("Sotuvda", default=True)
 
@@ -111,12 +111,12 @@ class Mahsulot(models.Model):
 class OmborTovar(models.Model):
     """Omborda hisobi yuritiladigan narsa: banka, qopqoq, qog'ozcha, quti, sumka..."""
 
-    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Dökon")
     nom = models.CharField("Nomi", max_length=120)
     birlik = models.CharField("Birlik", max_length=20, default="dona")
     min_qoldiq = models.PositiveIntegerField(
-        "Kam qoldiq chegarasi", default=0,
-        help_text="Qoldiq shundan kamaysa, hisobotda ogohlantirish chiqadi.",
+        "Kam qoldiq çegarasi", default=0,
+        help_text="Qoldiq şundan kamaysa, hisobotda ogohlantiriş çiqadi.",
     )
 
     class Meta:
@@ -146,18 +146,18 @@ class Tarkib(models.Model):
 
     class Meta:
         verbose_name = "Tarkib qismi"
-        verbose_name_plural = "Tarkibi (ombordan chiqadiganlar)"
+        verbose_name_plural = "Tarkibi (ombordan çiqadiganlar)"
 
     def __str__(self):
         return f"{self.tovar} × {self.miqdor}"
 
 
 class Mijoz(models.Model):
-    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Dökon")
     ism = models.CharField("Ismi", max_length=120)
     telefon = models.CharField("Telefon", max_length=40, blank=True)
     username = models.CharField("Telegram / Instagram", max_length=80, blank=True)
-    manzil = models.CharField("Manzil / shahar", max_length=200, blank=True)
+    manzil = models.CharField("Manzil / şahar", max_length=200, blank=True)
     izoh = models.TextField("Izoh", blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -173,8 +173,8 @@ class Mijoz(models.Model):
 class Buyurtma(models.Model):
     TUR = [
         ("sotuv", "Oddiy sotuv"),
-        ("reklama", "Reklama uchun tekin (blogger, tanishtirish)"),
-        ("sovga", "Sovg'a (tekin)"),
+        ("reklama", "Reklama uçun tekin (blogger, taniştiriş)"),
+        ("sovga", "Sovğa (tekin)"),
     ]
     HOLAT = [
         ("yangi", "Yangi"),
@@ -188,11 +188,11 @@ class Buyurtma(models.Model):
     TOLOV = [
         ("naqd", "Naqd"),
         ("karta", "Karta (Click, Payme, ...)"),
-        ("otkazma", "Hisobga o'tkazma"),
-        ("yetkazganda", "Yetkazganda to'laydi"),
+        ("otkazma", "Hisobga ötkazma"),
+        ("yetkazganda", "Yetkazganda tölaydi"),
     ]
 
-    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Dökon")
     sana = models.DateField("Sana", default=bugun, db_index=True)
     mijoz = models.ForeignKey(Mijoz, verbose_name="Mijoz", on_delete=models.PROTECT,
                               related_name="buyurtmalar")
@@ -201,42 +201,42 @@ class Buyurtma(models.Model):
     manba = models.CharField("Qayerdan keldi", max_length=12, choices=MANBA, default="telegram")
     kampaniya = models.CharField(
         "Reklama kampaniyasi", max_length=80, blank=True,
-        help_text="Saytdagi utm_campaign nomi (masalan reklama2_uz). Reklama samaradorligi shundan hisoblanadi.",
+        help_text="Saytdagi utm_campaign nomi (masalan reklama2_uz). Reklama samaradorligi şundan hisoblanadi.",
     )
 
-    chegirma = models.PositiveIntegerField("Chegirma (so'm)", default=0)
-    chegirma_izoh = models.CharField("Chegirma sababi", max_length=120, blank=True)
+    chegirma = models.PositiveIntegerField("Çegirma (söm)", default=0)
+    chegirma_izoh = models.CharField("Çegirma sababi", max_length=120, blank=True)
     YETKAZISH = [
         ("yandex", "Yandex"),
-        ("pochta", "Pochta orqali"),
-        ("ozim", "O'zim olib beraman"),
-        ("ozi", "O'zi olib ketadi"),
+        ("pochta", "Poçta orqali"),
+        ("ozim", "Özim olib beraman"),
+        ("ozi", "Özi olib ketadi"),
     ]
-    yetkazish_turi = models.CharField("Yetkazish turi", max_length=8, choices=YETKAZISH, default="yandex")
+    yetkazish_turi = models.CharField("Yetkaziş turi", max_length=8, choices=YETKAZISH, default="yandex")
     POCHTA = [
         ("bts", "BTS"),
         ("emu", "EMU"),
         ("uzpost", "UZ POST"),
     ]
-    pochta = models.CharField("Pochta", max_length=8, choices=POCHTA, blank=True)
+    pochta = models.CharField("Poçta", max_length=8, choices=POCHTA, blank=True)
     viloyat = models.CharField("Viloyat", max_length=40, blank=True)
     bts_filial = models.CharField("BTS filiali", max_length=160, blank=True)
     yetkazish_xarajati = models.PositiveIntegerField(
-        "Yetkazish xarajati (so'm)", default=0,
-        help_text="Kuryer/taksi/pochta uchun o'zingiz to'lagan pul.",
+        "Yetkaziş xarajati (söm)", default=0,
+        help_text="Kuryer/taksi/poçta uçun özingiz tölagan pul.",
     )
 
-    tolov_usuli = models.CharField("To'lov usuli", max_length=12, choices=TOLOV, default="naqd")
-    tolangan = models.PositiveIntegerField("To'langan summa (so'm)", default=0)
+    tolov_usuli = models.CharField("Tölov usuli", max_length=12, choices=TOLOV, default="naqd")
+    tolangan = models.PositiveIntegerField("Tölangan summa (söm)", default=0)
     izoh = models.TextField("Izoh", blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    holat_ozgargan = models.DateTimeField("Holat o'zgargan vaqt", null=True, blank=True, editable=False)
+    holat_ozgargan = models.DateTimeField("Holat özgargan vaqt", null=True, blank=True, editable=False)
 
     class Meta:
         verbose_name = "Buyurtma"
         verbose_name_plural = "Buyurtmalar"
         ordering = ["-sana", "-id"]
-        permissions = [("view_foyda", "Tannarx va foydani ko'ra oladi")]
+        permissions = [("view_foyda", "Tannarx va foydani köra oladi")]
 
     def __str__(self):
         return f"#{self.pk} {self.mijoz.ism} — {self.sana:%d.%m.%Y}"
@@ -345,10 +345,10 @@ class Buyurtma(models.Model):
         if not self.hisobga_kiradi:
             return "—"
         if self.tolangan >= self.tushum and self.tushum > 0:
-            return "To'langan"
+            return "Tölangan"
         if self.tolangan > 0:
             return "Qisman"
-        return "To'lanmagan"
+        return "Tölanmagan"
 
     # ── ombor ──────────────────────────────────────────────────────
     def omborni_yangilash(self):
@@ -372,10 +372,10 @@ class BuyurtmaQator(models.Model):
     mahsulot = models.ForeignKey(Mahsulot, verbose_name="Mahsulot", on_delete=models.PROTECT)
     miqdor = models.PositiveIntegerField("Soni", default=1)
     narx = models.PositiveIntegerField(
-        "Narxi (so'm)", null=True, blank=True,
-        help_text="Bo'sh qoldirsangiz mahsulotning sotuv narxi olinadi.",
+        "Narxi (söm)", null=True, blank=True,
+        help_text="Böş qoldirsangiz mahsulotning sotuv narxi olinadi.",
     )
-    tannarx = models.PositiveIntegerField("Tannarx (so'm)", null=True, blank=True, editable=False)
+    tannarx = models.PositiveIntegerField("Tannarx (söm)", null=True, blank=True, editable=False)
 
     class Meta:
         verbose_name = "Buyurtma qatori"
@@ -403,8 +403,8 @@ class BuyurtmaBonus(models.Model):
     buyurtma = models.ForeignKey(Buyurtma, on_delete=models.CASCADE, related_name="bonuslar")
     nom = models.CharField("Bonus nomi", max_length=120)
     tannarx = models.PositiveIntegerField(
-        "Tannarx (so'm)", default=0,
-        help_text="Ixtiyoriy: bonus sizga qanchaga tushgan. Bo'sh qoldirsangiz 0.")
+        "Tannarx (söm)", default=0,
+        help_text="Ixtiyoriy: bonus sizga qançaga tuşgan. Böş qoldirsangiz 0.")
 
     class Meta:
         verbose_name = "Bonus"
@@ -416,25 +416,25 @@ class BuyurtmaBonus(models.Model):
 
 class OmborHarakat(models.Model):
     TURI = [
-        ("kirim", "Kirim (sotib olindi / ishlab chiqarildi)"),
-        ("chiqim", "Chiqim (buyurtma)"),
-        ("tuzatish", "Tuzatish (buzildi, yo'qoldi, sanoq)"),
+        ("kirim", "Kirim (sotib olindi / işlab çiqarildi)"),
+        ("chiqim", "Çiqim (buyurtma)"),
+        ("tuzatish", "Tuzatiş (buzildi, yöqoldi, sanoq)"),
     ]
 
-    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Dökon")
     tovar = models.ForeignKey(OmborTovar, verbose_name="Tovar", on_delete=models.PROTECT,
                               related_name="harakatlar")
     turi = models.CharField("Turi", max_length=10, choices=TURI, default="kirim")
     miqdor = models.IntegerField(
-        "Miqdor", help_text="Kirimda musbat; kamayganda (buzildi, yo'qoldi) manfiy son yozing.")
+        "Miqdor", help_text="Kirimda musbat; kamayganda (buzildi, yöqoldi) manfiy son yozing.")
     birlik_narx = models.PositiveIntegerField(
-        "Birligi narxi (so'm)", default=0, help_text="Faqat kirim uchun: sotib olgan narxingiz.")
+        "Birligi narxi (söm)", default=0, help_text="Faqat kirim uçun: sotib olgan narxingiz.")
     xarajatga = models.BooleanField(
         "Xarajat sifatida yozilsin", default=True,
-        help_text="Kirim uchun: belgilansa, xarid summasi Xarajatlar ro'yxatiga ham tushadi.")
+        help_text="Kirim uçun: belgilansa, xarid summasi Xarajatlar röyxatiga ham tuşadi.")
     qoshimcha_xarajat = models.PositiveIntegerField(
-        "Qo'shimcha xarajat (so'm)", default=0,
-        help_text="Yo'l kira, olib kelish, tashish va h.k. Faqat xarajatga yozilsa hisoblanadi.")
+        "Qöşimça xarajat (söm)", default=0,
+        help_text="Yöl kira, olib keliş, taşiş va h.k. Faqat xarajatga yozilsa hisoblanadi.")
     sana = models.DateField("Sana", default=bugun, db_index=True)
     buyurtma = models.ForeignKey(Buyurtma, null=True, blank=True, on_delete=models.CASCADE,
                                  related_name="harakatlar", editable=False)
@@ -477,7 +477,7 @@ class OmborHarakat(models.Model):
                 harakat=self, defaults={
                     "dokon_id": self.dokon_id, "sana": self.sana, "kategoriya": "material", "summa": self.jami,
                     "izoh": f"Ombor kirimi: {self.tovar} × {self.miqdor}"
-                            + (f" (yo'l/boshqa: {self.qoshimcha_xarajat:,} so'm)".replace(",", " ")
+                            + (f" (yöl/boşqa: {self.qoshimcha_xarajat:,} söm)".replace(",", " ")
                                if self.qoshimcha_xarajat else ""),
                 })
         else:
@@ -487,22 +487,22 @@ class OmborHarakat(models.Model):
 class Xarajat(models.Model):
     KATEGORIYA = [
         ("reklama", "Reklama (Instagram, Meta)"),
-        ("qadoqlash", "Qadoqlash, bosma"),
-        ("ish_haqi", "Ish haqi"),
+        ("qadoqlash", "Qadoqlaş, bosma"),
+        ("ish_haqi", "Iş haqi"),
         ("sayt", "Sayt, server, domen"),
         ("ijara", "Ijara, kommunal"),
-        ("soliq", "Soliq, to'lov komissiyasi"),
-        ("boshqa", "Boshqa"),
+        ("soliq", "Soliq, tölov komissiyasi"),
+        ("boshqa", "Boşqa"),
         ("material", "Material xaridi (ombor kirimi)"),
     ]
 
-    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Dökon")
     sana = models.DateField("Sana", default=bugun, db_index=True)
     kategoriya = models.CharField("Turi", max_length=12, choices=KATEGORIYA, default="reklama")
-    summa = models.PositiveIntegerField("Summa (so'm)")
+    summa = models.PositiveIntegerField("Summa (söm)")
     kampaniya = models.CharField(
         "Reklama kampaniyasi", max_length=80, blank=True,
-        help_text="Reklama xarajati bo'lsa, kampaniya nomi (masalan reklama2_uz).")
+        help_text="Reklama xarajati bölsa, kampaniya nomi (masalan reklama2_uz).")
     izoh = models.CharField("Izoh", max_length=200, blank=True)
     harakat = models.OneToOneField(OmborHarakat, null=True, blank=True, on_delete=models.CASCADE,
                                    editable=False)
@@ -513,7 +513,7 @@ class Xarajat(models.Model):
         ordering = ["-sana", "-id"]
 
     def __str__(self):
-        return f"{self.get_kategoriya_display()} — {self.summa:,} so'm".replace(",", " ")
+        return f"{self.get_kategoriya_display()} — {self.summa:,} söm".replace(",", " ")
 
     @property
     def foydaga_kiradi(self):
@@ -535,8 +535,8 @@ class Hisobot(Buyurtma):
 class Bildirishnoma(models.Model):
     """Ilova ichidagi xabar (qo'ng'iroqcha). Do'konning hamma xodimi bir xil ro'yxatni ko'radi."""
 
-    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Do'kon")
-    kalit = models.CharField(max_length=60, unique=True, help_text="Bir xabar ikki marta yaratilmasligi uchun.")
+    dokon = models.ForeignKey(Dokon, on_delete=models.CASCADE, verbose_name="Dökon")
+    kalit = models.CharField(max_length=60, unique=True, help_text="Bir xabar ikki marta yaratilmasligi uçun.")
     turi = models.CharField(max_length=12, default="yolda")
     sarlavha = models.CharField(max_length=120)
     matn = models.CharField(max_length=240, blank=True)
@@ -545,8 +545,8 @@ class Bildirishnoma(models.Model):
     push_yuborildi = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = "Bildirishnoma"
-        verbose_name_plural = "Bildirishnomalar"
+        verbose_name = "Bildirişnoma"
+        verbose_name_plural = "Bildirişnomalar"
         ordering = ["-id"]
 
     def __str__(self):

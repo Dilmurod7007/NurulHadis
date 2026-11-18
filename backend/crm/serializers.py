@@ -106,7 +106,7 @@ class OmborTovarSerializer(serializers.ModelSerializer):
         if self.instance:
             qs = qs.exclude(pk=self.instance.pk)
         if qs.exists():
-            raise serializers.ValidationError("Bunday nomli tovar allaqachon bor.")
+            raise serializers.ValidationError("Bunday nomli tovar allaqaçon bor.")
         return nom
 
 
@@ -127,9 +127,9 @@ class OmborHarakatSerializer(serializers.ModelSerializer):
 
     def validate(self, d):
         if d.get("turi") == "chiqim":
-            raise serializers.ValidationError("Chiqim buyurtma orqali avtomatik yoziladi.")
+            raise serializers.ValidationError("Çiqim buyurtma orqali avtomatik yoziladi.")
         if d.get("turi") == "kirim" and d.get("miqdor", 0) <= 0:
-            raise serializers.ValidationError("Kirim miqdori musbat bo'lishi kerak.")
+            raise serializers.ValidationError("Kirim miqdori musbat bölişi kerak.")
         return d
 
 
@@ -274,5 +274,5 @@ class BuyurtmaSerializer(serializers.ModelSerializer):
 
     def validate_qatorlar(self, v):
         if not v:
-            raise serializers.ValidationError("Kamida bitta mahsulot qo'shing.")
+            raise serializers.ValidationError("Kamida bitta mahsulot qöşing.")
         return v
